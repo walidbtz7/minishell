@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.h                                          :+:      :+:    :+:   */
+/*   strlen.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/26 23:04:31 by wboutzou         ###   ########.fr       */
+/*   Created: 2022/08/26 23:01:42 by wboutzou          #+#    #+#             */
+/*   Updated: 2022/08/26 23:06:38 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSING_H
-#define PARSING_H
+#include "global.h"
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <limits.h>
+int ft_strlen(char *str)
+{
+    int i;
 
-#endif
+    i = 0;
+    while (str[i])
+    {
+        i++;
+    }
+    return (i);
+}
