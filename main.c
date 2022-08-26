@@ -1,25 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/26 22:52:23 by wboutzou         ###   ########.fr       */
+/*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
+/*   Updated: 2022/08/26 22:52:43 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#define MINISHELL_H
+#include "../minishell.h"
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <limits.h>
-#include "global/global.h"
-#include "parsing/parsing.h"
-#include "execution/execution.h"
-
-#endif
+int main(int argc, char **argv)
+{
+    printf("let's start");
+    return (0);
+}
