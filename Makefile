@@ -1,6 +1,6 @@
-SRCS    		=  ./global/*.c ./parsing/*.c ./execution/*.c main.c
+SRCS    		=   ./parsing/parsing.c	main.c
 
-FLAGS 			=	-Wall -Wextra -Werror 
+FLAGS 			=	-Wall -Wextra -Werror
 
 OBJS			=    $(SRCS:.c=.o)
 
@@ -14,7 +14,7 @@ all: $(NAME)
 
 
 $(NAME):  $(HELPERS) $(PRINTF) $(OBJS)
-	cc $(FLAGS) $(OBJS) $(PRINTF) $(HELPERS) -o $(NAME)
+	cc $(FLAGS) $(OBJS) $(PRINTF) $(HELPERS) -o $(NAME) -lreadline 
 
 %.o:%.c 
 	cc $(FLAGS) -c $< -o $@
