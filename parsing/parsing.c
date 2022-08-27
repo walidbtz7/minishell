@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/27 02:28:14 by wboutzou         ###   ########.fr       */
+/*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
+/*   Updated: 2022/08/27 02:28:21 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "include/parsing.h"
 
-int main(void)
+void parsing(char *src)
 {
-    return (0);
+    t_lexer *lexer = init_lexer(src);
 }

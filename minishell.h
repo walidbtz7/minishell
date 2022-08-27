@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/26 22:52:23 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/08/27 02:22:46 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <unistd.h>
 #include <limits.h>
 #include "global/global.h"
-#include "parsing/parsing.h"
+#include "parsing/include/parsing.h"
 #include "execution/execution.h"
 
 #endif
