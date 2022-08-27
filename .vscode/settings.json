@@ -1,5 +1,6 @@
 {
   "files.associations": {
-    "global.h": "c"
+    "global.h": "c",
+    "limits.h": "c"
   }
 }
