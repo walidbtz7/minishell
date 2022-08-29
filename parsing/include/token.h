@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/29 01:05:40 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/08/29 02:44:37 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ typedef struct token
     char *value;
     enum
     {
-        TOKEN_OUTPUT,
         TOKEN_INPUT,
-        TOKEN_TEXT,
-        TOKEN_PIPE,
+        TOKEN_OUTPUT,
+        TOKEN_APPEND,
         TOKEN_HEREDOC,
-        TOKEN_APPEND
+        TOKEN_PIPE,
+        TOKEN_TEXT
     } type;
     struct t_token *next;
 

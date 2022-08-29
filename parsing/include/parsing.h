@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/29 01:10:51 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/08/29 02:59:11 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #include <limits.h>
 #include "./lexer.h"
 
-char *lexer_next_token(t_lexer *lexer);
+t_token *lexer_next_token(t_lexer *lexer);
 void parsing(char *src);
 
 #endif
