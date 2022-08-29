@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   iswhite.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/29 01:07:13 by wboutzou         ###   ########.fr       */
+/*   Created: 2022/08/28 23:05:39 by wboutzou          #+#    #+#             */
+/*   Updated: 2022/08/28 23:25:37 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#define MINISHELL_H
+#include "../include/global.h"
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <limits.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "parsing/include/parsing.h"
-// #include "execution/execution.h"
-
-#endif
+int iswhite(int c)
+{
+    if (c == 13 || c == 10 || c == ' ' || c == '\t')
+        return (1);
+    return (0);
+}

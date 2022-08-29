@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   strldup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/29 01:07:13 by wboutzou         ###   ########.fr       */
+/*   Created: 2022/06/25 21:23:36 by wboutzou          #+#    #+#             */
+/*   Updated: 2022/08/28 23:25:45 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-#define MINISHELL_H
+#include "../include/global.h"
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <limits.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "parsing/include/parsing.h"
-// #include "execution/execution.h"
+char *ft_strldup(const char *s1, int len)
+{
+    char *p;
+    int i;
 
-#endif
+    if (!s1)
+        return (0);
+    p = (char *)malloc(sizeof(char) * (len + 1));
+    i = 0;
+    if (!p)
+        return (NULL);
+    while (s1[i] && i < len)
+    {
+        p[i] = s1[i];
+        i++;
+    }
+    p[i] = '\0';
+    return (p);
+}

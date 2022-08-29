@@ -6,18 +6,19 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/27 03:46:37 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/08/29 01:05:40 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-#define LEXER_H
+#ifndef TOKEN_H
+#define TOKEN_H
 
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
+#include "../../global/include/global.h"
 
 typedef struct token
 {
@@ -31,6 +32,7 @@ typedef struct token
         TOKEN_HEREDOC,
         TOKEN_APPEND
     } type;
+    struct t_token *next;
 
 } t_token;
 
