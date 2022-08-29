@@ -6,11 +6,11 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 23:01:42 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/26 23:06:38 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/08/28 23:25:33 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "global.h"
+#include "../include/global.h"
 
 int ft_strlen(char *str)
 {

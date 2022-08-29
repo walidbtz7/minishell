@@ -5,6 +5,7 @@
     "lexer.h": "c",
     "execution.h": "c",
     "parsing.h": "c",
-    "readline.h": "c"
+    "readline.h": "c",
+    "unistd.h": "c"
   }
 }

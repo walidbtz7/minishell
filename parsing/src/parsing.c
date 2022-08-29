@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   global.h                                           :+:      :+:    :+:   */
+/*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/26 23:04:14 by wboutzou         ###   ########.fr       */
+/*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
+/*   Updated: 2022/08/29 01:23:13 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#include "../include/parsing.h"
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <limits.h>
+char *lexer_next_token(t_lexer *lexer)
+{
+    char *token;
 
-int ft_strlen(char *str);
-#endif
+    token = NULL;
+    while (isalnum(lexer->c))
+    {
+        token = ft_strjoin(token, &lexer->c);
+        lexer_advence(lexer);
+    }
+    return (token);
+}
+
+void parsing(char *src)
+{
+    t_lexer *lexer = init_lexer(src);
+    while (lexer->c != '\0')
+    {
+        printf("%s\n", lexer_next_token(lexer));
+    }
+}

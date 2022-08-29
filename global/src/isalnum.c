@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   isalnum.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/27 03:40:52 by wboutzou         ###   ########.fr       */
+/*   Created: 2022/08/28 23:05:39 by wboutzou          #+#    #+#             */
+/*   Updated: 2022/08/28 23:25:41 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/parsing.h"
+#include "../include/global.h"
 
-void parsing(char *src)
+int isalnum(int c)
 {
-    printf("%s\n", src);
+    if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+        return (1);
+    return (0);
 }
