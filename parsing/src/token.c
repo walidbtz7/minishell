@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/06 19:15:45 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/07 14:11:48 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,3 +52,21 @@ void	printtokens(t_token *head)
 		tmp = tmp->next;
 	}
 }
+
+int	tokensize(t_token *tokens)
+{
+	t_token	*tmp;
+	int		count;
+
+	if (!tokens)
+		return (0);
+	count = 0;
+	tmp = tokens;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		count++;
+	}
+	return (count);
+}
+

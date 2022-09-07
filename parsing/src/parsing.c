@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/07 11:30:42 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/07 14:10:29 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,18 @@ int    tokenization(t_lexer *lexer, t_token **token)
     return (0);
 }
 
-int    parsing(char *src)
+int    parsing_analyse(t_cmd    *cmd,t_token *token)
 {
-    t_lexer *lexer = init_lexer(src);
-    t_token *token = NULL;
-
-    if(tokenization(lexer, &token))
+    t_token *tmp;
+    t_cmd *command;
+    int res;
+    command = NULL;
+    tmp = token;
+    while (tmp)
     {
-        write(2,"Error!\n",7);
-        return (1);
+        if(!parsing_checker(command, tmp))
+            return (0);
     }
-    printtokens(token);
-    return (0);
+    return (res);
 }
+

@@ -1,4 +1,4 @@
-SRCS    		=   lexer.c parsing.c token.c
+SRCS    		=   lexer.c token.c  parsing.c minishell.c
 FLAGS 			=	-Wall -Wextra -Werror 
 OBJS			=    $(SRCS:.c=.o)
 

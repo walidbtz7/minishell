@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/06 19:13:23 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/07 13:09:50 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,5 @@ typedef struct token
 t_token *init_token(char *value, int type);
 void	ft_tokenadd_back(t_token **token, t_token *new);
 void	printtokens(t_token *head);
+int     toeknsize(t_token *tokens);
 #endif

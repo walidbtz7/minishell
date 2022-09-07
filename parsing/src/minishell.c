@@ -5,21 +5,25 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/07 13:54:47 by wboutzou         ###   ########.fr       */
+/*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
+/*   Updated: 2022/09/07 13:54:54 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../include/parsing.h"
 
-int main(void)
+
+int    parsing(char *src,t_cmd  *cmd)
 {
-    t_cmd   *cmd;
+    int res;
+    t_lexer *lexer = init_lexer(src);
+    t_token *token = NULL;
 
-    cmd = NULL;
-    while (1)
+    if(tokenization(lexer, &token))
     {
-        parsing(readline("minishell> "), cmd);
+        write(2,"Error!\n",7);
+        return (1);
     }
-    return (0);
+    res = parsing_analyse(cmd, token);
+    return (res);
 }
