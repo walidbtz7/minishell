@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/29 06:33:34 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/07 11:28:10 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ t_lexer *init_lexer(char *src)
     lexer->src = src;
     lexer->src_lenght = ft_strlen(src);
     lexer->i = 0;
+    lexer->quote = 0;
     lexer->c = src[lexer->i];
-
     return (lexer);
 }
 
@@ -52,17 +52,53 @@ int token_type(t_lexer *lexer)
         return (5);
 }
 
-int case_to_handle(t_lexer *lexer)
+void quote_state(t_lexer *lexer)
 {
-    char current;
-    char next;
+    if((lexer->c == 34 || lexer->c == 39) && lexer->quote == 0)
+        lexer->quote = 1;
+    else if((lexer->c == 34 || lexer->c == 39) && lexer->quote == 1)
+        lexer->quote = 0;
+}
 
-    current = lexer->c;
-    next = lexer->src[lexer->i + 1];
-    if ((isalnum(current) && isimposter(next)) || (isimposter(current) && isalnum(next)))
+int stop(t_lexer *lexer)
+{
+    if(lexer->quote != 1)
+    {
+       if((istop(lexer->c) || isimposter(lexer->c)))
+        return (1);
+    }
+    else
+        if(lexer->c == '\0')
+        return (1);
+    return (0);
+}
+
+t_token *case_to_handle(t_lexer *lexer)
+{
+    if (lexer->c == '>')
     {
         lexer_advence(lexer);
-        return (1);
+        if(lexer->c == '>')
+        {
+            lexer_advence(lexer);
+            return init_token(">>", TOKEN_APPEND);
+        }
+        return init_token(">", TOKEN_OUTPUT);
+    }
+    else if (lexer->c == '<')
+    {
+        lexer_advence(lexer);
+        if(lexer->c == '<')
+        {
+            lexer_advence(lexer);
+            return init_token("<<", TOKEN_HEREDOC);
+        }
+        return init_token("<", TOKEN_INPUT);
+    }
+    else if (lexer->c == '|')
+    {
+        lexer_advence(lexer);
+        return init_token("|", TOKEN_PIPE);
     }
     return (0);
 }
