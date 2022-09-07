@@ -1,6 +1,6 @@
 SRCS    		=   minishell.c
 
-FLAGS 			=	-Wall -Wextra -Werror
+FLAGS 			=	-Wall -Wextra -Werror 
 
 OBJS			=    $(SRCS:.c=.o)
 
