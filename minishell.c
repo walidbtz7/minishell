@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/07 13:54:47 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/11 03:14:21 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 int main(void)
 {
-    t_cmd   *cmd;
+    t_node   *cmd;
 
     cmd = NULL;
     while (1)
     {
-        parsing(readline("minishell> "), cmd);
+        parsing(readline("minishell> "), &cmd);
     }
     return (0);
 }
