@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/07 11:23:37 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/11 23:37:57 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,11 @@ typedef struct lexer
 t_lexer *init_lexer(char *src);
 void lexer_advence(t_lexer *lexer);
 void lexer_space_skip(t_lexer *lexer);
+t_token *lexer_next_token(t_lexer *lexer);
 int token_type(t_lexer *lexer);
 t_token *case_to_handle(t_lexer *lexer);
-void quote_state(t_lexer *lexer);
-int stop(t_lexer *lexer);
+t_token *lexer_next_token(t_lexer *lexer);
+int      tokenization(t_lexer *lexer, t_token **token);
+void    quote_state(t_lexer *lexer);
+int     stop(t_lexer *lexer);
 #endif

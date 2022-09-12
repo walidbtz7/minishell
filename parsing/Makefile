@@ -1,5 +1,5 @@
 SRCS    		=   lexer.c token.c init.c analyse.c parsing.c minishell.c
-FLAGS 			=	-Wall -Wextra -Werror 
+FLAGS 			=	-Wall -Wextra -Werror
 OBJS			=    $(SRCS:.c=.o)
 
 NAME    		=    parsing.a

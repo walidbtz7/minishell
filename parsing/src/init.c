@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/11 04:26:31 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/12 04:44:55 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,41 @@ t_argv *init_argv(char	*value)
     return (argv);
 }
 
-t_cmd *init_cmd(void)
+t_cmd *init_cmd(t_node *argv, t_node *redirection)
 {
     t_cmd *cmd;
 
     cmd = malloc(sizeof(t_cmd));
-    cmd->argv = NULL;
-    cmd->redirection = NULL;
+    cmd->argv = argv;
+    cmd->redirection = redirection;
     return (cmd);
 }
 
-void	printcmd(t_node *head)
+void	printcmd(t_cmd *cmd)
+{
+    t_node  *argv;
+    t_node  *redirection;
+	
+	argv = cmd->argv;
+	redirection = cmd->redirection;
+	
+	while (argv)
+	{
+		printf("argv : \t");
+		printf("%s \n",((t_argv *)argv->content)->value);
+		argv = argv->next;
+	}
+	while (redirection)
+	{
+		printf("redirection : \n");			
+		printf("%s \n",((t_argv *)argv->content)->value);
+		printf("name : %s \n",((t_redirection *)redirection->content)->file);
+		printf("type : %d \n",((t_redirection *)redirection->content)->type);
+		redirection = redirection->next;
+	}
+		
+}
+void	printnode(t_node *head)
 {
 	t_node	*tmp;
     t_cmd  *cmd;
@@ -77,15 +101,15 @@ void	printcmd(t_node *head)
     t_node  *redirection;
 	int i = 0;
 	tmp = head;
-	cmd = (t_cmd *) tmp->content;
+	cmd = (t_cmd *) head->content;
 	argv =  cmd->argv;
 	redirection =  cmd->redirection;
 	while (tmp)
 	{
-		printf("the %d commande\n",i);
+		printf("cmd : %i\n",i++);
 		while (argv)
 		{
-			printf("argv : \t");	
+			printf("argv : \n");
 			printf("%s \n",((t_argv *)argv->content)->value);
 			argv = argv->next;
 		}
@@ -98,35 +122,45 @@ void	printcmd(t_node *head)
 			redirection = redirection->next;
 		}
 		tmp = tmp->next;
-		i++;
+ 	}
+}
+
+void	freecmd(t_cmd *cmd)
+{
+	t_node 	*tmp;
+    t_node  *argv;
+    t_node  *redirection;
+
+	argv =  cmd->argv;
+	redirection =  cmd->redirection;
+	while (argv)
+	{
+		tmp = argv;
+		argv = argv->next;
+		free(tmp->content);
+		free(tmp);
 	}
+	while (redirection)
+	{
+		tmp = redirection;
+		redirection = redirection->next;
+		free(tmp->content);
+		free(tmp);
+	}
+	free(cmd);
+
 }
 
 void	freeall(t_node **head)
 {
 	t_node	*tmp;
     t_cmd  *cmd;
-    t_node  *argv;
-    t_node  *redirection;
 
-	cmd = (t_cmd *) (*head)->content;
-	argv =  cmd->argv;
-	redirection =  cmd->redirection;
 	while (*head)
 	{
-		while (argv)
-		{
-			tmp = argv;
-			argv = argv->next;
-			free(tmp);
-		}
-		while (redirection)
-		{
-			tmp = redirection;
-			redirection = redirection->next;
-			free(redirection);
-		}
 		tmp = (*head);
+		cmd = (t_cmd *) (*head)->content;
+		freecmd(cmd);
 		*head =(*head)->next;
 		free(tmp);
 	}
