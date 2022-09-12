@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/12 04:38:37 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/12 21:24:15 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ t_redirection *init_redirection(int type, char  *file);
 t_argv          *init_argv(char *value);
 
 // token check
-int 	token_red(t_cmd *cmd, t_token    *token);
-int		token_txt(t_cmd *cmd, t_token    *token);
+int 	token_red(t_node **redirection, t_token    *token);
+int		token_txt(t_node **agrv, t_token    *token);
 // scanner
 int      parsing(char *src,t_node  **cmd);
 int      parsing_analyse(t_node    **cmd,t_token *token);

@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/12 04:38:09 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/12 21:48:46 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,24 +47,30 @@ int    tokenization(t_lexer *lexer, t_token **token)
 int    parsing_analyse(t_node    **cmd,t_token *token)
 {
     int             res;
-    t_node         *new;
-    t_cmd           *commande;
-
-    res = 1;
+    t_node         *redirection;
+    t_node          *argv;
+    t_node          *new;
     
-    commande = init_cmd(NULL, NULL);
+    redirection = NULL;
+    res = 0;
+    argv = NULL;
     while (token)
     {
+        printf("token check : %s\n",token->value);
         if(token->type == TOKEN_INPUT || token->type == TOKEN_OUTPUT || \
         token->type == TOKEN_APPEND || token->type == TOKEN_HEREDOC)
-            token_red(commande, token);
+        {
+            token_red(&redirection, token);
+            token = token->next;
+        }
         else if(token->type == TOKEN_TEXT)
-            token_txt(commande, token);
+            token_txt(&argv, token);
         if(token->type == TOKEN_PIPE || token->next == NULL)
         {
-            new = ft_lstnew(init_cmd(commande->argv, commande->redirection));
+            new = ft_lstnew(init_cmd(argv, redirection));
             ft_nodeadd_back(cmd, new);
-            commande = init_cmd(NULL , NULL);
+            redirection = NULL;
+            argv = NULL;
         }
         token = token->next;
     }
