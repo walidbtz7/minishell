@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/12 21:36:43 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/13 04:04:33 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ void	printcmd(t_cmd *cmd)
 	while (redirection)
 	{
 		printf("redirection : \n");			
-		printf("%s \n",((t_argv *)argv->content)->value);
 		printf("name : %s \n",((t_redirection *)redirection->content)->file);
 		printf("type : %d \n",((t_redirection *)redirection->content)->type);
 		redirection = redirection->next;
@@ -102,11 +101,12 @@ void	printnode(t_node *head)
 	int i = 1;
 	int j = 1;
 	tmp = head;
-	cmd = (t_cmd *) head->content;
-	argv =  cmd->argv;
-	redirection =  cmd->redirection;
+
 	while (tmp)
 	{
+		cmd = (t_cmd *) tmp->content;
+		argv =  cmd->argv;
+		redirection =  cmd->redirection;
 		printf("cmd : %d\n", i++);
 		while (argv)
 		{
@@ -117,9 +117,8 @@ void	printnode(t_node *head)
 		while (redirection)
 		{
 			printf("redirection : \n");			
-			printf("%s \n",((t_argv *)argv->content)->value);
-			printf("name : %s \n",((t_redirection *)redirection->content)->file);
-			printf("type : %d \n",((t_redirection *)redirection->content)->type);
+			printf("\tname : %s \n",((t_redirection *)redirection->content)->file);
+			printf("\ttype : %d \n",((t_redirection *)redirection->content)->type);
 			redirection = redirection->next;
 		}
 		tmp = tmp->next;
@@ -149,7 +148,6 @@ void	freecmd(t_cmd *cmd)
 		free(tmp);
 	}
 	free(cmd);
-
 }
 
 void	freeall(t_node **head)
@@ -165,4 +163,16 @@ void	freeall(t_node **head)
 		*head =(*head)->next;
 		free(tmp);
 	}
+}
+int	ft_lstsize(t_node *lst)
+{
+	int	i;
+
+	i = 0;
+	while (lst != NULL)
+	{
+		lst = lst->next;
+		i++;
+	}
+	return (i);
 }

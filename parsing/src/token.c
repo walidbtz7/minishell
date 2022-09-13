@@ -6,11 +6,11 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/07 14:11:48 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/13 21:50:29 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/token.h"
+#include "../include/parsing.h"
 
 t_token *init_token(char *value, int type)
 {

@@ -1,6 +1,6 @@
 SRCS    		=   minishell.c
 
-FLAGS 			=	-Wall -Wextra -Werror 
+FLAGS 			=	-Wall -Wextra -Werror -g -fsanitize=address 
 
 OBJS			=    $(SRCS:.c=.o)
 

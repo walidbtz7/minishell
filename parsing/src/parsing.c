@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/12 21:48:46 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/13 04:04:23 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,14 @@ t_token *lexer_next_token(t_lexer *lexer)
 {
     char *value;
     t_token *token;
-
+    char    tmp[2];
     token = NULL;
     value = NULL;
     while (!stop(lexer))
     {
-        value = ft_strjoin(value, &lexer->c);
+        tmp[0] = lexer->c;
+        tmp[1] = '\0';
+        value = ft_strjoin(value,tmp);
         quote_state(lexer);
         lexer_advence(lexer);
     }
@@ -56,13 +58,9 @@ int    parsing_analyse(t_node    **cmd,t_token *token)
     argv = NULL;
     while (token)
     {
-        printf("token check : %s\n",token->value);
         if(token->type == TOKEN_INPUT || token->type == TOKEN_OUTPUT || \
         token->type == TOKEN_APPEND || token->type == TOKEN_HEREDOC)
-        {
-            token_red(&redirection, token);
-            token = token->next;
-        }
+            token_red(&redirection, &token);
         else if(token->type == TOKEN_TEXT)
             token_txt(&argv, token);
         if(token->type == TOKEN_PIPE || token->next == NULL)

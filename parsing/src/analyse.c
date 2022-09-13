@@ -6,23 +6,26 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/12 21:51:51 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/12 22:41:33 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 
 
-int token_red(t_node **redirection, t_token    *token)
+int token_red(t_node **redirection, t_token    **token)
 {
     t_node  *new;
     int i;
     
     i = 1;
-    if(token->next->type != TOKEN_TEXT)
+    if(!(*token)->next)
         return (0);
-    new = ft_lstnew(init_redirection(token->type, token->next->value));
+    if((*token)->next->type != TOKEN_TEXT)
+        return (0);
+    new = ft_lstnew(init_redirection((*token)->type, (*token)->next->value));
     ft_nodeadd_back(redirection, new);
+    (*token) = (*token)->next;
     return (1);
 }
 

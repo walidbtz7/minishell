@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/12 21:03:47 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/12 23:52:34 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,5 @@ int    parsing(char *src,t_node  **cmd)
         return (1);
     }
     res = parsing_analyse(cmd, token);
-    freeall(cmd);
     return (res);
 }
