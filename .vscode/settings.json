@@ -6,6 +6,8 @@
     "execution.h": "c",
     "parsing.h": "c",
     "readline.h": "c",
-    "unistd.h": "c"
+    "unistd.h": "c",
+    "helper.h": "c",
+    "tokenization.h": "c"
   }
 }
