@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/14 02:08:51 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/15 11:32:25 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int token_is_red(int    type)
     return (0);
 }
 
-int    parsing_analyse(t_node    **cmd,t_token *token)
+int    parsing_analyse(t_node    **cmd,t_token *token , char **envp)
 {
     int             res;
     t_node         *redirection;
@@ -28,16 +28,19 @@ int    parsing_analyse(t_node    **cmd,t_token *token)
     t_node          *new;
     
     redirection = NULL;
-    res = 0;
+    res = 1;
     argv = NULL;
-    while (token)
+    while (token && res == 1)
     {
         if(token_is_red(token->type))
-            token_red(&redirection, &token);
+            res = token_red(&redirection, &token);
         else if(token->type == TOKEN_TEXT)
-            token_txt(&argv, token);
-        if(token->type == TOKEN_PIPE || token->next == NULL)
+            res = token_txt(&argv, token, envp);
+        if((token->type == TOKEN_PIPE || token->next == NULL) && res != 0)
         {
+            res = token_pipe(token);
+            if(!res)
+                return (res);
             new = ft_lstnew(init_cmd(argv, redirection));
             ft_nodeadd_back(cmd, new);
             redirection = NULL;
@@ -45,7 +48,6 @@ int    parsing_analyse(t_node    **cmd,t_token *token)
         }
         token = token->next;
     }
-    printnode(*cmd);
     return (res);
 }
 

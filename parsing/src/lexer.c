@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/13 22:24:45 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/15 11:46:22 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void lexer_space_skip(t_lexer *lexer)
 void quote_state(t_lexer *lexer)
 {
     if((lexer->c == 34 || lexer->c == 39) && lexer->quote == 0)
-        lexer->quote = 1;
-    else if((lexer->c == 34 || lexer->c == 39) && lexer->quote == 1)
+        lexer->quote = (int) lexer->c;
+    else if((lexer->c == 34 || lexer->c == 39) && (lexer->quote == (unsigned int) lexer->c))
         lexer->quote = 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/14 02:05:29 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/15 12:30:42 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
+#include <fcntl.h>
 #include "../../global/include/global.h"
 #include "./node.h"
 #include "./tokenization.h"
@@ -51,9 +52,11 @@ t_cmd       *init_cmd(t_node *argv, t_node *redirection);
 t_redirection *init_redirection(int type, char  *file);
 t_argv          *init_argv(char *value);
 int 	token_red(t_node **redirection, t_token    **token);
-int		token_txt(t_node **agrv, t_token    *token);
-int      parsing(char *src,t_node  **cmd);
-int      parsing_analyse(t_node    **cmd,t_token *token);
+int		token_txt(t_node **agrv, t_token    *token, char **envp);
+int		token_pipe(t_token    *token);
+int      parsing(char *src,t_node  **cmd, char **envp);
+int      parsing_analyse(t_node    **cmd,t_token *token, char **envp);
 void	freecmd(t_cmd *cmd);
+char 	*fargv(char   *str, char **envp);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/13 22:20:24 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/14 02:27:31 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,29 +40,7 @@ void	ft_nodeadd_back(t_node **node, t_node *new)
 	}
 }
 
-void	printcmd(t_cmd *cmd)
-{
-    t_node  *argv;
-    t_node  *redirection;
-	
-	argv = cmd->argv;
-	redirection = cmd->redirection;
-	
-	while (argv)
-	{
-		printf("argv : \t");
-		printf("%s \n",((t_argv *)argv->content)->value);
-		argv = argv->next;
-	}
-	while (redirection)
-	{
-		printf("redirection : \n");			
-		printf("name : %s \n",((t_redirection *)redirection->content)->file);
-		printf("type : %d \n",((t_redirection *)redirection->content)->type);
-		redirection = redirection->next;
-	}
-		
-}
+
 void	printnode(t_node *head)
 {
 	t_node	*tmp;
@@ -78,18 +56,18 @@ void	printnode(t_node *head)
 		cmd = (t_cmd *) tmp->content;
 		argv =  cmd->argv;
 		redirection =  cmd->redirection;
-		printf("cmd : %d\n", i++);
+		printf("cmd %d:\n", i++);
 		while (argv)
 		{
-			printf("\targv : %d\t",j++);
-			printf("%s \n",((t_argv *)argv->content)->value);
+			printf("\targv %d:\n",j++);
+			printf("\t\t%s \n",((t_argv *)argv->content)->value);
 			argv = argv->next;
 		}
 		while (redirection)
 		{
-			printf("redirection : \n");			
-			printf("\tname : %s \n",((t_redirection *)redirection->content)->file);
-			printf("\ttype : %d \n",((t_redirection *)redirection->content)->type);
+			printf("\tredirection : \n");			
+			printf("\t\tname : %s \n",((t_redirection *)redirection->content)->file);
+			printf("\t\ttype : %d \n",((t_redirection *)redirection->content)->type);
 			redirection = redirection->next;
 		}
 		tmp = tmp->next;

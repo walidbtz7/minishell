@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strlen.c                                           :+:      :+:    :+:   */
+/*   strchr.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/26 23:01:42 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/15 11:45:49 by wboutzou         ###   ########.fr       */
+/*   Created: 2022/08/28 23:05:39 by wboutzou          #+#    #+#             */
+/*   Updated: 2022/09/15 10:31:34 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/global.h"
 
-int ft_strlen(char *str)
+char	*ft_strchr(char *s, int c)
 {
-    int i;
+	char	*str;
 
-    i = 0;
-    while (str[i])
-        i++;
-    return (i);
+	str = (char *) s;
+	if (!s)
+		return (0);
+	while (*str != '\0')
+	{
+		if (*str == (char) c)
+			return (str);
+		str++;
+	}
+	return (NULL);
 }

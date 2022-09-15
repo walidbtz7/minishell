@@ -1,4 +1,4 @@
-SRCS    		=   imposter.c strlen.c isalnum.c  iswhite.c istop.c  strjoin.c  strldup.c  strjoin.c
+SRCS    		=   imposter.c strlen.c strchr.c isalnum.c  iswhite.c istop.c strldup.c substr.c strjoin.c 
 
 FLAGS 			=	-Wall -Wextra -Werror
 
