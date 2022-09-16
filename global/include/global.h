@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/15 10:29:28 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/16 09:50:22 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,6 @@ char	*get_next_line(int fd);
 char	*ft_strchr(char *s, int c);
 char	*ft_substr(char *s, int start, int len);
 char	*get_next_line(int fd);
+char	**ft_split(char *s, char c);
+
 #endif

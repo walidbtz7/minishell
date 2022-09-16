@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/16 05:55:06 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/16 09:03:02 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ typedef struct cargv
     int i;
     char    **envp;
     int start;
-    int dollar;
     int single;
     int expand;
     int dbl;

@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/16 06:14:18 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/16 09:58:44 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void cargv_advence(t_cargv *cargv)
 }
 int    envstop(char c)
 {
-    if(!isalnum(c) || c == '\0' || c == '_')
+    if(!isalnum(c) || c == '\0')
         return (0);
     return (1);
 }
@@ -124,53 +124,29 @@ char*    expandenv(t_cargv *cargv)
             var = ft_strjoin(var, charstr(cargv->c));
             cargv_advence(cargv);
         }
-        return (getenval(var, cargv->envp));
+       var = getenval(var, cargv->envp);
+       return (var);
     }
     return "$";
 }
 
-// char *expand(t_cargv *cargv)
-// {
-//     char    *new;
-//     char    *tmp;
-//     new = NULL;
-
-//     single_quote(cargv);
-//     double_quote(cargv);
-//     tmp = charstr(cargv->c);
-//     if(cargv->c == '$')
-//         new = ft_strjoin(new, expandenv(cargv));
-//     else if (cargv->c != 34 && cargv->c != 39)
-//         new = ft_strjoin(new, tmp);
-//     else if(cargv->c == 34 && cargv->single == 1)
-//         new = ft_strjoin(new, tmp);
-//     else if(cargv->c == 39 && cargv->dbl == 1)
-//         new = ft_strjoin(new, tmp);
-//     free(tmp);
-//     return (new);
-// }
-
 char *fargv(t_cargv *check)
 {
     char    *new;
-    char    *tmp;
 
     new = NULL;
-    tmp = NULL;
     while (check->c)
     {
-        single_quote(check);
         double_quote(check);
-        tmp = charstr(check->c);
+        single_quote(check);
         if(check->c == '$')
             new = ft_strjoin(new, expandenv(check));
-        else if (check->c != 34 && check->c != 39)
-            new = ft_strjoin(new, tmp);
+        if (check->c != 34 && check->c != 39 && check->c != '$')
+            new = ft_strjoin(new, charstr(check->c));
         else if(check->c == 34 && check->single == 1)
-            new = ft_strjoin(new, tmp);
+            new = ft_strjoin(new, charstr(check->c));
         else if(check->c == 39 && check->dbl == 1)
-            new = ft_strjoin(new, tmp);
-        free(tmp);
+            new = ft_strjoin(new, charstr(check->c));
         cargv_advence(check);
     }
     return (new);

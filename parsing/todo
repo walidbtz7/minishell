@@ -11,3 +11,4 @@
 #  echo $1asdf
 #  echo $1234234asdf
 echo "|"
+check if $ should not start with alphabtic 
