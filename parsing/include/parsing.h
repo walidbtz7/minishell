@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/15 12:30:42 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/16 05:53:17 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include "./node.h"
 #include "./tokenization.h"
 #include "./lexer.h"
+#include "./argv.h"
 
 typedef struct argv
 {
@@ -57,6 +58,6 @@ int		token_pipe(t_token    *token);
 int      parsing(char *src,t_node  **cmd, char **envp);
 int      parsing_analyse(t_node    **cmd,t_token *token, char **envp);
 void	freecmd(t_cmd *cmd);
-char 	*fargv(char   *str, char **envp);
+char 	*fargv(t_cargv *check);
 
 #endif
