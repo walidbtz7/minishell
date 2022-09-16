@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/15 11:44:51 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/16 06:47:55 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int main(int argc, char **argv, char** envp)
         if(str)
         {
             if(!parsing(str, &cmd, envp))
+            {
                 printf("Syntax Error!\n");
+                freeall(&cmd);
+            }
             printnode(cmd);
             freeall(&cmd);
         }

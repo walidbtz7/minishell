@@ -4,5 +4,10 @@
 << limit
 >> text
 
-expend "$USER" "'$USER'"
-notExpend '$USER' '"$USER"'
+# expend "$USER" "'$USER'"
+# notExpend '$USER' '"$USER"'
+#  | asdfasdf |
+#  echo $$$$$?
+#  echo $1asdf
+#  echo $1234234asdf
+echo "|"

@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/16 02:57:43 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/16 06:33:09 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void quote_state(t_lexer *lexer)
 
 int stop(t_lexer *lexer)
 {
-    if(lexer->quote != 1)
+    if(lexer->quote != 34 && lexer->quote != 39)
     {
        if((istop(lexer->c) || isimposter(lexer->c)))
         return (1);
