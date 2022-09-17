@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/16 09:50:22 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/17 11:45:47 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@
 int ft_strlen(char *str);
 int iswhite(int c);
 int istop(int c);
+int isnumber(int c);
 int isalnum(int c);
 char *ft_strjoin(char *s1, char *s2);
+char *ft_strjoin_sep(char *s1, char *s2);
 char *ft_strldup(const char *s1, int len);
 int isimposter(int c);
 char	*get_next_line(int fd);
 char	*ft_strchr(char *s, int c);
 char	*ft_substr(char *s, int start, int len);
 char	*get_next_line(int fd);
-char	**ft_split(char *s, char c);
+char	**ft_split(char *s);
 
 #endif

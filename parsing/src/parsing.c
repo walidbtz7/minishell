@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/15 11:32:25 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/17 14:20:20 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ int    parsing_analyse(t_node    **cmd,t_token *token , char **envp)
     redirection = NULL;
     res = 1;
     argv = NULL;
+    if(token->type == TOKEN_PIPE)
+        return (0);
     while (token && res == 1)
     {
         if(token_is_red(token->type))

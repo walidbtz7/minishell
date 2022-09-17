@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/16 09:58:44 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/17 14:27:14 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,6 @@ void cargv_advence(t_cargv *cargv)
         cargv->c = cargv->src[cargv->i];
     }
     
-}
-int    envstop(char c)
-{
-    if(!isalnum(c) || c == '\0')
-        return (0);
-    return (1);
 }
 
 void single_quote(t_cargv *cargv)
@@ -95,59 +89,113 @@ char   *getenval(char *key,char **envp)
     while (envp[i] && !exit)
     {
         j = 0;
-        while (key[j] == envp[i][j] && key[j] && envp[i][j])
+        while (key[j] == envp[i][j] && key && envp[i][j])
             j++;
-        if(envp[i][j] == '=')
+        if(j == ft_strlen(key))
             exit = 1;
-        else 
+        else
             i++;
     }
-    if(envp[i])
+    if(j == ft_strlen(key) &&  envp[i][j] == '=')
         return (ft_substr(envp[i], j + 1 , ft_strlen(envp[i])));
     return (NULL);
 }
 
+int    envstop(char c)
+{
+    if(isalnum(c) || c == '_')
+        return (1);
+    return (0);
+}
+
+char*    checkfirst(t_cargv *cargv)
+{
+    cargv_advence(cargv);
+    if(!isnumber((int) cargv->c))
+    {
+        if(cargv->c == '?')
+            return ("0");
+        else if (!envstop(cargv->c))
+            return ("$");
+    }
+    return (NULL);
+}
+char*   splitenv(char *str)
+{
+    char    **splited;
+    char    *new;
+    int     i;
+
+    i = 0;
+    new = NULL;
+    splited = NULL;
+    if(!str)
+        return (NULL);
+    splited = ft_split(str);
+    while (splited[i])
+    {
+       if(i == 0)
+            new = ft_strjoin(new, splited[i]);
+       else
+            new = ft_strjoin_sep(new, splited[i]);
+       i++;
+    }
+    return (new);
+}
 char*    expandenv(t_cargv *cargv)
 {
     char   *var;
 
     var = NULL;
     if(cargv->expand == 1)
-    {   
-        cargv_advence(cargv);
-        if(!cargv->c)
-            return "$";
-        if(cargv->c == '?')
-            return ("0");
+    {
+        var = checkfirst(cargv);
+        if(var)
+            return (var);
         while (envstop(cargv->c))
         {
             var = ft_strjoin(var, charstr(cargv->c));
             cargv_advence(cargv);
         }
        var = getenval(var, cargv->envp);
+       var = splitenv(var);
        return (var);
     }
+    else
+        cargv_advence(cargv);
+
     return "$";
 }
 
 char *fargv(t_cargv *check)
 {
     char    *new;
+    char    *expend;
 
-    new = NULL;
+    new = ft_strldup("", 0);
+    expend = NULL;
     while (check->c)
     {
         double_quote(check);
         single_quote(check);
         if(check->c == '$')
-            new = ft_strjoin(new, expandenv(check));
-        if (check->c != 34 && check->c != 39 && check->c != '$')
-            new = ft_strjoin(new, charstr(check->c));
-        else if(check->c == 34 && check->single == 1)
-            new = ft_strjoin(new, charstr(check->c));
-        else if(check->c == 39 && check->dbl == 1)
-            new = ft_strjoin(new, charstr(check->c));
-        cargv_advence(check);
+        {
+            expend = expandenv(check);
+            if(expend)
+                new = ft_strjoin(new, expend);
+            else 
+                new = NULL;
+        }
+        else 
+        {
+            if (check->c != 34 && check->c != 39)
+                new = ft_strjoin(new, charstr(check->c));
+            else if(check->c == 34 && check->single == 1 )
+                new = ft_strjoin(new, charstr(check->c));
+            else if(check->c == 39 && check->dbl == 1 )
+                new = ft_strjoin(new, charstr(check->c));
+            cargv_advence(check);
+        }
     }
     return (new);
 }

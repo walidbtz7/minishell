@@ -1,14 +1,17 @@
-||
-< text
-> text
-<< limit
->> text
-
+# ||
+# < text
+# > text
+# << limit
+# >> text
 # expend "$USER" "'$USER'"
 # notExpend '$USER' '"$USER"'
 #  | asdfasdf |
 #  echo $$$$$?
 #  echo $1asdf
 #  echo $1234234asdf
-echo "|"
-check if $ should not start with alphabtic 
+# echo "|"
+# check if $ should not start with alphabtic 
+# "'$USer'"
+#
+# ""
+# wa7d space katla3 fhad case                 
