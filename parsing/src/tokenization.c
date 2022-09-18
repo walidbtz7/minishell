@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/15 12:32:05 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/17 17:00:43 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,5 @@ t_token *lexer_next_token(t_lexer *lexer)
     else
         token = init_token(value, TOKEN_TEXT);
     return (token);
-}
+}   
 
