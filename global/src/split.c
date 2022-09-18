@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 23:30:36 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/17 11:47:59 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:39:46 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,50 @@ static int	ft_free(int j, char **str)
 	return (0);
 }
 
+void fsingle(char c, int *single, int dbl)
+{
+    if(dbl == 0)
+    {
+        if(c == 39 && *single == 0)
+            *single = 1;
+        else if(c == 39 && *single == 1)
+            *single = 0;
+    }
+}
+
+void fdbl(char c, int single, int *dbl)
+{
+    if(single == 0)
+    {
+        if(c == 34 && *dbl == 0)
+            *dbl = 1;
+        else if(c == 34 && *dbl == 1)
+            *dbl = 0;
+    }
+}
+
 static int	ft_normi(char *s, char **str, int start)
 {
 	int		t;
 	int		j;
 	int     i;
-
+	int single;
+	int dbl;
 	i = 0;
 	t = 0;
 	j = 0;
+	single = 0;
+	dbl = 0;
 	while (i <= ft_strlen(s))
 	{
+		fsingle(s[i],&single, dbl);
+		fdbl(s[i], single, &dbl);
 		if (!iswhite(s[i]) && t == 0)
 		{
 			start = i;
 			t = 1;
 		}
-		else if ((iswhite(s[i]) || i == ft_strlen(s)) && t == 1)
+		else if (((iswhite(s[i]) || i == ft_strlen(s)) && t == 1) && (single == 0 && dbl == 0))
 		{
 			str[j++] = ft_substr(s, start, (i - start));
 			if (!str[j - 1])
