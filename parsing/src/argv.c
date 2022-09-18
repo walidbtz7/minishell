@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/17 14:27:14 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/18 15:46:30 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,6 @@ char*    expandenv(t_cargv *cargv)
             cargv_advence(cargv);
         }
        var = getenval(var, cargv->envp);
-       var = splitenv(var);
        return (var);
     }
     else
@@ -167,13 +166,15 @@ char*    expandenv(t_cargv *cargv)
     return "$";
 }
 
-char *fargv(t_cargv *check)
+char **fargv(t_cargv *check)
 {
     char    *new;
     char    *expend;
+    char    **test;
 
     new = ft_strldup("", 0);
     expend = NULL;
+    test = NULL;
     while (check->c)
     {
         double_quote(check);
@@ -188,14 +189,35 @@ char *fargv(t_cargv *check)
         }
         else 
         {
-            if (check->c != 34 && check->c != 39)
-                new = ft_strjoin(new, charstr(check->c));
-            else if(check->c == 34 && check->single == 1 )
-                new = ft_strjoin(new, charstr(check->c));
-            else if(check->c == 39 && check->dbl == 1 )
-                new = ft_strjoin(new, charstr(check->c));
-            cargv_advence(check);
+            new = ft_strjoin(new, charstr(check->c));
+           cargv_advence(check);
         }
+    
+    }
+    if(new)
+    {
+        test = ft_split(new);
+    }
+    return (test);
+}
+char *rmquote(t_cargv *check)
+{
+    char    *new;
+    char    *expend;
+
+    new = ft_strldup("", 0);
+    expend = NULL;
+    while (check->c)
+    {
+        double_quote(check);
+        single_quote(check);
+        if (check->c != 34 && check->c != 39)
+            new = ft_strjoin(new, charstr(check->c));
+        else if(check->c == 34 && check->single == 1 )
+            new = ft_strjoin(new, charstr(check->c));
+        else if(check->c == 39 && check->dbl == 1 )
+            new = ft_strjoin(new, charstr(check->c));
+        cargv_advence(check);
     }
     return (new);
 }
