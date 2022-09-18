@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 23:01:42 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/28 23:25:33 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/16 09:53:16 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ int ft_strlen(char *str)
 
     i = 0;
     while (str[i])
-    {
         i++;
-    }
     return (i);
 }

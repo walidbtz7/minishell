@@ -1,4 +1,4 @@
-SRCS    		=   lexer.c parsing.c token.c
+SRCS    		=   node.c argv.c lexer.c tokenization.c init.c analyse.c parsing.c minishell.c
 FLAGS 			=	-Wall -Wextra -Werror 
 OBJS			=    $(SRCS:.c=.o)
 

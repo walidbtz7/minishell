@@ -1,37 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   global.h                                           :+:      :+:    :+:   */
+/*   node.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/17 11:45:47 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/14 02:04:36 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#ifndef NODE_H
+#define NODE_H
+  
+typedef struct s_node
+{
+	void			*content;
+	struct s_node	*next;
+}	t_node;
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <limits.h>
-
-int ft_strlen(char *str);
-int iswhite(int c);
-int istop(int c);
-int isnumber(int c);
-int isalnum(int c);
-char *ft_strjoin(char *s1, char *s2);
-char *ft_strjoin_sep(char *s1, char *s2);
-char *ft_strldup(const char *s1, int len);
-int isimposter(int c);
-char	*get_next_line(int fd);
-char	*ft_strchr(char *s, int c);
-char	*ft_substr(char *s, int start, int len);
-char	*get_next_line(int fd);
-char	**ft_split(char *s);
+t_node	*ft_lstnew(void *content);
+void     ft_nodeadd_back(t_node **node, t_node *new);
+void	printnode(t_node *head);
+void	freeall(t_node **head);
+int	    ft_lstsize(t_node *lst);
 
 #endif

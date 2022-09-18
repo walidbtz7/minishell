@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strjoin.c                                          :+:      :+:    :+:   */
+/*   strjoin_sep.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 21:23:36 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/16 09:53:59 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/17 12:56:08 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/global.h"
 
-char *ft_strjoin(char *s1, char *s2)
+char *ft_strjoin_sep(char *s1, char *s2)
 {
     int i;
     int j;
@@ -38,6 +38,8 @@ char *ft_strjoin(char *s1, char *s2)
         j++;
         i++;
     }
+    p[j] = ' ';
+    j++;
     i = 0;
     while (i < b)
     {

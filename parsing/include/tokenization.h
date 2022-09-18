@@ -1,37 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   global.h                                           :+:      :+:    :+:   */
+/*   tokenization.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/17 11:45:47 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/14 02:06:19 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GLOBAL_H
-#define GLOBAL_H
+#ifndef TOKEN_H
+#define TOKEN_H
 
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <limits.h>
+typedef struct token
+{
+    char *value;
+    enum
+    {
+        TOKEN_INPUT,
+        TOKEN_OUTPUT,
+        TOKEN_APPEND,
+        TOKEN_HEREDOC,
+        TOKEN_PIPE,
+        TOKEN_TEXT
+    } type;
+    struct token *next;
 
-int ft_strlen(char *str);
-int iswhite(int c);
-int istop(int c);
-int isnumber(int c);
-int isalnum(int c);
-char *ft_strjoin(char *s1, char *s2);
-char *ft_strjoin_sep(char *s1, char *s2);
-char *ft_strldup(const char *s1, int len);
-int isimposter(int c);
-char	*get_next_line(int fd);
-char	*ft_strchr(char *s, int c);
-char	*ft_substr(char *s, int start, int len);
-char	*get_next_line(int fd);
-char	**ft_split(char *s);
+} t_token;
 
+t_token *init_token(char *value, int type);
+void	ft_tokenadd_back(t_token **token, t_token *new);
+void	printtokens(t_token *head);
+int     toeknsize(t_token *tokens);
 #endif
