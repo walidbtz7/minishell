@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/17 14:20:20 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/18 14:36:20 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,13 @@ int    parsing_analyse(t_node    **cmd,t_token *token , char **envp)
             res = token_pipe(token);
             if(!res)
                 return (res);
+            if(argv || redirection)
+            {
             new = ft_lstnew(init_cmd(argv, redirection));
             ft_nodeadd_back(cmd, new);
             redirection = NULL;
             argv = NULL;
+            }
         }
         token = token->next;
     }

@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/16 05:53:17 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/18 16:13:20 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ typedef struct cmd
    t_node *redirection;
 } t_cmd;
 
-
 t_cmd       *init_cmd(t_node *argv, t_node *redirection);
 t_redirection *init_redirection(int type, char  *file);
 t_argv          *init_argv(char *value);
@@ -58,6 +57,7 @@ int		token_pipe(t_token    *token);
 int      parsing(char *src,t_node  **cmd, char **envp);
 int      parsing_analyse(t_node    **cmd,t_token *token, char **envp);
 void	freecmd(t_cmd *cmd);
-char 	*fargv(t_cargv *check);
+char 	**fargv(t_cargv *check);
+char 	*rmquote(t_cargv *check);
 
 #endif
