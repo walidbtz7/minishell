@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 15:17:10 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/20 21:38:55 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,23 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_node	*cmd;
-	char	*str;
+	t_parsing	parse;
 
 	(void ) argc;
 	(void ) argv;
-	cmd = NULL;
+	parse = init_parse(envp);
 	while (1)
 	{
-		str = readline("minishell> ");
-		if (str)
+		parse.str = readline("minishell> ");
+		if (parse.str)
 		{
-			if (!parsing(str, &cmd, envp))
+			if (!parsing(&parse))
 			{
 				printf("parse error near `|'\n");
-				freeall(&cmd);
+				freeall(&(parse.cmd));
 			}
-			printnode(cmd);
-			freeall(&cmd);
+			printnode(parse.cmd);
+			freeall(&(parse.cmd));
 		}
 	}
 	return (0);

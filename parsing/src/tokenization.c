@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 16:51:20 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/20 20:47:02 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_token	*init_token(char *value, int type)
 
 	token = malloc(sizeof(t_token));
 	token->value = value;
-	token->type = type;
+	token->e_type = type;
 	token->next = NULL;
 	return (token);
 }
