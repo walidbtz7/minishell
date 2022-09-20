@@ -38,8 +38,8 @@ int    parsing(char *src,t_node  **cmd, char **envp)
         write(2,"Error!\n",7);
         return (1);
     }
-    if(!token->value)
-        return (1);
+	if (!token || !token->value)
+		return (1);
     res = parsing_analyse(cmd, token, envp);
     return (res);
 }
