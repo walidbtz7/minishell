@@ -6,15 +6,15 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:05:39 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/29 06:16:42 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/20 15:34:57 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/global.h"
 
-int iswhite(int c)
+int	iswhite(int c)
 {
-    if (c == 13 || c == 10 || c == ' ' || c == '\t')
-        return (1);
-    return (0);
+	if (c == 13 || c == 10 || c == ' ' || c == '\t')
+		return (1);
+	return (0);
 }

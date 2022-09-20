@@ -6,15 +6,16 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:05:39 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/08/28 23:25:41 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/20 15:34:27 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/global.h"
 
-int isalnum(int c)
+int	isalnum(int c)
 {
-    if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-        return (1);
-    return (0);
+	if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || \
+	(c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
 }

@@ -6,15 +6,15 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:05:39 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/06 06:24:52 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/20 15:29:47 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/global.h"
 
-int istop(int c)
+int	istop(int c)
 {
-    if (iswhite(c) || c == '\0')
-        return (1);
-    return (0);
+	if (iswhite(c) || c == '\0')
+		return (1);
+	return (0);
 }
