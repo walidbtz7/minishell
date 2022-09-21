@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 21:56:57 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:40:36 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,31 +20,29 @@ int	token_is_red(int type)
 	return (0);
 }
 
-int	parsing_analyse(t_parsing *parse)
+void	parsing_analyse(t_parsing *parse)
 {
-	t_token	*token;
-
-	token = parse->token;
-	if (token->e_type == TOKEN_PIPE)
-		return (0);
-	while (token && parse->res == 1)
+	while (parse->token && parse->res == 1)
 	{
-		if (token_is_red(token->e_type))
-			token_red(parse);
-		else if (token->e_type == TOKEN_PIPE || token->next == NULL)
+		if (token_is_red(parse->token->e_type))
+			parse->res = token_red(parse);
+		else if (parse->token->e_type == TOKEN_TEXT)
+			parse->res = token_txt(&(parse->argv), parse->token, parse->envp);
+		if ((parse->token->e_type == TOKEN_PIPE || \
+		parse->token->next == NULL) && parse->res != 0)
 		{
-			parse->res = token_pipe(token);
+			parse->res = token_pipe(parse->token);
 			if (!parse->res)
-				return (parse->res);
+				return ;
 			if (parse->argv || parse->redirection)
 			{
 				parse->new = ft_lstnew(init_cmd(parse->argv, \
 				parse->redirection));
-				ft_nodeadd_back(parse->cmd, parse->new);
+				ft_nodeadd_back(&(parse->cmd), parse->new);
 				parse->redirection = NULL;
 				parse->argv = NULL;
 			}
 		}
-		token = token->next;
+		parse->token = parse->token->next;
 	}
 }

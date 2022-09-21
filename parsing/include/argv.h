@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 16:52:28 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:47:28 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ typedef struct cargv
 	int		dbl;
 }	t_cargv;
 
+char	**fargv(t_cargv *check);
 t_cargv	*init_cargv(char *src, char **envp);
-
+void	cargv_advence(t_cargv *cargv);
+void	single_quote(t_cargv *cargv);
+void	double_quote(t_cargv *cargv);
+char	*expandenv(t_cargv *cargv);
+char	*rmquote(t_cargv *check);
 #endif

@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 23:30:36 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 23:28:52 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/21 15:51:08 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,23 @@ static int	ft_free(int j, char **str)
 	return (0);
 }
 
+void	init_tab(int	*tab, int size)
+{
+	int	i;
+
+	i = 0;
+	while (i < size)
+	{
+		tab[i] = 0;
+		i++;
+	}
+}
+
 static int	ft_normi(char *s, char **str, int start)
 {
 	int	tab[5];
 
-	tab = {0, 0, 0, 0, 0};
+	init_tab(tab, 5);
 	while (tab[0] <= ft_strlen(s))
 	{
 		fsingle(s[tab[0]], &tab[1], tab[2]);
@@ -64,7 +76,7 @@ static int	ft_normi(char *s, char **str, int start)
 				return (ft_free(tab[4] - 1, str));
 			tab[3] = 0;
 		}
-		i++;
+		tab[0]++;
 	}
 	str[tab[4]] = NULL;
 	return (1);

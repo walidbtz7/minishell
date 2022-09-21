@@ -6,24 +6,26 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 21:37:07 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/21 17:01:50 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 
-t_parsing	init_parse(void)
+t_parsing	*init_parse(char **envp)
 {
-	t_parsing	parse;
+	t_parsing	*parse;
 
-	parse.argv = NULL;
-	parse.cmd = NULL;
-	parse.lexer = NULL;
-	parse.new = NULL;
-	parse.redirection = NULL;
-	parse.res = 1;
-	parse.str = NULL;
-	parse.token = NULL;
+	parse = (t_parsing *) malloc(sizeof(t_parsing));
+	parse->argv = NULL;
+	parse->cmd = NULL;
+	parse->lexer = NULL;
+	parse->new = NULL;
+	parse->redirection = NULL;
+	parse->res = 1;
+	parse->str = NULL;
+	parse->envp = envp;
+	parse->token = NULL;
 	return (parse);
 }
 

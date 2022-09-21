@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 21:37:34 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/21 19:16:52 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	tokenization_checker(t_token	*token)
 {
 	if (!token || !token->value)
 		return (0);
+	if (token->e_type == TOKEN_PIPE)
+		return (-1);
 	return (1);
 }
 
@@ -42,7 +44,7 @@ int	parsing(t_parsing *parse)
 		write(2, "Error!\n", 7);
 		return (1);
 	}
-	if (tokenization_checker(parse->token))
-		parse->res = parsing_analyse(parse);
+	parse->res = tokenization_checker(parse->token);
+	parsing_analyse(parse);
 	return (parse->res);
 }

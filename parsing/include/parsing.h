@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 21:54:32 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:46:55 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ t_cmd			*init_cmd(t_node *argv, t_node *redirection);
 t_redirection	*init_redirection(int type, char *file);
 t_argv			*init_argv(char *value);
 int				parsing(t_parsing *parse);
-int				parsing_analyse(t_parsing *parse);
+void			parsing_analyse(t_parsing *parse);
 void			freecmd(t_cmd *cmd);
-char			**fargv(t_cargv *check);
-char			*rmquote(t_cargv *check);
-t_parsing		init_parse(char **envp);
+t_parsing		*init_parse(char **envp);
+int				token_red(t_parsing	*parse);
+int				token_txt(t_node **argv, t_token *token, char **envp);
+int				token_pipe(t_token *token);
 #endif
