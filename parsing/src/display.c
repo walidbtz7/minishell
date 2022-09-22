@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 20:39:13 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/21 23:26:35 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,14 @@ void	printnode(t_node *head)
 {
 	t_node	*tmp;
 	t_cmd	*cmd;
+	int		i;
 
+	i = 1;
 	tmp = head;
 	while (tmp)
 	{
 		cmd = (t_cmd *) tmp->content;
+		printf("cmd %d\n", i++);
 		printargv(cmd->argv);
 		printredirection(cmd->redirection);
 		tmp = tmp->next;

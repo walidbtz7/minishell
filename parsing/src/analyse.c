@@ -6,27 +6,44 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 21:32:50 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:32:24 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 
-int	token_red(t_parsing	*parse)
+void	error_token(char	**error, char	*value)
+{
+	*error = ft_strjoin(*error, value);
+	*error = ft_strjoin(*error, "'");
+}
+
+void	token_red(t_parsing	*parse)
 {
 	t_node	*new;
-	int		i;
+	char	*error;
 
-	i = 1;
-	if (!parse->token->next)
-		return (0);
-	if (parse->token->next->e_type != TOKEN_TEXT)
-		return (0);
-	new = ft_lstnew(init_redirection(parse->token->e_type, \
-	parse->token->next->value));
+	error = "minishell: syntax error near unexpected token `";
+	if (parse->token->next && parse->token->next->e_type == TOKEN_TEXT)
+	{
+		new = ft_lstnew(init_redirection(parse->token->e_type, \
+parse->token->next->value));
+		parse->token = parse->token->next;
+	}
+	else
+	{
+		if (!parse->token->next)
+			error = ft_strjoin(error, "newline'");
+		else
+		{
+			error_token(&error, parse->token->next->value);
+			parse->token = parse->token->next;
+		}
+		parse->error = error;
+		new = ft_lstnew(init_redirection(ERROR, error));
+		parse->res = -2;
+	}
 	ft_nodeadd_back(&(parse->redirection), new);
-	parse->token = parse->token->next;
-	return (1);
 }
 
 int	token_pipe(t_token *token)
@@ -40,7 +57,7 @@ int	token_pipe(t_token *token)
 	return (1);
 }
 
-int	token_txt(t_node **argv, t_token *token, char **envp)
+void	token_txt(t_node **argv, t_token *token, char **envp)
 {
 	t_cargv	*check;
 	t_cargv	*rm;
@@ -50,7 +67,7 @@ int	token_txt(t_node **argv, t_token *token, char **envp)
 	check = init_cargv(token->value, envp);
 	rm = NULL;
 	if (!check)
-		return (0);
+		return ;
 	str = fargv(check);
 	if (str)
 	{
@@ -65,5 +82,4 @@ int	token_txt(t_node **argv, t_token *token, char **envp)
 			str++;
 		}
 	}
-	return (1);
 }

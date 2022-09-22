@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 17:01:50 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:18:00 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_parsing	*init_parse(char **envp)
 	parse->str = NULL;
 	parse->envp = envp;
 	parse->token = NULL;
+	parse->herdoc = 0;
 	return (parse);
 }
 

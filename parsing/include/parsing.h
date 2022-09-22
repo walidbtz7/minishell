@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 21:46:55 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/22 16:13:58 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ typedef struct redirection
 		INPUT,
 		OUTPUT,
 		APPED,
-		HERRDOC
+		HERRDOC,
+		ERROR
 	} e_type;
 	char	*file;
 }	t_redirection;
@@ -58,7 +59,9 @@ typedef struct parsing
 	t_node	*new;
 	char	*str;
 	char	**envp;
+	char	*error;
 	int		res;
+	int		herdoc;
 }	t_parsing;
 
 t_cmd			*init_cmd(t_node *argv, t_node *redirection);
@@ -68,7 +71,8 @@ int				parsing(t_parsing *parse);
 void			parsing_analyse(t_parsing *parse);
 void			freecmd(t_cmd *cmd);
 t_parsing		*init_parse(char **envp);
-int				token_red(t_parsing	*parse);
-int				token_txt(t_node **argv, t_token *token, char **envp);
+void			token_red(t_parsing	*parse);
+void			token_txt(t_node **argv, t_token *token, char **envp);
 int				token_pipe(t_token *token);
+char			**argvconvert(t_node *argv);
 #endif
