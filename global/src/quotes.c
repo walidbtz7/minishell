@@ -1,41 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   node.c                                             :+:      :+:    :+:   */
+/*   quotes.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 17:32:15 by wboutzou         ###   ########.fr       */
+/*   Created: 2021/11/24 23:30:36 by wboutzou          #+#    #+#             */
+/*   Updated: 2022/09/20 16:44:54 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include "../include/global.h"
 
-t_node	*ft_lstnew(void *content)
+void	fsingle(char c, int *single, int dbl)
 {
-	t_node	*n;
-
-	n = malloc(sizeof(t_node));
-	if (!n)
-		return (NULL);
-	n->content = content;
-	n->next = NULL;
-	return (n);
+	if (dbl == 0)
+	{
+		if (c == 39 && *single == 0)
+			*single = 1;
+		else if (c == 39 && *single == 1)
+			*single = 0;
+	}
 }
 
-void	ft_nodeadd_back(t_node **node, t_node *new)
+void	fdbl(char c, int single, int *dbl)
 {
-	t_node	*n;
-
-	n = *node;
-	if (!*node)
-		*node = new;
-	else
+	if (single == 0)
 	{
-		while (n->next)
-			n = n->next;
-		n->next = new;
-		new->next = NULL;
+		if (c == 34 && *dbl == 0)
+			*dbl = 1;
+		else if (c == 34 && *dbl == 1)
+			*dbl = 0;
 	}
 }

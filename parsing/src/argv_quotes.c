@@ -1,65 +1,63 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   argv.c                                             :+:      :+:    :+:   */
+/*   argv_quotes.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 23:21:12 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/21 21:39:58 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/parsing.h"
 
-t_cargv	*init_cargv(char *src, char **envp)
+void	single_quote(t_cargv *cargv)
 {
-	t_cargv	*cargv;
-
-	if (!src)
-		return (NULL);
-	cargv = malloc(sizeof(t_cargv));
-	cargv->src = src;
-	cargv->i = 0;
-	cargv->envp = envp;
-	cargv->expand = 1;
-	cargv->single = 0;
-	cargv->dbl = 0;
-	cargv->c = src[cargv->i];
-	return (cargv);
-}
-
-void	cargv_advence(t_cargv *cargv)
-{
-	if (cargv->c != '\0')
+	if (cargv->dbl == 0)
 	{
-		cargv->i++;
-		cargv->c = cargv->src[cargv->i];
+		if (cargv->c == 39 && cargv->single == 0)
+		{
+			cargv->single = 1;
+			cargv->expand = 0;
+		}
+		else if (cargv->c == 39 && cargv->single == 1)
+		{
+			cargv->single = 0;
+			cargv->expand = 1;
+		}
 	}
 }
 
-char	**fargv(t_cargv *check)
+void	double_quote(t_cargv *cargv)
+{
+	if (cargv->single == 0)
+	{
+		if (cargv->c == 34 && cargv->dbl == 0)
+			cargv->dbl = 1;
+		else if (cargv->c == 34 && cargv->dbl == 1)
+			cargv->dbl = 0;
+	}
+}
+
+char	*rmquote(t_cargv *check)
 {
 	char	*new;
 	char	*expend;
-	char	**str;
 
 	new = ft_strldup("", 0);
 	expend = NULL;
-	str = NULL;
 	while (check->c)
 	{
 		double_quote(check);
 		single_quote(check);
-		if (check->c == '$')
-			new = ft_strjoin(new, expandenv(check));
-		else
-		{
+		if (check->c != 34 && check->c != 39)
 			new = ft_strjoin(new, charstr(check->c));
-			cargv_advence(check);
-		}
+		else if (check->c == 34 && check->single == 1)
+			new = ft_strjoin(new, charstr(check->c));
+		else if (check->c == 39 && check->dbl == 1)
+			new = ft_strjoin(new, charstr(check->c));
+		cargv_advence(check);
 	}
-	if (new)
-		str = ft_split(new);
-	return (str);
+	return (new);
 }
