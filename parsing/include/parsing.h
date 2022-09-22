@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/22 16:13:58 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/22 20:12:29 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct parsing
 	t_node	*cmd;
 	t_lexer	*lexer;
 	t_token	*token;
+	t_token	*head;
 	t_node	*redirection;
 	t_node	*argv;
 	t_node	*new;
@@ -70,6 +71,9 @@ t_argv			*init_argv(char *value);
 int				parsing(t_parsing *parse);
 void			parsing_analyse(t_parsing *parse);
 void			freecmd(t_cmd *cmd);
+void			freeargv(t_node *argv);
+void			freeredirection(t_node *redirection);
+void			freetoken(t_token **token);
 t_parsing		*init_parse(char **envp);
 void			token_red(t_parsing	*parse);
 void			token_txt(t_node **argv, t_token *token, char **envp);

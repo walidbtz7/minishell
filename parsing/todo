@@ -15,4 +15,7 @@
 #
 # ""
 # wa7d space katla3 fhad case     
-export k="cat Makefile"            
+#export k="cat Makefile"
+#herdoc expend : 
+#herdoc not expend : '$USER' "$USER"
+

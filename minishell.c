@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/22 16:27:35 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/22 20:57:13 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,14 @@ int	main(int argc, char **argv, char **envp)
 		parse = init_parse(envp);
 		parse->str = readline("minishell> ");
 		if (parse->str)
+		{
 			parsing(parse);
-		if (parsing_error(parse))
-			printnode(parse->cmd);
-		freeall(&(parse->cmd));
-		free(parse);
+			if (parsing_error(parse))
+				printnode(parse->cmd);
+			free(parse->str);
+			freeall(&(parse->cmd));
+			free(parse);
+		}
 	}
 	return (0);
 }
