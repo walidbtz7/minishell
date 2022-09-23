@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/22 16:18:00 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/23 14:29:50 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,13 @@ t_parsing	*init_parse(char **envp)
 	return (parse);
 }
 
-t_redirection	*init_redirection(int type, char	*file)
+t_redirection	*init_redirection(int type, char	*file, int expand)
 {
 	t_redirection	*redirection;
 
 	redirection = (t_redirection *) malloc(sizeof(t_redirection));
 	redirection->e_type = type;
+	redirection->expand = expand;
 	redirection->file = file;
 	return (redirection);
 }

@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/22 20:12:29 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/23 14:29:47 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct redirection
 		ERROR
 	} e_type;
 	char	*file;
+	int		expand;
 }	t_redirection;
 
 typedef struct cmd
@@ -66,7 +67,7 @@ typedef struct parsing
 }	t_parsing;
 
 t_cmd			*init_cmd(t_node *argv, t_node *redirection);
-t_redirection	*init_redirection(int type, char *file);
+t_redirection	*init_redirection(int type, char *file, int expand);
 t_argv			*init_argv(char *value);
 int				parsing(t_parsing *parse);
 void			parsing_analyse(t_parsing *parse);

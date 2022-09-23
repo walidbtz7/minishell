@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/22 21:23:47 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/23 14:30:51 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,22 @@ void	error_token(char	**error, char	*value)
 	*error = ft_strjoin(*error, "'");
 }
 
+void	token_rm(t_parsing	*parse, t_node	**new)
+{
+	t_cargv	*rm;
+	char	*str;
+	int		expand;
+
+	expand = 1;
+	rm = init_cargv(parse->token->next->value, NULL);
+	str = rmquote(rm);
+	if (ft_strlen(str) != ft_strlen(parse->token->next->value))
+		expand = 0;
+	*new = ft_lstnew(init_redirection(parse->token->e_type, \
+	str, expand));
+	parse->token = parse->token->next;
+}
+
 void	token_red(t_parsing	*parse)
 {
 	t_node	*new;
@@ -25,11 +41,7 @@ void	token_red(t_parsing	*parse)
 
 	error = "minishell: syntax error near unexpected token `";
 	if (parse->token->next && parse->token->next->e_type == TOKEN_TEXT)
-	{
-		new = ft_lstnew(init_redirection(parse->token->e_type, \
-parse->token->next->value));
-		parse->token = parse->token->next;
-	}
+		token_rm(parse, &new);
 	else
 	{
 		if (!parse->token->next)
@@ -40,7 +52,7 @@ parse->token->next->value));
 			parse->token = parse->token->next;
 		}
 		parse->error = error;
-		new = ft_lstnew(init_redirection(ERROR, error));
+		new = ft_lstnew(init_redirection(ERROR, error, 1));
 		parse->res = -2;
 	}
 	ft_nodeadd_back(&(parse->redirection), new);
