@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 23:21:12 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:29:27 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,6 @@ char	**fargv(t_cargv *check)
 	}
 	if (new)
 		str = ft_split(new);
+	free(check);
 	return (str);
 }

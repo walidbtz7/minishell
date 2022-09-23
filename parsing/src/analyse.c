@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/23 14:30:51 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/23 18:44:58 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,16 @@ void	token_red(t_parsing	*parse)
 	t_node	*new;
 	char	*error;
 
-	error = "minishell: syntax error near unexpected token `";
+	error = ft_strldup("minishell: syntax error near unexpected token `", 48);
 	if (parse->token->next && parse->token->next->e_type == TOKEN_TEXT)
+	{
 		token_rm(parse, &new);
+		free(error);
+	}
 	else
 	{
 		if (!parse->token->next)
-			error = ft_strjoin(error, "newline'");
+			error = ft_strjoin(error, ft_strldup("newline'", 9));
 		else
 		{
 			error_token(&error, parse->token->next->value);
@@ -72,26 +75,28 @@ int	token_pipe(t_token *token)
 void	token_txt(t_node **argv, t_token *token, char **envp)
 {
 	t_cargv	*check;
-	t_cargv	*rm;
 	t_node	*new;
 	char	**str;
+	int		i;
 
+	i = 0;
 	check = init_cargv(token->value, envp);
-	rm = NULL;
 	if (!check)
 		return ;
 	str = fargv(check);
 	if (str)
 	{
-		while (*str)
+		while (str[i])
 		{
-			if (*str)
+			if (str[i])
 			{
-				rm = init_cargv(*str, envp);
-				new = ft_lstnew(init_argv(rmquote(rm)));
+				check = init_cargv(str[i], envp);
+				new = ft_lstnew(init_argv(rmquote(check)));
 				ft_nodeadd_back(argv, new);
+				free(str[i]);
 			}
-			str++;
+			i++;
 		}
 	}
+	free(str);
 }

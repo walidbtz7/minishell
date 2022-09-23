@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/22 20:57:13 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/23 17:02:46 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ int	parsing_error(t_parsing *parse)
 	return (1);
 }
 
+void	free_norm(t_parsing *parse)
+{
+	free(parse->str);
+	freetoken(&parse->head);
+	freeall(&(parse->cmd));
+	free(parse);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_parsing	*parse;
@@ -40,11 +48,10 @@ int	main(int argc, char **argv, char **envp)
 		if (parse->str)
 		{
 			parsing(parse);
+			add_history(parse->str);
 			if (parsing_error(parse))
 				printnode(parse->cmd);
-			free(parse->str);
-			freeall(&(parse->cmd));
-			free(parse);
+			free_norm(parse);
 		}
 	}
 	return (0);

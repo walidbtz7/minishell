@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 23:30:36 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/22 20:59:29 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:15:11 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ char	**ft_split(char *s)
 	i = ft_normi(s, str, 0);
 	if (i == 0)
 		return (NULL);
+	free(s);
 	return (str);
 }

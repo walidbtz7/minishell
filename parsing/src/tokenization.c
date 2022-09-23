@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 17:16:17 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/23 15:19:51 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,17 @@ t_token	*case_redirection(t_lexer *lexer)
 		if (lexer->c == '>')
 		{
 			lexer_advence(lexer);
-			return (init_token(">>", TOKEN_APPEND));
+			return (init_token(ft_strldup(">>", 2), TOKEN_APPEND));
 		}
-		return (init_token(">", TOKEN_OUTPUT));
+		return (init_token(ft_strldup(">", 1), TOKEN_OUTPUT));
 	}
 	lexer_advence(lexer);
 	if (lexer->c == '<')
 	{
 		lexer_advence(lexer);
-		return (init_token("<<", TOKEN_HEREDOC));
+		return (init_token(ft_strldup("<<", 2), TOKEN_HEREDOC));
 	}
-	return (init_token("<", TOKEN_INPUT));
+	return (init_token(ft_strldup("<", 1), TOKEN_INPUT));
 }
 
 t_token	*case_to_handle(t_lexer *lexer)
@@ -67,7 +67,7 @@ t_token	*case_to_handle(t_lexer *lexer)
 	else if (lexer->c == '|')
 	{
 		lexer_advence(lexer);
-		return (init_token("|", TOKEN_PIPE));
+		return (init_token(ft_strldup("|", 1), TOKEN_PIPE));
 	}
 	return (0);
 }
