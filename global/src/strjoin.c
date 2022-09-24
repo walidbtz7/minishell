@@ -6,11 +6,11 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 21:23:36 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 23:11:12 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:39:11 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/global.h"
+#include <minishell.h>
 
 char	*ft_strjoin(char *s1, char *s2)
 {
@@ -36,5 +36,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[i])
 		p[j++] = s2[i++];
 	p[j] = '\0';
+	free(s1);
+	free(s2);
 	return (p);
 }

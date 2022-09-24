@@ -6,11 +6,11 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 23:26:35 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:09:50 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include <minishell.h>
 
 void	printargv(t_node *argv)
 {
@@ -39,6 +39,8 @@ void	printredirection(t_node *redirection)
 		printf("\tredirection %d: \n", i++);
 		printf("\t\tname : %s \n", ((t_redirection *)tmp->content)->file);
 		printf("\t\ttype : %d \n", ((t_redirection *)tmp->content)->e_type);
+		if (((t_redirection *)tmp->content)->e_type == HERRDOC)
+			printf("\t\texpand : %d \n", ((t_redirection *)tmp->content)->expand);
 		tmp = tmp->next;
 	}
 }

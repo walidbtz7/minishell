@@ -6,11 +6,11 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 23:30:36 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 15:51:08 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:39:48 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/global.h"
+#include <minishell.h>
 
 static int	ft_count(char *s)
 {
@@ -95,5 +95,6 @@ char	**ft_split(char *s)
 	i = ft_normi(s, str, 0);
 	if (i == 0)
 		return (NULL);
+	free(s);
 	return (str);
 }

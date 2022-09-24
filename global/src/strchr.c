@@ -6,11 +6,11 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:05:39 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/15 10:31:34 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:39:50 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/global.h"
+#include <minishell.h>
 
 char	*ft_strchr(char *s, int c)
 {

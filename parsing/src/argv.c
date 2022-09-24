@@ -6,11 +6,11 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 23:21:12 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:09:43 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include <minishell.h>
 
 t_cargv	*init_cargv(char *src, char **envp)
 {
@@ -61,5 +61,6 @@ char	**fargv(t_cargv *check)
 	}
 	if (new)
 		str = ft_split(new);
+	free(check);
 	return (str);
 }

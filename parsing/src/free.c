@@ -6,19 +6,30 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 15:54:20 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:35:37 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include <minishell.h>
+
+void	freetoken(t_token **token)
+{
+	t_token	*tmp;
+
+	while (*token)
+	{
+		tmp = *token;
+		*token = (*token)->next;
+		free(tmp->value);
+		free(tmp);
+	}
+}
 
 void	freeargv(t_node *argv)
 {
 	t_node	*tmp;
 	t_argv	*targv;
-	int		i;
 
-	i = 1;
 	tmp = argv;
 	while (argv)
 	{

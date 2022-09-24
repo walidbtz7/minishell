@@ -6,11 +6,11 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 23:30:36 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 16:44:54 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:39:45 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/global.h"
+#include <minishell.h>
 
 void	fsingle(char c, int *single, int dbl)
 {

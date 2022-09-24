@@ -6,40 +6,48 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 21:43:58 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:09:38 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include <minishell.h>
 
 int	envstop(char c)
 {
-	if (isalnum(c) || c == '_')
+	if (ft_isalnum(c) || c == '_')
 		return (1);
 	return (0);
 }
 
 char	*checkfirst(t_cargv *cargv)
 {
+	char	*str;
+
+	str = NULL;
 	cargv_advence(cargv);
-	if (!isnumber((int) cargv->c))
+	if (!ft_isnumber((int) cargv->c))
 	{
 		if (cargv->c == '?')
-			return ("0");
+		{
+			str = ft_strldup("0", 1);
+			cargv_advence(cargv);
+		}
 		else if (!envstop(cargv->c))
-			return ("$");
+			str = ft_strldup("$", 1);
 	}
-	return (NULL);
+	return (str);
 }
 
 char	*getenval(char *key, char **envp)
 {
-	int	i;
-	int	j;
-	int	exit;
+	int		i;
+	int		j;
+	int		exit;
+	char	*str;
 
 	i = 0;
 	exit = 0;
+	str = NULL;
 	if (!key)
 		return (0);
 	while (envp[i] && !exit)
@@ -53,8 +61,9 @@ char	*getenval(char *key, char **envp)
 			i++;
 	}
 	if (j == ft_strlen(key) && envp[i][j] == '=')
-		return (ft_substr(envp[i], j + 1, ft_strlen(envp[i])));
-	return (NULL);
+		str = ft_substr(envp[i], j + 1, ft_strlen(envp[i]));
+	free(key);
+	return (str);
 }
 
 char	*expandenv(t_cargv *cargv)
@@ -77,5 +86,5 @@ char	*expandenv(t_cargv *cargv)
 	}
 	else
 		cargv_advence(cargv);
-	return ("$");
+	return (ft_strldup("$", 1));
 }
