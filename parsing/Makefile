@@ -9,7 +9,7 @@ all:    $(NAME)
 
 $(NAME):
 	cd src && cc $(FLAGS) -c $(SRCS)
-	cd src && ar rcs ../$(NAME) $(OBJS)
+	cd src && ar rcs ../$(NAME) $(OBJS) 
 clean:
 	cd src && ${RM} ${OBJS}
 

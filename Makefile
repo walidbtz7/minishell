@@ -1,6 +1,8 @@
 SRCS    		=   minishell.c
 
-FLAGS 			=	-Wall -Wextra -Werror
+FLAGS 			=	-Wall -Wextra -Werror 
+
+RL_PATH			= -lreadline -L ~/goinfre/homebrew/opt/readline/lib -I ~/goinfre/homebrew/opt/readline/include
 
 OBJS			=    $(SRCS:.c=.o)
 
@@ -19,7 +21,7 @@ all: $(NAME)
 
 
 $(NAME):  $(GLOBAL) $(PARSING) $(OBJS)
-	cc $(FLAGS) $(GLOBAL) $(PARSING) $(OBJS) -o $(NAME) -lreadline 
+	cc $(FLAGS) $(RL_PATH) $(GLOBAL) $(PARSING) $(OBJS) -o $(NAME) 
 
 $(GLOBAL):
 	@make -C global
@@ -36,7 +38,7 @@ $(EXECUTION):
 clean:
 	@rm -f ${OBJS}
 	@make  -C global clean
-	@make  -C parsing clean
+	@make  -C parsing
 
 fclean:    clean
 	@make  -C global fclean
