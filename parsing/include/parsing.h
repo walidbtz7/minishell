@@ -6,14 +6,13 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/23 20:49:21 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 17:12:46 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSING_H
 # define PARSING_H
 
-# include "../../global/include/global.h"
 # include "./node.h"
 # include "./tokenization.h"
 # include "./lexer.h"

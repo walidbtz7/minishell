@@ -6,11 +6,11 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/28 23:05:39 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/20 15:33:58 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 19:59:28 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/global.h"
+#include <minishell.h>
 
 int	isimposter(int c)
 {

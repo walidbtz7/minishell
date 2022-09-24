@@ -6,11 +6,11 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/23 18:32:12 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:19:29 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include <minishell.h>
 
 int	tokenization(t_lexer *lexer, t_token **token)
 {

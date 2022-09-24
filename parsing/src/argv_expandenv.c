@@ -6,15 +6,15 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/23 18:36:22 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:09:38 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include <minishell.h>
 
 int	envstop(char c)
 {
-	if (isalnum(c) || c == '_')
+	if (ft_isalnum(c) || c == '_')
 		return (1);
 	return (0);
 }
@@ -25,7 +25,7 @@ char	*checkfirst(t_cargv *cargv)
 
 	str = NULL;
 	cargv_advence(cargv);
-	if (!isnumber((int) cargv->c))
+	if (!ft_isnumber((int) cargv->c))
 	{
 		if (cargv->c == '?')
 		{

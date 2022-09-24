@@ -6,16 +6,19 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/23 18:44:58 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/24 20:48:05 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/parsing.h"
+#include <minishell.h>
 
 void	error_token(char	**error, char	*value)
 {
-	*error = ft_strjoin(*error, value);
-	*error = ft_strjoin(*error, "'");
+	char	*val;
+
+	val = ft_strldup(value, ft_strlen(value));
+	*error = ft_strjoin(*error, val);
+	*error = ft_strjoin(*error, ft_strldup("'", 1));
 }
 
 void	token_rm(t_parsing	*parse, t_node	**new)
@@ -65,10 +68,10 @@ int	token_pipe(t_token *token)
 {
 	if (token->e_type == TOKEN_PIPE && \
 	token->next == NULL)
-		return (0);
+		return (-1);
 	if (token->e_type == TOKEN_PIPE && \
 	(token->next->e_type == TOKEN_PIPE))
-		return (0);
+		return (-1);
 	return (1);
 }
 

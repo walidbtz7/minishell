@@ -8,6 +8,8 @@
     "readline.h": "c",
     "unistd.h": "c",
     "helper.h": "c",
-    "tokenization.h": "c"
+    "tokenization.h": "c",
+    "stdarg.h": "c",
+    "stdlib.h": "c"
   }
 }
