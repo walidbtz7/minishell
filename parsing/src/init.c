@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/24 20:09:56 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/25 20:24:48 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_parsing	*init_parse(char **envp)
 	parse->envp = envp;
 	parse->token = NULL;
 	parse->herdoc = 0;
+	parse->error = \
+	ft_strldup("minishell: syntax error near unexpected token `", 48);
 	return (parse);
 }
 

@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/24 20:09:50 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/25 18:00:26 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	printargv(t_node *argv)
 
 	i = 1;
 	tmp = argv;
+	if (!argv)
+		return ;
 	while (tmp)
 	{
 		printf("\targv %d:\n", i++);
@@ -34,6 +36,8 @@ void	printredirection(t_node *redirection)
 
 	i = 1;
 	tmp = redirection;
+	if (!redirection)
+		return ;
 	while (tmp)
 	{
 		printf("\tredirection %d: \n", i++);

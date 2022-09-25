@@ -18,4 +18,4 @@
 #export k="cat Makefile"
 #herdoc expend : 
 #herdoc not expend : '$USER' "$USER"
-
+# << < d

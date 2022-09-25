@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/24 20:19:29 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/25 16:50:40 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,16 @@ int	tokenization_checker(t_token	*token)
 int	parsing(t_parsing *parse)
 {
 	parse->res = 1;
-	parse->token = NULL;
+	parse->head = NULL;
 	parse->lexer = init_lexer(parse->str);
-	if (tokenization(parse->lexer, &(parse->token)))
+	if (tokenization(parse->lexer, &(parse->head)))
 	{
+		parse->res = -3;
 		write(2, "Error!\n", 7);
-		return (1);
+		return (0);
 	}
-	free(parse->lexer);
-	parse->res = tokenization_checker(parse->token);
-	parse->head = parse->token;
+	parse->res = tokenization_checker(parse->head);
+	parse->token = parse->head;
 	parsing_analyse(parse);
 	return (parse->res);
 }

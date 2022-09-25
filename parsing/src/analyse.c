@@ -6,19 +6,24 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/24 20:48:05 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/25 21:30:35 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	error_token(char	**error, char	*value)
+void	error_token(t_parsing	*parse)
 {
 	char	*val;
 
-	val = ft_strldup(value, ft_strlen(value));
-	*error = ft_strjoin(*error, val);
-	*error = ft_strjoin(*error, ft_strldup("'", 1));
+	val = ft_strldup(parse->token->next->value, \
+	ft_strlen(parse->token->next->value));
+	parse->error = ft_strjoin(parse->error, val);
+	parse->error = ft_strjoin(parse->error, ft_strldup("'", 1));
+	while (parse->token->next)
+	{
+		parse->token = parse->token->next;
+	}
 }
 
 void	token_rm(t_parsing	*parse, t_node	**new)
@@ -40,25 +45,20 @@ void	token_rm(t_parsing	*parse, t_node	**new)
 void	token_red(t_parsing	*parse)
 {
 	t_node	*new;
-	char	*error;
+	char	*tmp;
 
-	error = ft_strldup("minishell: syntax error near unexpected token `", 48);
 	if (parse->token->next && parse->token->next->e_type == TOKEN_TEXT)
-	{
 		token_rm(parse, &new);
-		free(error);
-	}
 	else
 	{
+		if (parse->token->e_type == TOKEN_HEREDOC)
+			parse->herdoc = 0;
 		if (!parse->token->next)
-			error = ft_strjoin(error, ft_strldup("newline'", 9));
+			parse->error = ft_strjoin(parse->error, ft_strldup("newline'", 9));
 		else
-		{
-			error_token(&error, parse->token->next->value);
-			parse->token = parse->token->next;
-		}
-		parse->error = error;
-		new = ft_lstnew(init_redirection(ERROR, error, 1));
+			error_token(parse);
+		tmp = ft_strldup(parse->error, ft_strlen(parse->error));
+		new = ft_lstnew(init_redirection(ERROR, tmp, 1));
 		parse->res = -2;
 	}
 	ft_nodeadd_back(&(parse->redirection), new);

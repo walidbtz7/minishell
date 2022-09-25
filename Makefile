@@ -19,10 +19,10 @@ all: $(NAME)
 
 
 $(NAME): $(OBJS)
-	cc $(FLAGS) $(RL_PATH) $(OBJS) minishell.c -o $(NAME) 
+	@cc $(FLAGS) $(RL_PATH) $(OBJS) minishell.c -o $(NAME) 
 
 %.o:%.c 
-	cc $(FLAGS) -c $< -o $@
+	@cc $(FLAGS) -c $< -o $@
 
 clean:
 	@rm -f ${OBJS}
