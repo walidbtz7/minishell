@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/25 21:18:59 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/25 22:40:45 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,12 @@
 
 int	token_is_red(t_parsing *parse)
 {
-	if (parse->token->e_type == TOKEN_HEREDOC)
-		parse->herdoc = 1;
+	if (parse->token->next)
+	{
+		if (parse->token->e_type == TOKEN_HEREDOC && \
+		parse->token->next->e_type == TOKEN_TEXT)
+			parse->herdoc = 1;
+	}
 	if (parse->token->e_type == TOKEN_INPUT || \
 		parse->token->e_type == TOKEN_OUTPUT || \
 		parse->token->e_type == TOKEN_APPEND || \

@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/25 21:30:35 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/25 22:38:34 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,6 @@ void	token_red(t_parsing	*parse)
 		token_rm(parse, &new);
 	else
 	{
-		if (parse->token->e_type == TOKEN_HEREDOC)
-			parse->herdoc = 0;
 		if (!parse->token->next)
 			parse->error = ft_strjoin(parse->error, ft_strldup("newline'", 9));
 		else
