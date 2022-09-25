@@ -6,33 +6,34 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/24 20:46:29 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/25 21:31:31 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	free_parse(t_parsing *parse)
+{
+	free(parse->str);
+	free(parse->lexer);
+	freetoken(&parse->head);
+	freeall(&(parse->cmd));
+	free(parse->error);
+	free(parse);
+}
+
 int	parsing_error(t_parsing *parse)
 {
-	if (parse->herdoc == 0 && parse->res == -2)
+	if ((parse->herdoc == 0 && parse->res == -2) || \
+	(parse->res == -1) || (parse->res == -3))
 	{
-		printf("%s\n", parse->error);
-		return (0);
-	}
-	if (parse->res == -1)
-	{
-		printf("syntax error near unexpected token `|'\n");
+		if ((parse->herdoc == 0 && parse->res == -2))
+			printf("%s\n", parse->error);
+		else if (parse->res == -1)
+			printf("syntax error near unexpected token `|'\n");
 		return (0);
 	}
 	return (1);
-}
-
-void	free_norm(t_parsing *parse)
-{
-	free(parse->str);
-	freetoken(&parse->head);
-	freeall(&(parse->cmd));
-	free(parse);
 }
 
 void	sig_handler(int signum)
@@ -64,7 +65,7 @@ int	main(int argc, char **argv, char **envp)
 			add_history(parse->str);
 			if (parsing_error(parse))
 				printnode(parse->cmd);
-			free_norm(parse);
+			free_parse(parse);
 		}
 		else
 			return (0);
