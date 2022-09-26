@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strjoin.c                                          :+:      :+:    :+:   */
+/*   strjoin_free.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 21:23:36 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/26 23:51:25 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/26 23:51:46 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	int		i;
 	int		j;
@@ -36,5 +36,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[i])
 		p[j++] = s2[i++];
 	p[j] = '\0';
+	free(s1);
+	free(s2);
 	return (p);
 }

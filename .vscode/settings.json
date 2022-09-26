@@ -10,6 +10,7 @@
     "helper.h": "c",
     "tokenization.h": "c",
     "stdarg.h": "c",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "minishell.h": "c"
   }
 }

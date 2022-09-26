@@ -4,7 +4,9 @@ PARSING    		=   display.c node.c argv_quotes.c argv_expandenv.c argv.c lexer.c 
 					tokenization.c init.c analyse.c free.c parsing.c minishell.c
 
 GLOBAL    		=   imposter.c charstr.c strlen.c strchr.c number.c isalnum.c \
-					iswhite.c istop.c strldup.c substr.c quotes.c split.c strjoin.c
+					iswhite.c istop.c strdup.c strldup.c substr.c quotes.c split_space.c split.c strjoin_free.c strjoin.c
+
+EXECUTION		=	argv_convert.c execution.c
 
 FLAGS 			=	-Wall -Wextra -Werror -I ./includes
 
@@ -14,6 +16,7 @@ OBJS			=    $(SRCS:.c=.o)
 
 SRCS =  $(addprefix global/src/, $(GLOBAL)) \
         $(addprefix parsing/src/, $(PARSING)) \
+		$(addprefix execution/src/, $(EXECUTION)) \
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/25 17:58:21 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/26 23:35:08 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct redirection
 		HERRDOC,
 		ERROR
 	} e_type;
+	int		fd;
 	char	*file;
 	int		expand;
 }	t_redirection;
@@ -41,6 +42,7 @@ typedef struct cmd
 {
 	t_node	*argv;
 	t_node	*redirection;
+	char	**after_expand;
 }	t_cmd;
 
 typedef struct parsing

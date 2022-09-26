@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/24 20:09:38 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/26 23:53:04 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*expandenv(t_cargv *cargv)
 			return (var);
 		while (envstop(cargv->c))
 		{
-			var = ft_strjoin(var, charstr(cargv->c));
+			var = ft_strjoin_free(var, charstr(cargv->c));
 			cargv_advence(cargv);
 		}
 		var = getenval(var, cargv->envp);
