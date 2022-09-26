@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/25 22:38:34 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/26 23:52:53 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	error_token(t_parsing	*parse)
 
 	val = ft_strldup(parse->token->next->value, \
 	ft_strlen(parse->token->next->value));
-	parse->error = ft_strjoin(parse->error, val);
-	parse->error = ft_strjoin(parse->error, ft_strldup("'", 1));
+	parse->error = ft_strjoin_free(parse->error, val);
+	parse->error = ft_strjoin_free(parse->error, ft_strldup("'", 1));
 	while (parse->token->next)
 	{
 		parse->token = parse->token->next;
@@ -52,7 +52,7 @@ void	token_red(t_parsing	*parse)
 	else
 	{
 		if (!parse->token->next)
-			parse->error = ft_strjoin(parse->error, ft_strldup("newline'", 9));
+			parse->error = ft_strjoin_free(parse->error, ft_strldup("newline'", 9));
 		else
 			error_token(parse);
 		tmp = ft_strldup(parse->error, ft_strlen(parse->error));

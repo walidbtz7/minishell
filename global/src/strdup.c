@@ -1,49 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   argv_convert.c                                     :+:      :+:    :+:   */
+/*   strdup.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/22 14:46:43 by mrafik            #+#    #+#             */
-/*   Updated: 2022/09/26 23:11:29 by wboutzou         ###   ########.fr       */
+/*   Created: 2022/06/25 21:23:36 by wboutzou          #+#    #+#             */
+/*   Updated: 2022/09/26 23:13:48 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ft_nodesize(t_node *node)
+char	*ft_strdup(const char *s1)
 {
-	int	i;
-
-	i = 0;
-	while (node != NULL)
-	{
-		node = node->next;
-		i++;
-	}
-	return (i);
-}
-
-char	**argvconvert(t_node *argv)
-{
-	int		size;
-	char	**str;
-	char	*tmp;
 	int		i;
+	int		j;
+	char	*ptr;
 
 	i = 0;
-	if (!argv)
-		return (NULL);
-	size = ft_nodesize(argv);
-	str = (char **)malloc((size + 1) * sizeof(char *));
-	while (argv)
+	j = 0;
+	while (s1[i] != '\0')
 	{
-		tmp = ((t_argv *)(argv->content))->value;
-		str[i] = ft_strdup(tmp);
-		argv = argv->next;
 		i++;
 	}
-	str[i] = NULL;
-	return (str);
+	ptr = (char *)(malloc((i + 1) * sizeof(char)));
+	if (!ptr)
+		return (0);
+	while (j < i)
+	{
+		ptr[j] = s1[j];
+		j++;
+	}
+	ptr[j] = '\0';
+	return (ptr);
 }

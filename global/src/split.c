@@ -5,96 +5,84 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/24 23:30:36 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/24 20:39:48 by wboutzou         ###   ########.fr       */
+/*   Created: 2021/11/10 11:12:52 by mrafik            #+#    #+#             */
+/*   Updated: 2022/09/26 23:40:38 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-static int	ft_count(char *s)
+static int	ft_size(char *str, char c)
 {
-	int	i;
-	int	stock;
+	int	x;
+	int	y;
 
-	i = 0;
-	stock = 0;
-	while (iswhite(s[i]))
-		i++;
-	while (s[i])
+	x = 0;
+	y = 0;
+	while (str[x] == c)
+		x++;
+	while (str[x] != '\0')
 	{
-		if ((iswhite(s[i]) && !iswhite(s[i + 1])) && s[i + 1] != '\0')
-			stock++;
-		i++;
-	}
-	return (stock + 1);
-}
-
-static int	ft_free(int j, char **str)
-{
-	while (j >= 0)
-	{
-		free(str[j]);
-		j--;
-	}
-	free(str);
-	return (0);
-}
-
-void	init_tab(int	*tab, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		tab[i] = 0;
-		i++;
-	}
-}
-
-static int	ft_normi(char *s, char **str, int start)
-{
-	int	tab[5];
-
-	init_tab(tab, 5);
-	while (tab[0] <= ft_strlen(s))
-	{
-		fsingle(s[tab[0]], &tab[1], tab[2]);
-		fdbl(s[tab[0]], tab[1], &tab[2]);
-		if (!iswhite(s[tab[0]]) && tab[3] == 0)
+		if (str[x] == c)
 		{
-			start = tab[0];
-			tab[3] = 1;
+			y++;
+			while (str[x] == c)
+				x++;
 		}
-		else if (((iswhite(s[tab[0]]) || \
-		tab[0] == ft_strlen(s)) && tab[3] == 1) && \
-		(tab[1] == 0 && tab[2] == 0))
-		{
-			str[tab[4]++] = ft_substr(s, start, (tab[0] - start));
-			if (!str[tab[4] - 1])
-				return (ft_free(tab[4] - 1, str));
-			tab[3] = 0;
-		}
-		tab[0]++;
+		else
+			x++;
 	}
-	str[tab[4]] = NULL;
-	return (1);
+	return (++y);
 }
 
-char	**ft_split(char *s)
+static char	*ft_cm(char *str, const char *s, char c)
 {
-	int		i;
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
+	while (s[x] != '\0')
+	{
+		if (s[x] == c)
+			break ;
+		x++;
+	}
+	str = (char *) malloc ((x + 1) * sizeof(char *));
+	while (y < x)
+	{
+		str[y] = s[y];
+		y++;
+	}
+	str[x] = '\0';
+	return (str);
+}
+
+char	**ft_split(char const *s, char c)
+{
 	char	**str;
+	int		x;
+	int		y;
 
-	if (s == NULL)
+	x = 0;
+	y = 0;
+	if (!s)
 		return (0);
-	str = (char **) malloc((ft_count(s) + 1) * sizeof(char *));
+	str = (char **) malloc ((ft_size((char *)s, c) + 1) * sizeof(char *));
 	if (!str)
 		return (0);
-	i = ft_normi(s, str, 0);
-	if (i == 0)
-		return (NULL);
-	free(s);
+	while (s[y] != '\0')
+	{
+		if (s[y] != c)
+		{
+			str[x] = ft_cm(str[x], &s[y], c);
+			x++;
+			while (s[y] != c && s[y] != '\0')
+				y++;
+		}
+		else
+			y++;
+	}
+	str[x] = 0;
 	return (str);
 }

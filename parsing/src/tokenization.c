@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 01:56:50 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/24 20:10:22 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/26 23:53:14 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_token	*lexer_next_token(t_lexer *lexer)
 	value = NULL;
 	while (!stop(lexer))
 	{
-		value = ft_strjoin(value, charstr(lexer->c));
+		value = ft_strjoin_free(value, charstr(lexer->c));
 		quote_state(lexer);
 		lexer_advence(lexer);
 	}

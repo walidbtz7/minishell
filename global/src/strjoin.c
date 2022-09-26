@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/25 21:23:36 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/24 20:39:11 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/26 23:51:25 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,5 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (s2[i])
 		p[j++] = s2[i++];
 	p[j] = '\0';
-	free(s1);
-	free(s2);
 	return (p);
 }

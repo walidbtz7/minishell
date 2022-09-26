@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/24 20:09:43 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/26 23:53:13 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,15 @@ char	**fargv(t_cargv *check)
 		double_quote(check);
 		single_quote(check);
 		if (check->c == '$')
-			new = ft_strjoin(new, expandenv(check));
+			new = ft_strjoin_free(new, expandenv(check));
 		else
 		{
-			new = ft_strjoin(new, charstr(check->c));
+			new = ft_strjoin_free(new, charstr(check->c));
 			cargv_advence(check);
 		}
 	}
 	if (new)
-		str = ft_split(new);
+		str = ft_split_space(new);
 	free(check);
 	return (str);
 }

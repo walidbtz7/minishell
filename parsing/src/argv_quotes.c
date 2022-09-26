@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/24 20:09:32 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/26 23:53:09 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ char	*rmquote(t_cargv *check)
 		double_quote(check);
 		single_quote(check);
 		if (check->c != 34 && check->c != 39)
-			new = ft_strjoin(new, charstr(check->c));
+			new = ft_strjoin_free(new, charstr(check->c));
 		else if (check->c == 34 && check->single == 1)
-			new = ft_strjoin(new, charstr(check->c));
+			new = ft_strjoin_free(new, charstr(check->c));
 		else if (check->c == 39 && check->dbl == 1)
-			new = ft_strjoin(new, charstr(check->c));
+			new = ft_strjoin_free(new, charstr(check->c));
 		cargv_advence(check);
 	}
 	free(check);
