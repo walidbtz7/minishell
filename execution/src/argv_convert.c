@@ -1,0 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   argv_convert.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/09/22 14:46:43 by mrafik            #+#    #+#             */
+/*   Updated: 2022/09/24 17:13:54 by mrafik           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+
+#include"src/include/minishell.h" 
+
+int	ft_nodesize(t_node *node)
+{
+	int	i;
+
+	i = 0;
+	while (node != NULL)
+	{
+		node = node->next;
+		i++;
+	}
+	return (i);
+}
+
+char	**argvconvert(t_node *argv)
+{
+	int		size;
+	char	**str;
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	if (!argv)
+		return (NULL);
+	size = ft_nodesize(argv);
+	str = (char **)malloc((size + 1) * sizeof(char *));
+	while (argv)
+	{
+		tmp = ((t_args *)(argv->content))->value;
+		str[i] = ft_strdup(tmp);
+		argv = argv->next;
+		i++;
+	}
+	str[i] = NULL;
+	return (str);
+}

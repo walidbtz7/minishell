@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/25 22:29:17 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/26 16:40:58 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 			parsing(parse);
 			add_history(parse->str);
 			if (parsing_error(parse))
-				printnode(parse->cmd);
+				ft_pipe()
 			free_parse(parse);
 		}
 		else

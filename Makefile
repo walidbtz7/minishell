@@ -6,6 +6,7 @@ PARSING    		=   display.c node.c argv_quotes.c argv_expandenv.c argv.c lexer.c 
 GLOBAL    		=   imposter.c charstr.c strlen.c strchr.c number.c isalnum.c \
 					iswhite.c istop.c strldup.c substr.c quotes.c split.c strjoin.c
 
+EXECUTION		= 
 FLAGS 			=	-Wall -Wextra -Werror -I ./includes
 
 RL_PATH			= -lreadline -L ~/goinfre/homebrew/opt/readline/lib -I ~/goinfre/homebrew/opt/readline/include
@@ -14,6 +15,7 @@ OBJS			=    $(SRCS:.c=.o)
 
 SRCS =  $(addprefix global/src/, $(GLOBAL)) \
         $(addprefix parsing/src/, $(PARSING)) \
+		$(addprefix execution/src/, $(EXECUTION)) \
 
 all: $(NAME)
 
