@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/09/27 21:16:33 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/09/28 00:38:34 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,15 @@ int	bull_shit(t_cmd *my_cmd)
 		else if (red->e_type == APPED)
 		{
 			red->fd = open(red->file, O_WRONLY | O_APPEND | O_CREAT, 0666);
+			if (red->fd < 0)
+			{
+				perror("red->file");
+				return(1);
+			}
+		}
+		else if (red->e_type == HERRDOC)
+		{
+			red->fd = open(red->file, O_CREAT | O_WRONLY | O_RDONLY , 0666);
 			if (red->fd < 0)
 			{
 				perror("red->file");
@@ -119,12 +128,29 @@ void ft_after_expand(t_node *my_cmd)
 		((t_cmd *)(my_cmd->content))->after_expand = argvconvert(((t_cmd *)my_cmd->content)->argv);
 	
 }
- 
+void herrdoc(t_redirection r )
+{
+	char *str;
+	ft_putstr_fd("<",1);
+				str = get_next_line(0);
+				printf("%s\n",redrec->file);
+				while (ft_strncmp(redrec->file,str,(ft_strlen(str) - 1)))
+				{
+					ft_putstr_fd("<",1);
+					ft_putstr_fd(str,redrec->fd);
+					free(str);
+					str = get_next_line(0);
+				}
+				dup2(redrec->fd,0);
+				close(redrec->fd);
+				break;
+}
 void ft_pipe(t_node *my_cmd,char **env)
 {
 	int fd[2];
 	pid_t id;
 	int save;
+	
 	t_redirection *redrec;
 	
 	save = -1;
@@ -141,6 +167,22 @@ void ft_pipe(t_node *my_cmd,char **env)
 		id = fork();
 		if(id == 0)
 		{
+			if(redrec->e_type == HERRDOC)
+			{
+				ft_putstr_fd("<",1);
+				str = get_next_line(0);
+				printf("%s\n",redrec->file);
+				while (ft_strncmp(redrec->file,str,(ft_strlen(str) - 1)))
+				{
+					ft_putstr_fd("<",1);
+					ft_putstr_fd(str,redrec->fd);
+					free(str);
+					str = get_next_line(0);
+				}
+				dup2(redrec->fd,0);
+				close(redrec->fd);
+				break;
+			}
 			if(my_cmd->next)
 			{
 				dup2(fd[1], 1);
