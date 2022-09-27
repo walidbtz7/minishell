@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/09/26 23:49:58 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/27 21:16:33 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,25 @@ int	bull_shit(t_cmd *my_cmd)
 			red->fd = open(red->file, O_RDONLY , 0666);
 			if (red->fd < 0)
 			{
-				perror("No such file or directory\n");
+				perror("red->file");
 				return(1);
 			}
 		}
 		else if (red->e_type == OUTPUT)
 		{
-			red->fd = open(red->file, O_CREAT , 0666);
+			red->fd = open(red->file, O_CREAT | O_WRONLY , 0666);
 			if (red->fd < 0)
 			{
-				perror("No such file or directory\n");
+				perror("red->file");
+				return(1);
+			}
+		}
+		else if (red->e_type == APPED)
+		{
+			red->fd = open(red->file, O_WRONLY | O_APPEND | O_CREAT, 0666);
+			if (red->fd < 0)
+			{
+				perror("red->file");
 				return(1);
 			}
 		}
@@ -142,6 +151,11 @@ void ft_pipe(t_node *my_cmd,char **env)
 				dup2(redrec->fd, 1);
 				close(redrec->fd);
 			}
+			if(redrec->e_type == APPED)
+			{
+				dup2(redrec->fd, 1);
+				close(redrec->fd);
+			}
 			if (save != -1)
 			{
 				dup2(save, 0);
@@ -152,8 +166,8 @@ void ft_pipe(t_node *my_cmd,char **env)
 				dup2(redrec->fd, 0);
 				close(redrec->fd);
 			}
-			// printf("%d",((t_redirection *)((t_cmd *)((my_cmd)->content))->redirection->content)->fd);
 			run_cmd(env, (((t_cmd *)((my_cmd)->content))->after_expand));
+			perror((((t_cmd *)((my_cmd)->content))->after_expand)[0]);
 			exit(0);
 		}
 		if(save != -1)
