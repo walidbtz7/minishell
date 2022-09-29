@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/28 17:58:56 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/09/29 20:53:30 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,11 @@ char	*get_next_line(int fd);
 void	ft_putstr_fd(char *s, int fd);
 int	ft_strcmp(char *s1, char *s2);
 int	ft_strncmp(char *s1, char *s2, int n);
+void ft_error(char *str);
+int cd_fuction(char *path);
+void herrdoc(t_redirection *redrec);
+void	echo_function(char **str);
+char *path(char **env,char *search);
+
 
 #endif
