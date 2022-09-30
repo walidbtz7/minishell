@@ -3,103 +3,107 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/09/26 23:49:58 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/09/30 22:32:49 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	bull_shit(t_cmd *my_cmd)
+void herrdoc(t_redirection *redrec)
+{
+	char *str;
+	
+	str = readline("<");
+	while (ft_strcmp(redrec->file,str))
+	{
+		ft_putstr_fd(str,redrec->fd);
+		write(redrec->fd, "\n", 1);
+		free(str);
+		str = readline("<");
+	}
+	close(redrec->fd);
+}
+
+int	*bull_shit(t_cmd *cmd)
 {
 	t_redirection	*red;
+	t_node			*my_cmd = NULL;
+	int				fd[2];
+	int				x;
+	int				*lst_fd;
 
-	while (my_cmd->redirection)
+	lst_fd = (int *)malloc(3 * sizeof (int));
+	x = 0;
+	
+	my_cmd = cmd->redirection;
+	while (my_cmd)
 	{
-		red = (t_redirection *)my_cmd->redirection->content;
+		red = (t_redirection *)my_cmd->content;
 		if (red->e_type == INPUT)
 		{
-			red->fd = open(red->file, O_RDONLY , 0666);
-			if (red->fd < 0)
-			{
-				perror("No such file or directory\n");
-				return(1);
+			if(lst_fd > 0)
+				close(lst_fd[0]);
+			lst_fd[0] = open(red->file, O_RDONLY , 0666);
+			if (lst_fd < 0)
+			{ 
+				// perror("red->file");
+				// return(1);
 			}
 		}
 		else if (red->e_type == OUTPUT)
 		{
-			red->fd = open(red->file, O_CREAT , 0666);
-			if (red->fd < 0)
+			if(lst_fd > 0)
+				close(lst_fd[1]);
+			lst_fd[1] = open(red->file, O_CREAT | O_WRONLY , 0666);
+			if (lst_fd < 0)
 			{
-				perror("No such file or directory\n");
-				return(1);
+				// perror("red->file");
+				// return(1);
 			}
 		}
-		my_cmd->redirection = my_cmd->redirection->next;
-	}
-	return(0);
-}
-
-char	*avai_path(char *str,char *cmd)
-{
-	char	**pos;
-	int		i;
-
-	i = 0;
-	pos = ft_split(ft_split(str, '=')[1], ':');
-	while(pos[i])
-	{
-		if (open(ft_strjoin(pos[i],cmd),0)  != -1)
+		else if (red->e_type == APPED)
 		{
-			return (ft_strjoin(pos[i],cmd));
+			if(x != 0)
+				close(lst_fd[1]);
+			lst_fd[1] = open(red->file, O_WRONLY | O_APPEND | O_CREAT, 0666);
+			if (lst_fd < 0)
+			{
+				// perror("red->file");
+				// return(1);
+			}
 		}
-		i++;
+		else if (red->e_type == HERRDOC)
+		{
+			if(x != 0)
+				close(fd[0]);
+			pipe(fd);
+			lst_fd[1] = fd[1]; 
+			herrdoc(red);
+			lst_fd[0] = fd[0];
+			x = 1;
+		}
+		my_cmd = my_cmd->next;
 	}
-	return (NULL);
+	return(lst_fd);
 }
 
-void run_cmd(char **env,char **av)
-{
-	char *cmd_path;
-	char *cmd;
 
-	cmd = ft_strjoin("/", av[0]);
-	cmd_path = avai_path(path(env, "PATH"), cmd);
-	execve(cmd_path,av, env);
-}
-int cd_fuction(char *path)
+int cd_fuction(char *path_cd)
 {
-	if(chdir(path))
-		return(printf("faild to %s\n",path));
+	if(!path_cd)
+	{
+		free(path_cd);
+		path_cd = ft_strdup("/Users");
+	}
+	if(chdir(path_cd))
+		return(printf("faild to %s\n",path_cd));
 	return(0);
 	
 }
-char *path(char **env,char *search)
-{
-	int i;
-	int j;
-	
-	i = 0;
-	while(env[i])
-	{
-		j = 0;
-		while(env[i][j])
-		{
-			if(env[i][j] == search[j] && (env[i][j] != '\0' || search[j] != '\0'))
-			{
-				j++;
-				if(!search[j])
-					return (env[i]);
-			}
-			else
-				break;
-		}
-		i++;
-	}
-	return(NULL);
-}
+
 
 void ft_after_expand(t_node *my_cmd)
 {
@@ -108,54 +112,59 @@ void ft_after_expand(t_node *my_cmd)
 	i = 0;
 	if(my_cmd)
 		((t_cmd *)(my_cmd->content))->after_expand = argvconvert(((t_cmd *)my_cmd->content)->argv);
-	
 }
- 
-void ft_pipe(t_node *my_cmd,char **env)
+void ft_error(char **str)
+{
+	if(str)
+	{
+		ft_putstr_fd("minishell>  ",2);
+		ft_putstr_fd(str[0], 2);
+		ft_putstr_fd(": command not found\n",2);
+		exit(0);
+	}
+}
+
+void ft_pipe(t_node *cmd,char **env)
 {
 	int fd[2];
 	pid_t id;
+	t_node *my_cmd;
 	int save;
+	int	*lst_fd;
+	int i = 0;
+	
 	t_redirection *redrec;
 	
+	my_cmd = cmd;
 	save = -1;
+	redrec = NULL;
 	while (my_cmd)
 	{
-		if((t_redirection *)(((t_cmd *)my_cmd->content)->redirection))
+		if(((t_cmd *)my_cmd->content)->redirection)
 			redrec = (t_redirection *)(((t_cmd *)my_cmd->content)->redirection->content);
 		pipe(fd);
-		if (bull_shit((t_cmd *) my_cmd->content))
-			return;
 		ft_after_expand(my_cmd);
-		// if(!ft_strcmp((((t_cmd *)((my_cmd)->content))->after_expand)[0],"cd"))
-		// cd_fuction((((t_cmd *)((my_cmd)->content))->after_expand)[1]);
+		lst_fd = bull_shit((t_cmd *)my_cmd->content);
 		id = fork();
 		if(id == 0)
 		{
-			if(my_cmd->next)
+			if((((t_cmd *)((my_cmd)->content))->after_expand))
 			{
-				dup2(fd[1], 1);
-				close(fd[1]);
+				ft_directions(my_cmd,fd,lst_fd,save);
+				if(!ft_strcmp((((t_cmd *)((my_cmd)->content))->after_expand)[0],"cd"))
+					cd_fuction((((t_cmd *)((my_cmd)->content))->after_expand)[1]);
+				if(!ft_strcmp((((t_cmd *)((my_cmd)->content))->after_expand)[0],"echo"))
+					echo_function((((t_cmd *)((my_cmd)->content))->after_expand));
 			}
-			if(redrec->e_type == OUTPUT)
-			{
-				dup2(redrec->fd, 1);
-				close(redrec->fd);
-			}
-			if (save != -1)
-			{
-				dup2(save, 0);
-				close(save);
-			}
-			if(redrec->e_type == INPUT)
-			{
-				dup2(redrec->fd, 0);
-				close(redrec->fd);
-			}
-			// printf("%d",((t_redirection *)((t_cmd *)((my_cmd)->content))->redirection->content)->fd);
 			run_cmd(env, (((t_cmd *)((my_cmd)->content))->after_expand));
-			exit(0);
+			ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
 		}
+		while ((((t_cmd *)((my_cmd)->content))->after_expand)[i])
+		{
+			free((((t_cmd *)((my_cmd)->content))->after_expand)[i]);
+			i++;
+		}
+		free((((t_cmd *)((my_cmd)->content))->after_expand));
 		if(save != -1)
 			close(save);
 		close(fd[1]);

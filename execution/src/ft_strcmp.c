@@ -1,49 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   argv_convert.c                                     :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/22 14:46:43 by mrafik            #+#    #+#             */
-/*   Updated: 2022/09/27 20:24:31 by mrafik           ###   ########.fr       */
+/*   Created: 2021/11/11 15:15:25 by mrafik            #+#    #+#             */
+/*   Updated: 2022/09/30 17:50:13 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ft_nodesize(t_node *node)
+int	ft_strcmp(char *s1, char *s2)
 {
 	int	i;
-
+	
+	if(!s2)
+		return(0);
 	i = 0;
-	while (node != NULL)
+	while ((s1[i] == s2[i]) && (s1[i]) && (s2[i]))
 	{
-		node = node->next;
 		i++;
 	}
-	return (i);
+	return (s1[i] - s2[i]);
 }
 
-char	**argvconvert(t_node *argv)
-{
-	int		size;
-	char	**str;
-	char	*tmp;
-	int		i;
-
-	i = 0;
-	if (!argv)
-		return (NULL);
-	size = ft_nodesize(argv);
-	str = (char **)malloc((size + 1) * sizeof(char *));
-	while (argv)
-	{
-		tmp = ((t_argv *)(argv->content))->value;
-		str[i] = ft_strdup(tmp);
-		argv = argv->next;
-		i++;
-	}
-	str[i] = NULL;
-	return (str);
-}
