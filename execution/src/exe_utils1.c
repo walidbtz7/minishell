@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 16:43:08 by mrafik            #+#    #+#             */
-/*   Updated: 2022/09/29 19:39:25 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/09/30 22:32:27 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,53 @@ int check_echo(char **str)
 		i++;
 	}
 return(1);
+
+}
+void ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
+{
+	t_redirection *redrec;
+	
+	redrec = NULL;
+	if(((t_cmd *)my_cmd->content)->redirection)
+	{
+		redrec = (t_redirection *)(((t_cmd *)my_cmd->content)->redirection->content);
+	}
+	if(my_cmd->next)
+	{
+		dup2(fd[1], 1);
+		close(fd[1]);
+	}
+	if(redrec != NULL)
+	{
+		if(redrec->e_type == OUTPUT)
+		{
+			dup2(lst_fd[1], 1);
+			close(lst_fd[1]);
+		}
+		if(redrec->e_type == APPED)
+		{
+			dup2(lst_fd[1], 1);
+			close(lst_fd[1]);
+		}
+	}
+	if (save != -1)
+	{
+		dup2(save, 0);
+		close(save);
+	}
+	if(redrec != NULL)
+	{
+		if(redrec->e_type == HERRDOC)
+		{
+			dup2(lst_fd[0],0);
+			close(lst_fd[0]);
+		}
+		if(redrec->e_type == INPUT)
+		{
+			dup2(lst_fd[0], 0);
+			close(lst_fd[0]);
+		}
+	}
 }
 void	echo_function(char **str)
 {

@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_blt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/11 15:15:25 by mrafik            #+#    #+#             */
-/*   Updated: 2022/09/30 17:50:13 by mrafik           ###   ########.fr       */
+/*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
+/*   Updated: 2022/09/30 16:30:09 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	ft_strcmp(char *s1, char *s2)
+void	builtins(char **str)
 {
-	int	i;
-	
-	if(!s2)
-		return(0);
-	i = 0;
-	while ((s1[i] == s2[i]) && (s1[i]) && (s2[i]))
-	{
-		i++;
-	}
-	return (s1[i] - s2[i]);
+	if(!ft_strcmp(str[0],"cd"))
+		cd_fuction(str[1]);
+	if(!ft_strcmp(str[0],"echo"))
+		echo_function(str);
 }
-
