@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/26 23:53:35 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/01 05:26:02 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 			parsing(parse);
 			add_history(parse->str);
 			if (parsing_error(parse))
-				ft_pipe(parse->cmd, parse->envp);
+				printnode(parse->cmd);
 			free_parse(parse);
 		}
 		else
