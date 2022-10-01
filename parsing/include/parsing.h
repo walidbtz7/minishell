@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
+/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/28 21:35:59 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/01 05:56:29 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ void			freetoken(t_token **token);
 t_parsing		*init_parse(char **envp);
 void			token_red(t_parsing	*parse);
 void			token_txt(t_node **argv, t_token *token, char **envp);
-int				token_pipe(t_token *token);
 char			**argvconvert(t_node *argv);
 void			printredirection(t_node *redirection);
 void			printargv(t_node *argv);

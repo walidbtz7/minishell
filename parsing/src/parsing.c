@@ -6,11 +6,22 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/25 22:40:45 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/01 05:56:16 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
+
+int	token_pipe(t_token *token)
+{
+	if (token->e_type == TOKEN_PIPE && \
+	token->next == NULL)
+		return (-1);
+	if (token->e_type == TOKEN_PIPE && \
+	(token->next->e_type == TOKEN_PIPE))
+		return (-1);
+	return (1);
+}
 
 int	token_is_red(t_parsing *parse)
 {
