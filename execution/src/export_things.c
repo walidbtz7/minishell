@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/09/30 19:44:51 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/01 19:25:38 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char **export_sort(char **envp)
 		}
 		i++;
 	}
+	return(export);
 }
 
 void	export_cmd(char **env,char **str)
@@ -55,6 +56,7 @@ void	export_cmd(char **env,char **str)
 	char **export;
 	char **tmp;
 	int i;
+	
 	i = 0;
 	while (export[i])
 		i++;
