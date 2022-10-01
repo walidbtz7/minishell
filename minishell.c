@@ -64,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 			parsing(parse);
 			add_history(parse->str);
 			if (parsing_error(parse))
-				printnode(parse->cmd);
+				ft_pipe(parse->cmd, parse->envp);
 			free_parse(parse);
 		}
 		else
