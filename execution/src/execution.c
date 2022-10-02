@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/09/30 22:32:49 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/01 23:08:30 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,18 +91,7 @@ int	*bull_shit(t_cmd *cmd)
 }
 
 
-int cd_fuction(char *path_cd)
-{
-	if(!path_cd)
-	{
-		free(path_cd);
-		path_cd = ft_strdup("/Users");
-	}
-	if(chdir(path_cd))
-		return(printf("faild to %s\n",path_cd));
-	return(0);
-	
-}
+
 
 
 void ft_after_expand(t_node *my_cmd)
@@ -152,12 +141,16 @@ void ft_pipe(t_node *cmd,char **env)
 			{
 				ft_directions(my_cmd,fd,lst_fd,save);
 				if(!ft_strcmp((((t_cmd *)((my_cmd)->content))->after_expand)[0],"cd"))
-					cd_fuction((((t_cmd *)((my_cmd)->content))->after_expand)[1]);
+					cd_fuction((((t_cmd *)((my_cmd)->content))->after_expand)[1],env);
 				if(!ft_strcmp((((t_cmd *)((my_cmd)->content))->after_expand)[0],"echo"))
 					echo_function((((t_cmd *)((my_cmd)->content))->after_expand));
+				if(!ft_strcmp((((t_cmd *)((my_cmd)->content))->after_expand)[0],"pwd"))
+					getcwd(NULL,0);
+					
 			}
 			run_cmd(env, (((t_cmd *)((my_cmd)->content))->after_expand));
-			ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
+		 	ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
+			exit(0);
 		}
 		while ((((t_cmd *)((my_cmd)->content))->after_expand)[i])
 		{
