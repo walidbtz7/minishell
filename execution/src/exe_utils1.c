@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 16:43:08 by mrafik            #+#    #+#             */
-/*   Updated: 2022/09/30 22:32:27 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/01 18:25:06 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,7 @@ char *path(char **env,char *search)
 	}
 	return(NULL);
 }
-int check_echo(char **str)
-{
-	int i;
-	
-	i = 1;
-	while (str[1][i])
-	{
-		if(str[1][0] != '-')
-			return(0);
-		if(str[1][i] != 'n')
-			return(0);
-		i++;
-	}
-return(1);
 
-}
 void ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
 {
 	t_redirection *redrec;
@@ -116,21 +101,7 @@ void ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
 		}
 	}
 }
-void	echo_function(char **str)
-{
-	int i;
 
-	i = 1;
-	if(check_echo(str))
-		i = 2;
-	while (str[i])
-	{
-		printf("%s %d",str[i],i);
-		i++;
-	}
-	if(!check_echo(str))
-		printf("\n");
-}
 void run_cmd(char **env,char **av)
 {
 	char *cmd_path;

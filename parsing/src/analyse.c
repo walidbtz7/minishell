@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/01 05:56:08 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/02 00:49:42 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	token_txt(t_node **argv, t_token *token, char **envp)
 				check = init_cargv(str[i], envp);
 				new = ft_lstnew(init_argv(rmquote(check)));
 				ft_nodeadd_back(argv, new);
-				free(str[i]);
 			}
 			i++;
 		}
