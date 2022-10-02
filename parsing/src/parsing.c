@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/01 05:56:16 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/02 00:35:58 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ int	token_is_red(t_parsing *parse)
 
 void	parsing_analyse(t_parsing *parse)
 {
-	while (parse->token && parse->res == 1)
+	while (parse->token && (parse->res == 1 || parse->res == -4))
 	{
-		if (token_is_red(parse))
+		if (token_is_red(parse) && parse-> res != -4)
 			token_red(parse);
-		else if (parse->token->e_type == TOKEN_TEXT)
+		else if (parse->token->e_type == TOKEN_TEXT && parse-> res != -4)
 			token_txt(&(parse->argv), parse->token, parse->envp);
 		if ((parse->token->e_type == TOKEN_PIPE || \
 parse->token->next == NULL) && parse->res != -1)
@@ -54,7 +54,7 @@ parse->token->next == NULL) && parse->res != -1)
 				parse->res = token_pipe(parse->token);
 			if (parse->res == 0)
 				return ;
-			if (parse->argv || parse->redirection)
+			if ((parse->argv || parse->redirection) && parse->res != -4)
 			{
 				parse->new = ft_lstnew(init_cmd(parse->argv, \
 				parse->redirection));

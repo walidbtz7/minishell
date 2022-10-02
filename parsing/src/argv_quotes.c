@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/26 23:53:09 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/02 00:49:25 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ char	*rmquote(t_cargv *check)
 			new = ft_strjoin_free(new, charstr(check->c));
 		cargv_advence(check);
 	}
+	free(check->src);
 	free(check);
 	return (new);
 }
