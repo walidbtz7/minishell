@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/01 06:44:50 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/02 02:58:35 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,6 @@ void	error_token(t_parsing	*parse)
 	{
 		parse->token = parse->token->next;
 	}
-}
-
-int	ambiguous_red(char	*str)
-{
-	if (!str[0])
-	{
-		printf("ambiguous redirect\n");
-		free(str);
-		return (0);
-	}
-	return (1);
 }
 
 char	*fred(t_cargv *check)
@@ -60,32 +49,35 @@ char	*fred(t_cargv *check)
 	return (new);
 }
 
+char	*expand_file_name(t_cargv **check, char	*str, char	**envp)
+{
+	*check = init_cargv(str, envp);
+	str = fred(*check);
+	return (str);
+}
+
 void	token_rm(t_parsing	*parse, t_node	**new)
 {
 	t_cargv	*check;
 	char	*str;
 	int		expand;
-	char	*tmp;
 
 	expand = 1;
 	check = NULL;
 	str = parse->token->next->value;
 	if (parse->token->e_type != TOKEN_HEREDOC)
+		str = expand_file_name(&check, str, parse->envp);
+	if (ambiguous_red(str))
 	{
-		check = init_cargv(str, parse->envp);
-		str = fred(check);
-		tmp = str;
+		check = init_cargv(str, NULL);
+		str = rmquote(check);
+		if (ft_strlen(str) != ft_strlen(parse->token->next->value))
+			expand = 0;
+			*new = ft_lstnew(init_redirection(parse->token->e_type, \
+		str, expand));
 	}
 	else
-		tmp = ft_strldup("", 0);
-	check = init_cargv(str, NULL);
-	str = rmquote(check);
-	free(tmp);
-	if (ft_strlen(str) != ft_strlen(parse->token->next->value))
-		expand = 0;
-	if (ambiguous_red(str))
-		*new = ft_lstnew(init_redirection(parse->token->e_type, \
-	str, expand));
+		parse->res = -4;
 	parse->token = parse->token->next;
 }
 
