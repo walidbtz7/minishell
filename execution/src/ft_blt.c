@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/01 23:12:06 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/02 19:17:41 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,19 +95,25 @@ void	echo_function(char **str)
 		printf("\n");
 }
 
-// void	builtins(char **str,char **env)
-// {
-// 	char **export;
+char	**builtins(char **str,char **env)
+{
+	char **export;
 	
-// 	export = export_sort(env);
-// 	if(!ft_strcmp(str[0],"cd"))
-// 		{
-// 			cd_fuction(str[1],env);
-// 			free(export);
-// 			export = export_sort(env);
-// 		}
-// 	if(!ft_strcmp(str[0],"echo"))
-// 		echo_function(str);
-// 	if(!ft_strcmp(str[0],"export"))
-// 		export_cmd(env,str);
-// }
+	export = export_sort(env);
+	if(str)
+	{
+		if(!ft_strcmp(str[0],"cd"))
+		{
+			cd_fuction(str[1],env);
+			free(export);
+			export = export_sort(env);
+		}
+		if(!ft_strcmp(str[0],"echo"))
+			echo_function(str);
+		if(!ft_strcmp(str[0],"export"))
+			env = export_cmd(env,str);
+		if(!ft_strcmp(str[0],"pwd"))
+			getcwd(NULL,0);
+	}
+	return(env);
+}

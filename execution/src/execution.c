@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/01 23:08:30 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/02 19:19:35 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	*bull_shit(t_cmd *cmd)
 	int				x;
 	int				*lst_fd;
 
-	lst_fd = (int *)malloc(3 * sizeof (int));
+	lst_fd = (int *)malloc(2 * sizeof (int));
 	x = 0;
 	
 	my_cmd = cmd->redirection;
@@ -49,8 +49,8 @@ int	*bull_shit(t_cmd *cmd)
 			lst_fd[0] = open(red->file, O_RDONLY , 0666);
 			if (lst_fd < 0)
 			{ 
-				// perror("red->file");
-				// return(1);
+				perror("red->file");
+				// return(0);
 			}
 		}
 		else if (red->e_type == OUTPUT)
@@ -60,8 +60,8 @@ int	*bull_shit(t_cmd *cmd)
 			lst_fd[1] = open(red->file, O_CREAT | O_WRONLY , 0666);
 			if (lst_fd < 0)
 			{
-				// perror("red->file");
-				// return(1);
+				perror("red->file");
+				// return(0);
 			}
 		}
 		else if (red->e_type == APPED)
@@ -71,8 +71,8 @@ int	*bull_shit(t_cmd *cmd)
 			lst_fd[1] = open(red->file, O_WRONLY | O_APPEND | O_CREAT, 0666);
 			if (lst_fd < 0)
 			{
-				// perror("red->file");
-				// return(1);
+				perror("red->file");
+				// return(0);
 			}
 		}
 		else if (red->e_type == HERRDOC)
@@ -113,10 +113,10 @@ void ft_error(char **str)
 	}
 }
 
-void ft_pipe(t_node *cmd,char **env)
+char **ft_pipe(t_node *cmd,char **env)
 {
 	int fd[2];
-	pid_t id;
+	// pid_t id;
 	t_node *my_cmd;
 	int save;
 	int	*lst_fd;
@@ -134,30 +134,24 @@ void ft_pipe(t_node *cmd,char **env)
 		pipe(fd);
 		ft_after_expand(my_cmd);
 		lst_fd = bull_shit((t_cmd *)my_cmd->content);
-		id = fork();
-		if(id == 0)
-		{
-			if((((t_cmd *)((my_cmd)->content))->after_expand))
+		env = builtins((((t_cmd *)((my_cmd)->content))->after_expand),env);
+		// id = fork();
+		// if(id == 0)
+		// {
+		// 	if((((t_cmd *)((my_cmd)->content))->after_expand))
+		// 			ft_directions(my_cmd,fd,lst_fd,save);
+		// 	run_cmd(env, (((t_cmd *)((my_cmd)->content))->after_expand));
+		//  	ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
+		// 	exit(0);
+		// }
+		if((((t_cmd *)((my_cmd)->content))->after_expand))
+		{	while ((((t_cmd *)((my_cmd)->content))->after_expand)[i])
 			{
-				ft_directions(my_cmd,fd,lst_fd,save);
-				if(!ft_strcmp((((t_cmd *)((my_cmd)->content))->after_expand)[0],"cd"))
-					cd_fuction((((t_cmd *)((my_cmd)->content))->after_expand)[1],env);
-				if(!ft_strcmp((((t_cmd *)((my_cmd)->content))->after_expand)[0],"echo"))
-					echo_function((((t_cmd *)((my_cmd)->content))->after_expand));
-				if(!ft_strcmp((((t_cmd *)((my_cmd)->content))->after_expand)[0],"pwd"))
-					getcwd(NULL,0);
-					
+				free((((t_cmd *)((my_cmd)->content))->after_expand)[i]);
+				i++;
 			}
-			run_cmd(env, (((t_cmd *)((my_cmd)->content))->after_expand));
-		 	ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
-			exit(0);
-		}
-		while ((((t_cmd *)((my_cmd)->content))->after_expand)[i])
-		{
-			free((((t_cmd *)((my_cmd)->content))->after_expand)[i]);
-			i++;
-		}
 		free((((t_cmd *)((my_cmd)->content))->after_expand));
+		}
 		if(save != -1)
 			close(save);
 		close(fd[1]);
@@ -169,4 +163,5 @@ void ft_pipe(t_node *cmd,char **env)
 	{
 		res = waitpid(-1, NULL, 0);
 	}
+	return(env);
 }
