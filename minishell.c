@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/02 02:40:59 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/02 03:01:34 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,12 @@ void	free_parse(t_parsing *parse)
 int	parsing_error(t_parsing *parse)
 {
 	if ((parse->herdoc == 0 && parse->res == -2) || \
-	(parse->res == -1))
+	(parse->res == -1) || (parse->res == -3))
 	{
 		if ((parse->herdoc == 0 && parse->res == -2))
-			write(2, parse->error, ft_strlen(parse->error));
+			printf("%s\n", parse->error);
 		else if (parse->res == -1)
-			write(2, "syntax error near unexpected token `|'", 39);
-		write(2, "\n", 1);
+			printf("syntax error near unexpected token `|'\n");
 		return (0);
 	}
 	return (1);
@@ -65,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 			parsing(parse);
 			add_history(parse->str);
 			if (parsing_error(parse))
-				printnode(parse->cmd);
+				ft_pipe(parse->cmd, parse->envp);
 			free_parse(parse);
 		}
 		else
