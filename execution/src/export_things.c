@@ -6,87 +6,83 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/02 22:23:22 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/03 22:00:15 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 
 #include <minishell.h>
-
-char **export_sort(char **envp)
+int ft_end(t_ex *ex,char **export)
 {
-	int i;
-	int x,y;
-	char **export;
-	char *tmp;
-	
-	i = 0;
-	while(envp[i])
-		i++;
-	export = (char **)(malloc((i+1) * sizeof(char *)));
-	i = 0;
-	while (envp[i])
-	{
-		export[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	export[i] = NULL;
-	i = 0;
-	while (export[i])
-	{
-		x = 0;
-		while (export[i +x])
-		{
-			if(ft_strcmp(export[i],export[i+x]) > 0)
-			{
-				tmp = ft_strdup(export[i]);
-				export[i] = ft_strdup(export[i+x]);
-				export[i+x] = ft_strdup(tmp);
-				free(tmp);
-			}
-			x++;
-		}
-		i++;
-	}
-	i = 0;
-	x =  0;
-	y  = 0;
-	while (export[i])
-	{
-		tmp = (char *)malloc(ft_strlen((export[i]) + 3) *sizeof(char));
-		while (export[i][x])
-		{
-			if(export[i][x] == '=')
-			{
-				tmp[y] = export[i][x];
-				y++;
-				tmp[y] = '"';
-			}
-			if(!export[i][x+1])
-			{	
-				tmp[y] = export[i][x];
-				y++;
-				tmp[y] = '"';
-			}
-			tmp[y] = export[i][x];
-			x++;
-			y++;
-		}
-		tmp[y] = '\0';		
-	}
-	
-	return(export);
-}
-
-int	check_cmd_export(char *str)
-{
-	if(ft_isnumber(str[1]))
-	{
-		printf("export: `%s': not a valid identifier",str);
+	if((ex->len-1) == ex->x)
+	{	
+		ex->tmp2[ex->i][ex->y++] = export[ex->i][ex->x];
+		if(ex->e == 1)
+			ex->tmp2[ex->i][ex->y++] = '"';
+		ex->tmp2[ex->i][ex->y]='\0';
 		return(0);
 	}
 	return(1);
+}
+
+int ft_close(t_ex	*ex,char **export)
+{
+	if(export[ex->i][ex->x] == '=' )
+	{
+		ex->tmp2[ex->i][ex->y++] = export[ex->i][ex->x];
+		if(export[ex->i][ex->x+1]	!= '\0')
+		{
+			ex->x++;
+			ex->tmp2[ex->i][ex->y++] = '"';
+		}
+		else
+		{
+			ex->tmp2[ex->i][ex->y++] = '"';
+			ex->tmp2[ex->i][ex->y++] = '"';
+			ex->tmp2[ex->i][ex->y]='\0';
+			return(0);
+		}
+		ex->e = 1;
+	}
+	return(1);
+}
+
+char **ft_add(char **export)
+{
+	t_ex ex;
+	
+	ex.i = 0;
+	ex.tmp2 = (char **)malloc((ft_strlen2(export)+1) * sizeof(char *));
+	while (export[ex.i])
+	{
+		ex.len = ft_strlen((export[ex.i]));
+		ex.tmp2[ex.i] = (char *)malloc((ex.len + 4) *sizeof(char));
+		ex.y  = 0;
+		ex.e = 0;
+		ex.x =  0;
+		while (export[ex.i][ex.x])
+		{
+			if(!ft_close(&ex,export))
+				break;
+			if(!ft_end(&ex,export))
+				break;
+			ex.tmp2[ex.i][ex.y++] = export[ex.i][ex.x++];
+		}
+		ex.i++;
+	}
+		ex.tmp2[ex.i] = NULL;
+	
+	return(ex.tmp2);
+}
+int ft_strlen2(char **str)
+{
+	int i;
+	i = 0;
+	 
+	while (str[i])
+		i++;
+	return(i);
 }
 char **ft_dup(char **str)
 {
@@ -105,57 +101,136 @@ char **ft_dup(char **str)
 	return(tmp);
 }
 
-int ft_strlen2(char **str)
+char **export_sort(char **envp)
 {
-	int i;
-	i = 0;
-	 
-	while (str[i])
-		i++;
-	return(i);
-}
-char	**export_cmd(char **env,char **str)
-{
-	char **export= NULL;
-	char **tmp;
 	int i;
 	int x;
+	char **export;
+	char	*tmp;
+	
+	i = 0;
+	export = (char **)(malloc((i+1) * sizeof(char *)));
+	export = ft_dup(envp);
+	while (export[i])
+	{
+		x = 0;
+		while (export[i +x])
+		{
+			if(ft_strcmp(export[i],export[i+x]) > 0)
+			{
+				tmp = ft_strdup(export[i]);
+				export[i] = ft_strdup(export[i+x]);
+				export[i+x] = ft_strdup(tmp);
+				free(tmp);
+			}
+			x++;
+		}
+		i++;
+	}
+	export = ft_add(export);
+	return(export);
+}
+
+int	check_cmd_export(char *str)
+{
+	if(ft_isnumber(str[1]))
+	{
+		printf("export: `%s': not a valid identifier",str);
+		return(0);
+	}
+	return(1);
+}
+
+int ft_search(char *str,char *exp)
+{
+	int i;
+	int x;
+	i = 0;
+	x = 0;
+	while (str[x] && str[x] != '=')
+	{
+		x++;
+	}
+	if(!ft_strncmp(exp,str,x) && str[x] == '\0')
+		return(2);
+	if(!ft_strncmp(exp,str,x))
+		return(1);
+	return(0);
+}
+
+int ft_strcmp2(char **env,char *str)
+{
+	int i;
+	i =0;
+	while (env[i])
+	{
+		if(ft_search(str,env[i]))
+			return(1);
+		i++;
+	}
+	return(0);
+}
+void ft_stock(t_ex *expo,char **env,char **str,int x)
+{
+	int i;
+	int e;
+	
+	i =  0;
+	i = ft_strlen2(env);
+	if(!ft_strcmp2(env,str[x]))
+			i = i+1;
+	expo->tmp = (char **)malloc((i+1) * sizeof(char *));
+	i = 0;
+	while (env[i])
+	{
+		e = ft_search(str[x],env[i]);
+		if(e == 1)
+			expo->tmp[i] = ft_strdup(str[x]);
+		else
+			expo->tmp[i] = ft_strdup(env[i]);
+		i++;
+	}
+	if(e == 0)
+	{
+		expo->tmp[i] = ft_strdup(str[x]);
+		expo->tmp[i+1] = 0;
+	}
+	else
+	expo->tmp[i] = 0;
+}
+
+char	**export_cmd(char **env,char **str)
+{
+	t_ex expo;
+	char **export= NULL;
+	int i;
+	int x;
+	// int e;
 	
 	i = 0;
 	i = ft_strlen2(env);
 	export = export_sort(env);
 	x = 1;
-	tmp = (char **)malloc((i+2) * sizeof(char *));
-	tmp = ft_dup(env);
+	expo.tmp = (char **)malloc((i+2) * sizeof(char *));
+	expo.tmp = ft_dup(env);
 	while (str[x])
 	{
 		if(check_cmd_export(str[x]))
 		{
 			if(str[0])
 			{
-				free(tmp);
-				i = ft_strlen2(env);
-				tmp = (char **)malloc((i+2) * sizeof(char *));
-				i = 0;
-				while (env[i])
-				{
-					tmp[i] = ft_strdup(env[i]);
-					i++;
-				}
-				tmp[i] = ft_strdup(str[x]);
-				tmp[i+1] = 0;
+				ft_stock(&expo,env,str,x);
 			}
 		}
 	if(ft_strchr(str[x],'='))
-		env = ft_dup(tmp);
+		env = ft_dup(expo.tmp);
 	x++;
-	export = export_sort(tmp);
+	export = export_sort(expo.tmp);
 	}
-	
 		i = 0;
-		while (env[i])
+		while (export[i])
 		{
-			printf("%s\n",env[i]);
+			printf("%s\n",export[i]);
 			i++;
 		}
 	return(env);
