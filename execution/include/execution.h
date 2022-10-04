@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/03 22:16:16 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/04 23:54:41 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	run_cmd(char **env,char **av);
 char	*path(char **env,char *search);
 char	**convert(t_cmd *my_cmd);
 void	ft_after_expand(t_node *my_cmd);
-char	**ft_pipe(t_node *my_cmd,char **env);
+void	ft_pipe(t_node *my_cmd,t_ex *ex);
 int		*bull_shit(t_cmd *my_cmd) ;
 char	**argvconvert(t_node *argv);
 char	*ft_strdup(const char *s1);
@@ -44,15 +44,17 @@ void	ft_putstr_fd(char *s, int fd);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strncmp(char *s1, char *s2, int n);
 void	ft_error(char **str);
-int		cd_fuction(char *path, char **env);
+char	**cd_fuction(char *path, char **env);
 void	herrdoc(t_redirection *redrec);
 void	echo_function(char **str);
 char	*path(char **env,char *search);
 void	ft_directions(t_node *my_cmd, int *fd,int *lst_fd, int save);
 char	**export_sort(char **envp);
-char	**builtins(char **str,char **env);
+void	builtins(char **str,t_ex *ex);
 char	**export_sort(char **envp);
-char	**export_cmd(char **env,char **str);
+void	export_cmd(char **str,t_ex *ex);
 int		ft_strlen2(char **str);
+char **ft_dup(char **str);
+void	 ft_free_e(char **str);
 
 #endif

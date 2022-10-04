@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/02 19:17:41 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/04 23:53:49 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,27 +38,26 @@ int position(char **env,char *search)
 	return(0);
 }
 
-int cd_fuction(char *path_cd,char **env)
+char **cd_fuction(char *path_cd,char **env)
 {
-	///char	*pwd;
 	int		i;
 	int		j;
-	char	*save;
-	//char	**search;
+	// char	*save;
 	
-	write(2,"hna\n",4);
 	if(chdir(path_cd))
-		return(printf("faild to %s\n",path_cd));
+	{
+		printf("faild to %s\n",path_cd);
+		return(0);
+	}
 	i = position(env,"PWD");
 	j = position(env,"OLDPWD");
-	save = ft_strdup(env[j]);
-	env[j] = ft_strdup(env[i]);
-	if (getcwd(NULL, 0))
-		env[i] =  getcwd(NULL, 0);
-	else
-		env[i] = ft_strdup(save); 
-	return(0);
-	exit(0);
+	// save = ft_strdup(env[j]);
+	// env[j] = ft_strdup(env[i]);
+	// if (getcwd(NULL, 0))
+	// 	env[i] =  getcwd(NULL, 0);
+	// else
+	// 	env[i] = ft_strdup(save); 
+	return(env);
 }
 int check_echo(char **str)
 {
@@ -95,25 +94,36 @@ void	echo_function(char **str)
 		printf("\n");
 }
 
-char	**builtins(char **str,char **env)
+void	builtins(char **str,t_ex *ex)
 {
-	char **export;
+	int		i;
+	char	**tmp;
 	
-	export = export_sort(env);
+	i = 0;
 	if(str)
 	{
 		if(!ft_strcmp(str[0],"cd"))
 		{
-			cd_fuction(str[1],env);
-			free(export);
-			export = export_sort(env);
+			tmp = cd_fuction(str[1],ex->env);
+			if(tmp)
+				{
+					ex->env = tmp;
+					ex->export = export_sort(ex->env);
+				}
 		}
 		if(!ft_strcmp(str[0],"echo"))
-			echo_function(str);
+				echo_function(str);
 		if(!ft_strcmp(str[0],"export"))
-			env = export_cmd(env,str);
+		{
+				export_cmd(str,ex);
+	
+		}
 		if(!ft_strcmp(str[0],"pwd"))
-			getcwd(NULL,0);
+			printf("%s\n",getcwd(NULL,0));
 	}
-	return(env);
+	i = 0;
+	// while (ex->export[i])
+	// 	free(ex->export[i++]);
+	// free(ex->export);
+	
 }

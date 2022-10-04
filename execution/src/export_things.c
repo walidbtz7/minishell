@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/03 22:00:15 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/04 23:56:20 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <minishell.h>
 int ft_end(t_ex *ex,char **export)
 {
+	
 	if((ex->len-1) == ex->x)
 	{	
 		ex->tmp2[ex->i][ex->y++] = export[ex->i][ex->x];
@@ -47,6 +48,16 @@ int ft_close(t_ex	*ex,char **export)
 	}
 	return(1);
 }
+void	 ft_free_e(char **str)
+{
+	int i;
+	i = 0;
+
+	while (str[i])
+		free(str[i++]);
+	free(str);
+	
+}
 
 char **ft_add(char **export)
 {
@@ -63,16 +74,16 @@ char **ft_add(char **export)
 		ex.x =  0;
 		while (export[ex.i][ex.x])
 		{
+			
 			if(!ft_close(&ex,export))
 				break;
 			if(!ft_end(&ex,export))
-				break;
+					break;
 			ex.tmp2[ex.i][ex.y++] = export[ex.i][ex.x++];
 		}
 		ex.i++;
 	}
 		ex.tmp2[ex.i] = NULL;
-	
 	return(ex.tmp2);
 }
 int ft_strlen2(char **str)
@@ -107,28 +118,33 @@ char **export_sort(char **envp)
 	int x;
 	char **export;
 	char	*tmp;
+	char	**tmp2;
 	
 	i = 0;
-	export = (char **)(malloc((i+1) * sizeof(char *)));
 	export = ft_dup(envp);
 	while (export[i])
 	{
 		x = 0;
 		while (export[i +x])
 		{
-			if(ft_strcmp(export[i],export[i+x]) > 0)
+			if(ft_strcmp(export[i],export[i + x]) > 0)
 			{
-				tmp = ft_strdup(export[i]);
-				export[i] = ft_strdup(export[i+x]);
-				export[i+x] = ft_strdup(tmp);
-				free(tmp);
+				tmp = export[i];
+				export[i] = export[i+x];
+				export[i+x] = tmp;
+				//free(tmp);
 			}
 			x++;
 		}
 		i++;
 	}
-	export = ft_add(export);
-	return(export);
+	tmp2 = ft_add(export);
+	i =0;
+	while (export[i])
+		free(export[i++]);
+	free(export);
+	
+	return(tmp2);
 }
 
 int	check_cmd_export(char *str)
@@ -170,6 +186,7 @@ int ft_strcmp2(char **env,char *str)
 	}
 	return(0);
 }
+
 void ft_stock(t_ex *expo,char **env,char **str,int x)
 {
 	int i;
@@ -185,53 +202,40 @@ void ft_stock(t_ex *expo,char **env,char **str,int x)
 	{
 		e = ft_search(str[x],env[i]);
 		if(e == 1)
-			expo->tmp[i] = ft_strdup(str[x]);
+			expo->tmp[i] = str[x];
 		else
-			expo->tmp[i] = ft_strdup(env[i]);
+			expo->tmp[i] = env[i];
 		i++;
 	}
 	if(e == 0)
 	{
-		expo->tmp[i] = ft_strdup(str[x]);
+		expo->tmp[i] = str[x];
 		expo->tmp[i+1] = 0;
 	}
 	else
 	expo->tmp[i] = 0;
 }
-
-char	**export_cmd(char **env,char **str)
+void	export_cmd(char **str,t_ex *ex)
 {
 	t_ex expo;
-	char **export= NULL;
 	int i;
 	int x;
-	// int e;
 	
-	i = 0;
-	i = ft_strlen2(env);
-	export = export_sort(env);
+	i = ft_strlen2(ex->env);
 	x = 1;
-	expo.tmp = (char **)malloc((i+2) * sizeof(char *));
-	expo.tmp = ft_dup(env);
+	expo.tmp = ex->env;
 	while (str[x])
 	{
 		if(check_cmd_export(str[x]))
 		{
 			if(str[0])
-			{
-				ft_stock(&expo,env,str,x);
-			}
+				ft_stock(&expo,ex->env,str,x);
+				
 		}
-	if(ft_strchr(str[x],'='))
-		env = ft_dup(expo.tmp);
-	x++;
-	export = export_sort(expo.tmp);
-	}
-		i = 0;
-		while (export[i])
+		if(ft_strchr(str[x],'='))
 		{
-			printf("%s\n",export[i]);
-			i++;
+			ex->env = expo.tmp;
 		}
-	return(env);
+		x++;
+	}
 }
