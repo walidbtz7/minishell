@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/04 23:32:05 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/05 15:52:36 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,8 @@ void ft_error(char **str)
 
 void	ft_pipe(t_node *cmd,t_ex *ex)
 {
-	//int fd[2];
-	// pid_t id;
+	int fd[2];
+	pid_t id;
 	t_node *my_cmd;
 	int save;
 	int	*lst_fd;
@@ -134,16 +134,16 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 		builtins((((t_cmd *)((my_cmd)->content))->after_expand),ex);
 		lst_fd = bull_shit((t_cmd *)my_cmd->content);
 		free(lst_fd);
-		//pipe(fd);
-		// id = fork();
-		// if(id == 0)
-		// {
-		// 	if((((t_cmd *)((my_cmd)->content))->after_expand))
-		// 			ft_directions(my_cmd,fd,lst_fd,save);
-		// 	run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
-		//  	ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
-		// 	exit(0);
-		// }
+		pipe(fd);
+		id = fork();
+		if(id == 0)
+		{
+			if((((t_cmd *)((my_cmd)->content))->after_expand))
+					ft_directions(my_cmd,fd,lst_fd,save);
+			run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
+		 	ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
+			exit(0);
+		}
 		if((((t_cmd *)((my_cmd)->content))->after_expand))
 		{	while ((((t_cmd *)((my_cmd)->content))->after_expand)[i])
 			{
@@ -152,10 +152,10 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 			}
 		free((((t_cmd *)((my_cmd)->content))->after_expand));
 		}
-		// if(save != -1)
-		// 	close(save);
-		// close(fd[1]);
-		// save = fd[0];
+		if(save != -1)
+			close(save);
+		close(fd[1]);
+		save = fd[0];
 		(my_cmd) = (my_cmd)->next;
 		
 	}

@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/04 23:54:41 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/05 15:21:51 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct execution
 	char	**env;
 	char	**export;
 	char	**tmp;
+	char	**ex_save;
 }	t_ex;
 
 void	run_cmd(char **env,char **av);
@@ -52,7 +53,7 @@ void	ft_directions(t_node *my_cmd, int *fd,int *lst_fd, int save);
 char	**export_sort(char **envp);
 void	builtins(char **str,t_ex *ex);
 char	**export_sort(char **envp);
-void	export_cmd(char **str,t_ex *ex);
+char	**export_cmd(char **env,char **str,t_ex *ex);
 int		ft_strlen2(char **str);
 char **ft_dup(char **str);
 void	 ft_free_e(char **str);

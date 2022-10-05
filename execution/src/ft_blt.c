@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/04 23:53:49 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/05 19:00:23 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char **cd_fuction(char *path_cd,char **env)
 {
 	int		i;
 	int		j;
-	// char	*save;
+	char	*save;
 	
 	if(chdir(path_cd))
 	{
@@ -51,12 +51,12 @@ char **cd_fuction(char *path_cd,char **env)
 	}
 	i = position(env,"PWD");
 	j = position(env,"OLDPWD");
-	// save = ft_strdup(env[j]);
-	// env[j] = ft_strdup(env[i]);
-	// if (getcwd(NULL, 0))
-	// 	env[i] =  getcwd(NULL, 0);
-	// else
-	// 	env[i] = ft_strdup(save); 
+	save = env[j];
+	env[j] = env[i];
+	if (getcwd(NULL, 0))
+		env[i] =  getcwd(NULL, 0);
+	else
+		env[i] = save; 
 	return(env);
 }
 int check_echo(char **str)
@@ -107,15 +107,25 @@ void	builtins(char **str,t_ex *ex)
 			tmp = cd_fuction(str[1],ex->env);
 			if(tmp)
 				{
-					ex->env = tmp;
+					ex->env = ft_dup(tmp);
 					ex->export = export_sort(ex->env);
+					while (ex->env[i])
+					{
+						printf("%s\n",ex->env[i++]);
+					}
+					
 				}
 		}
 		if(!ft_strcmp(str[0],"echo"))
 				echo_function(str);
 		if(!ft_strcmp(str[0],"export"))
 		{
-				export_cmd(str,ex);
+				ex->env = export_cmd(ex->env,str,ex);
+				i = 0;
+				// while(ex->export[i])
+				// {
+				// 	printf("%s\n",ex->export[i++]);
+				// }
 	
 		}
 		if(!ft_strcmp(str[0],"pwd"))
