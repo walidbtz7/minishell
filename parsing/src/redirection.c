@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/02 02:58:35 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/06 12:07:53 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char	*fred(t_cargv *check)
 			cargv_advence(check);
 		}
 	}
+	free(check->src);
 	free(check);
 	return (new);
 }
@@ -61,24 +62,30 @@ void	token_rm(t_parsing	*parse, t_node	**new)
 	t_cargv	*check;
 	char	*str;
 	int		expand;
+	int		type;
 
+	type = 0;
 	expand = 1;
 	check = NULL;
-	str = parse->token->next->value;
+	str = ft_strdup(parse->token->next->value);
 	if (parse->token->e_type != TOKEN_HEREDOC)
 		str = expand_file_name(&check, str, parse->envp);
-	if (ambiguous_red(str))
+	if (ambiguous_red(str, parse))
 	{
 		check = init_cargv(str, NULL);
 		str = rmquote(check);
-		if (ft_strlen(str) != ft_strlen(parse->token->next->value))
-			expand = 0;
+		if(!parse->token->next->value)
+		{
+			if (ft_strlen(str) != ft_strlen(parse->token->next->value))
+				expand = 0;
+		}
 			*new = ft_lstnew(init_redirection(parse->token->e_type, \
 		str, expand));
 	}
 	else
 		parse->res = -4;
 	parse->token = parse->token->next;
+
 }
 
 void	token_red(t_parsing	*parse)
@@ -86,6 +93,8 @@ void	token_red(t_parsing	*parse)
 	t_node	*new;
 	char	*tmp;
 
+	tmp = NULL;
+	new = NULL;
 	if (parse->token->next && parse->token->next->e_type == TOKEN_TEXT)
 		token_rm(parse, &new);
 	else
@@ -98,6 +107,9 @@ void	token_red(t_parsing	*parse)
 		new = ft_lstnew(init_redirection(ERROR, tmp, 1));
 		parse->res = -2;
 	}
-	if (new->content)
-		ft_nodeadd_back(&(parse->redirection), new);
+	if(new)
+	{
+		if (new->content)
+			ft_nodeadd_back(&(parse->redirection), new);
+	}
 }
