@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/05 15:52:36 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/06 11:13:42 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,6 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 		ft_after_expand(my_cmd);
 		builtins((((t_cmd *)((my_cmd)->content))->after_expand),ex);
 		lst_fd = bull_shit((t_cmd *)my_cmd->content);
-		free(lst_fd);
 		pipe(fd);
 		id = fork();
 		if(id == 0)
@@ -152,6 +151,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 			}
 		free((((t_cmd *)((my_cmd)->content))->after_expand));
 		}
+		free(lst_fd);
 		if(save != -1)
 			close(save);
 		close(fd[1]);

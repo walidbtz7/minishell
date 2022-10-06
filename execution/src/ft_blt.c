@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/05 19:00:23 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/06 11:33:38 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,10 +122,10 @@ void	builtins(char **str,t_ex *ex)
 		{
 				ex->env = export_cmd(ex->env,str,ex);
 				i = 0;
-				// while(ex->export[i])
-				// {
-				// 	printf("%s\n",ex->export[i++]);
-				// }
+				while(ex->ex_save[i])
+				{
+					printf("%s\n",ex->ex_save[i++]);
+				}
 	
 		}
 		if(!ft_strcmp(str[0],"pwd"))
