@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/01 18:24:27 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/05 15:21:51 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,27 +17,45 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-void run_cmd(char **env,char **av);
-char *path(char **env,char *search);
+typedef struct execution
+{
+	char	**tmp2;
+	int		e;
+	int		x;
+	int		i;
+	int		len;
+	int		y;
+	char	**env;
+	char	**export;
+	char	**tmp;
+	char	**ex_save;
+}	t_ex;
+
+void	run_cmd(char **env,char **av);
+char	*path(char **env,char *search);
 char	**convert(t_cmd *my_cmd);
-void ft_after_expand(t_node *my_cmd);
-void ft_pipe(t_node *my_cmd,char **env);
-int *bull_shit(t_cmd *my_cmd) ;
+void	ft_after_expand(t_node *my_cmd);
+void	ft_pipe(t_node *my_cmd,t_ex *ex);
+int		*bull_shit(t_cmd *my_cmd) ;
 char	**argvconvert(t_node *argv);
 char	*ft_strdup(const char *s1);
 char	*ft_strjoin(char *s1, char *s2);
 char	*get_next_line(int fd);
 void	ft_putstr_fd(char *s, int fd);
-int	ft_strcmp(char *s1, char *s2);
-int	ft_strncmp(char *s1, char *s2, int n);
-void ft_error(char **str);
-int cd_fuction(char *path, char **env);
-void herrdoc(t_redirection *redrec);
+int		ft_strcmp(char *s1, char *s2);
+int		ft_strncmp(char *s1, char *s2, int n);
+void	ft_error(char **str);
+char	**cd_fuction(char *path, char **env);
+void	herrdoc(t_redirection *redrec);
 void	echo_function(char **str);
-char *path(char **env,char *search);
-void ft_directions(t_node *my_cmd, int *fd,int *lst_fd, int save);
+char	*path(char **env,char *search);
+void	ft_directions(t_node *my_cmd, int *fd,int *lst_fd, int save);
 char	**export_sort(char **envp);
-void	export_cmd(char **env,char **str);
-
+void	builtins(char **str,t_ex *ex);
+char	**export_sort(char **envp);
+char	**export_cmd(char **env,char **str,t_ex *ex);
+int		ft_strlen2(char **str);
+char **ft_dup(char **str);
+void	 ft_free_e(char **str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 16:43:08 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/01 18:25:06 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/02 14:50:51 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void run_cmd(char **env,char **av)
 
 	if(!av)
 		return;
-	cmd = ft_strjoin_free(ft_strdup("/"), av[0]);
+	cmd = ft_strjoin("/", av[0]);
 	cmd_path = avai_path(path(env, "PATH"), cmd);
 	free(cmd);
 	execve(cmd_path,av, env);

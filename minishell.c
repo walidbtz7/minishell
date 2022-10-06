@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/02 03:19:47 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/05 15:51:43 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,15 @@ void	sig_handler(int signum)
 int	main(int argc, char **argv, char **envp)
 {
 	t_parsing	*parse;
+	t_ex		execu;
+	//char		**tmp;
 
 	(void ) argc;
 	(void ) argv;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
+	execu.env = envp;
+	execu.ex_save = envp;
 	while (1)
 	{
 		parse = init_parse(envp);
@@ -64,7 +68,10 @@ int	main(int argc, char **argv, char **envp)
 			parsing(parse);
 			add_history(parse->str);
 			if (parsing_error(parse))
-				ft_pipe(parse->cmd, parse->envp);
+				{
+					ft_pipe(parse->cmd, &execu);
+					
+				}
 			free_parse(parse);
 		}
 		else
