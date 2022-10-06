@@ -6,7 +6,7 @@
 /*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/02 02:58:49 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/06 11:57:16 by wboutzou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	freestrings(char **str)
 	free(str);
 }
 
-int	ambiguous_red(char	*str)
+int	ambiguous_red(char	*str, t_parsing	*parse)
 {
 	char	**check;
 	char	*tmp;
@@ -35,7 +35,9 @@ int	ambiguous_red(char	*str)
 
 	res = 1;
 	check = NULL;
-	if (str[0])
+	if(parse->token->e_type == TOKEN_HEREDOC)
+		return (1);
+	if (str && str[0])
 	{
 		tmp = ft_strldup(str, ft_strlen(str));
 		check = ft_split_space(tmp);
