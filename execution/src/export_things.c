@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/05 20:27:39 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/06 11:34:08 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,11 +215,11 @@ void ft_stock_save(t_ex *expo,char **env,char **str,int x)
 		expo->tmp[i+1] = 0;}
 	else
 	expo->tmp[i]= 0;
-	i = 0;
-	while (expo->tmp[i])
-	{
-		printf("%s  \n",expo->tmp[i++]);
-	}
+	// i = 0;
+	// while (expo->tmp[i])
+	// {
+	// 	printf("%s  \n",expo->tmp[i++]);
+	// }
 	
 }
 
