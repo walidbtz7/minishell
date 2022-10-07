@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/07 14:51:04 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/07 15:50:54 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		ft_strcmp(char *s1, char *s2);
 int		ft_strncmp(char *s1, char *s2, int n);
 void	ft_error(char **str);
 char	**cd_fuction(char *path, char **env);
-void	herrdoc(t_redirection *redrec,char **env);
+void	herrdoc(t_redirection *redrec,char **env,int fd);
 void	echo_function(char **str);
 char	*path(char **env,char *search);
 void	ft_directions(t_node *my_cmd, int *fd,int *lst_fd, int save);

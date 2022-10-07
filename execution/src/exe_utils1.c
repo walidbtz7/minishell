@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 16:43:08 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/06 18:21:33 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/07 20:06:59 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ void ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
 	{
 		if(redrec->e_type == HERRDOC)
 		{
-			write(2,&lst_fd[0],1);
 			write(2,"\n",1);
 			dup2(lst_fd[0],0);
 			close(lst_fd[0]);

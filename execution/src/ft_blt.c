@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/07 13:07:02 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/07 18:09:13 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ int check_echo(char **str)
 	while(str[x])
 	{
 		i = 0;
-		while (str[x][i])
-		{
 			if(i == 0 && str[x][i] == '-')
 			{
 				i = 1;
@@ -85,7 +83,6 @@ int check_echo(char **str)
 			}
 			else
 				break;
-		}
 		x++;
 	}
 	return(r);
@@ -96,14 +93,14 @@ void	echo_function(char **str)
 	int i;
 	int s;
 	i = 1;
-
+	if(!str[1])
+		return;
 	i = check_echo(str);
-	printf("haaaa i=%d\n", i);
+	s = i;
 	if(i == 0)
 		i = 1;
 	else
 		i++;
-	s = i;
 	while (str[i])
 	{
 		printf("%s",str[i]);
@@ -111,7 +108,7 @@ void	echo_function(char **str)
 			printf(" ");
 		i++;
 	}
-	if(s == 1)
+	if(s == 0)
 		printf("\n");
 }
 
