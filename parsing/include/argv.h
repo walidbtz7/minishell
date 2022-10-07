@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/21 21:47:28 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/07 14:56:08 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct cargv
 
 char	**fargv(t_cargv *check);
 t_cargv	*init_cargv(char *src, char **envp);
+char	*expand_env(t_cargv *check);
 void	cargv_advence(t_cargv *cargv);
 void	single_quote(t_cargv *cargv);
 void	double_quote(t_cargv *cargv);

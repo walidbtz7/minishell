@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv_expandenv.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/26 23:53:04 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/07 15:09:25 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*checkfirst(t_cargv *cargv)
 	{
 		if (cargv->c == '?')
 		{
-			str = ft_strldup("0", 1);
+			str = ft_strdup(ft_itoa(code));
 			cargv_advence(cargv);
 		}
 		else if (!envstop(cargv->c))

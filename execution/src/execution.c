@@ -6,19 +6,24 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/06 11:13:42 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/07 15:12:16 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void herrdoc(t_redirection *redrec)
+void	herrdoc(t_redirection *redrec,char **env)
 {
 	char *str;
-	
+	t_cargv *dollar;
 	str = readline("<");
+
+	dollar = NULL;
 	while (ft_strcmp(redrec->file,str))
 	{
+		dollar = init_cargv(str,env);
+		if(redrec->expand == 1)
+			str = expand_env(dollar);
 		ft_putstr_fd(str,redrec->fd);
 		write(redrec->fd, "\n", 1);
 		free(str);
@@ -27,7 +32,7 @@ void herrdoc(t_redirection *redrec)
 	close(redrec->fd);
 }
 
-int	*bull_shit(t_cmd *cmd)
+int	*bull_shit(t_cmd *cmd,char **env)
 {
 	t_redirection	*red;
 	t_node			*my_cmd = NULL;
@@ -81,7 +86,7 @@ int	*bull_shit(t_cmd *cmd)
 				close(fd[0]);
 			pipe(fd);
 			lst_fd[1] = fd[1]; 
-			herrdoc(red);
+			herrdoc(red,env);
 			lst_fd[0] = fd[0];
 			x = 1;
 		}
@@ -132,7 +137,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 			redrec = (t_redirection *)(((t_cmd *)my_cmd->content)->redirection->content);
 		ft_after_expand(my_cmd);
 		builtins((((t_cmd *)((my_cmd)->content))->after_expand),ex);
-		lst_fd = bull_shit((t_cmd *)my_cmd->content);
+		lst_fd = bull_shit((t_cmd *)my_cmd->content,ex->env);
 		pipe(fd);
 		id = fork();
 		if(id == 0)
@@ -140,6 +145,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 			if((((t_cmd *)((my_cmd)->content))->after_expand))
 					ft_directions(my_cmd,fd,lst_fd,save);
 			run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
+			code = 127;
 		 	ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
 			exit(0);
 		}

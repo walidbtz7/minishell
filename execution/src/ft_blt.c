@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/06 11:33:38 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/07 13:07:02 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,30 +59,51 @@ char **cd_fuction(char *path_cd,char **env)
 		env[i] = save; 
 	return(env);
 }
+
 int check_echo(char **str)
 {
 	int i;
+	int	x;
+	int r;
 	
-	i = 1;
-	while (str[1][i])
+	x = 1;
+	r = 0;
+	while(str[x])
 	{
-		if(str[1][0] != '-')
-			return(0);
-		else if(str[1][i] != 'n')
-			return(0);
-		i++;
+		i = 0;
+		while (str[x][i])
+		{
+			if(i == 0 && str[x][i] == '-')
+			{
+				i = 1;
+				while(str[x][i] && str[x][i] == 'n')
+				{
+					if(!str[x][i+1])
+							r = x;
+					i++;
+				}
+			}
+			else
+				break;
+		}
+		x++;
 	}
-	return(1);
+	return(r);
 }
 
 void	echo_function(char **str)
 {
 	int i;
-
+	int s;
 	i = 1;
 
-	if(check_echo(str))
-		i = 2;
+	i = check_echo(str);
+	printf("haaaa i=%d\n", i);
+	if(i == 0)
+		i = 1;
+	else
+		i++;
+	s = i;
 	while (str[i])
 	{
 		printf("%s",str[i]);
@@ -90,9 +111,10 @@ void	echo_function(char **str)
 			printf(" ");
 		i++;
 	}
-	if(!check_echo(str))
+	if(s == 1)
 		printf("\n");
 }
+
 
 void	builtins(char **str,t_ex *ex)
 {
@@ -122,14 +144,17 @@ void	builtins(char **str,t_ex *ex)
 		{
 				ex->env = export_cmd(ex->env,str,ex);
 				i = 0;
+				ex->ex_save = export_sort(ex->ex_save);
 				while(ex->ex_save[i])
 				{
-					printf("%s\n",ex->ex_save[i++]);
+					printf("declare -x %s\n",ex->ex_save[i++]);
 				}
 	
 		}
 		if(!ft_strcmp(str[0],"pwd"))
 			printf("%s\n",getcwd(NULL,0));
+		if(!ft_strcmp(str[0],"exit"))
+			exit(0);
 	}
 	i = 0;
 	// while (ex->export[i])
@@ -137,3 +162,4 @@ void	builtins(char **str,t_ex *ex)
 	// free(ex->export);
 	
 }
+//exit code 0 succes 1 signal 127 cmd err   258 pars err

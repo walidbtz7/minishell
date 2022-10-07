@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   global.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/26 23:51:51 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/07 14:31:05 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,5 @@ char	**ft_split(char const *s, char c);
 char	*charstr(char c);
 void	fsingle(char c, int *single, int dbl);
 void	fdbl(char c, int single, int *dbl);
+char	*ft_itoa(int n);
 #endif

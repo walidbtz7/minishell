@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/02 03:19:45 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/07 10:52:03 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # include "../parsing/include/parsing.h"
 # include "../execution/include/execution.h"
 
+int code;
 void	rl_replace_line(const char *text, int clear_undo);
 
 #endif
