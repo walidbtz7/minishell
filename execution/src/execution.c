@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/07 20:00:24 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/08 20:26:56 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 		id = fork();
 		if(id == 0)
 		{
-			// if((((t_cmd *)((my_cmd)->content))->after_expand))
+			// if((((t_cmd *)((my_cmd)->content))->after_expand))    
 					ft_directions(my_cmd,fd,lst_fd,save);
 			run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
 			code = 127;

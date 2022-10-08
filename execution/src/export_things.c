@@ -6,13 +6,13 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/06 11:34:08 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/08 21:16:26 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-
 #include <minishell.h>
+
 int ft_end(t_ex *ex,char **export)
 {
 	
@@ -90,9 +90,11 @@ int ft_strlen2(char **str)
 {
 	int i;
 	i = 0;
-	 
-	while (str[i])
+	if(str)
+	{
+		while (str[i])
 		i++;
+	}
 	return(i);
 }
 char **ft_dup(char **str)
@@ -117,13 +119,12 @@ char **export_sort(char **envp)
 	int i;
 	int x;
 	char **export;
-	char	*old;
+	//char	*old;
 	char	*tmp;
 	
 	i = 0;
 	export = envp;
-	old = ft_strdup("OLDPWD");
-	
+	//old = ft_strdup("OLDPWD");
 	while (export[i])
 	{
 		x = 0;
@@ -178,11 +179,14 @@ int ft_strcmp2(char **env,char *str)
 	int i;
 	
 	i = 0;
-	while (env[i])
+	if(env && str)
 	{
-		if(ft_search(str,env[i]))
-			return(1);
-		i++;
+		while (env[i])
+		{
+			if(ft_search(str,env[i]))
+				return(1);
+			i++;
+		}
 	}
 	return(0);
 }
@@ -198,23 +202,27 @@ void ft_stock_save(t_ex *expo,char **env,char **str,int x)
 			i = i+1;
 	expo->tmp = (char **)malloc((i+1) * sizeof(char *));
 	i = 0;
-	while (env[i])
+	if(env && str)
 	{
-		e = ft_search(str[x],env[i]);
-		if(e)
-			{
-				expo->tmp[i] = ft_strdup(str[x]);
-			}
+		while (env[i])
+		{
+			e = ft_search(str[x],env[i]);
+			if(e)
+				{
+					expo->tmp[i] = ft_strdup(str[x]);
+				}
+			else
+				expo->tmp[i] = env[i];
+			i++;
+		}
+		if(!e)
+		{
+			expo->tmp[i] = str[x];
+			expo->tmp[i+1] = 0;
+		}
 		else
-			expo->tmp[i] = env[i];
-		i++;
+			expo->tmp[i]= 0;
 	}
-	if(!e)
-		{expo->tmp[i] = str[x];
-		
-		expo->tmp[i+1] = 0;}
-	else
-	expo->tmp[i]= 0;
 	// i = 0;
 	// while (expo->tmp[i])
 	// {
@@ -281,11 +289,5 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 		}
 	x++;
 	}
-		// i = 0;
-		// while (ex->ex_save[i])
-		// {
-		// 	printf("%s\n",ex->ex_save[i]);
-		// 	i++;
-		// }
 	return(env);
 }

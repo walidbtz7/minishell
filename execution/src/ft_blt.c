@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/07 18:09:13 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/08 21:26:23 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,23 @@ char **cd_fuction(char *path_cd,char **env)
 	int		i;
 	int		j;
 	char	*save;
-	
+
 	if(chdir(path_cd))
 	{
 		printf("faild to %s\n",path_cd);
 		return(0);
 	}
+	// if(x == 0)
+	// {
+		j = position(env,"OLDPWD");
+		save = env[j];
+	//}
 	i = position(env,"PWD");
-	j = position(env,"OLDPWD");
-	save = env[j];
-	env[j] = env[i];
+	env[j] = ft_strjoin("OLD",env[i]);
 	if (getcwd(NULL, 0))
-		env[i] =  getcwd(NULL, 0);
+		env[i] =  ft_strjoin("PWD=",getcwd(NULL, 0));
 	else
-		env[i] = save; 
+	 	env[i] = save; 
 	return(env);
 }
 
@@ -112,51 +115,42 @@ void	echo_function(char **str)
 		printf("\n");
 }
 
-
 void	builtins(char **str,t_ex *ex)
 {
 	int		i;
 	char	**tmp;
 	
 	i = 0;
+	// ex->ex_save = ft_add_old(ex->ex_save);
 	if(str)
 	{
 		if(!ft_strcmp(str[0],"cd"))
 		{
 			tmp = cd_fuction(str[1],ex->env);
 			if(tmp)
-				{
-					ex->env = ft_dup(tmp);
-					ex->export = export_sort(ex->env);
-					while (ex->env[i])
-					{
-						printf("%s\n",ex->env[i++]);
-					}
-					
-				}
+			{
+				ex->env = tmp;
+				ex->ex_save = cd_fuction(str[i],ex->ex_save);
+			}		
 		}
 		if(!ft_strcmp(str[0],"echo"))
 				echo_function(str);
 		if(!ft_strcmp(str[0],"export"))
 		{
+			
 				ex->env = export_cmd(ex->env,str,ex);
+			if(!str[1])
+			{
+				ex->export = export_sort(ex->ex_save);
 				i = 0;
-				ex->ex_save = export_sort(ex->ex_save);
-				while(ex->ex_save[i])
-				{
-					printf("declare -x %s\n",ex->ex_save[i++]);
-				}
-	
+				while(ex->export[i])
+					printf("declare -x %s\n",ex->export[i++]);
+			}
 		}
 		if(!ft_strcmp(str[0],"pwd"))
 			printf("%s\n",getcwd(NULL,0));
 		if(!ft_strcmp(str[0],"exit"))
 			exit(0);
 	}
-	i = 0;
-	// while (ex->export[i])
-	// 	free(ex->export[i++]);
-	// free(ex->export);
-	
 }
 //exit code 0 succes 1 signal 127 cmd err   258 pars err

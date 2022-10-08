@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/07 14:43:51 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/08 18:01:29 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,13 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_parsing	*parse;
 	t_ex		execu;
-	//char		**tmp;
 
 	(void ) argc;
 	(void ) argv;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN); 
-	execu.env = envp;
 	code = 0;
+	execu.env = envp;
 	execu.ex_save = envp;
 	while (1)
 	{
