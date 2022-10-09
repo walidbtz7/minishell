@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/08 21:26:23 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/09 11:34:56 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,14 @@ char **cd_fuction(char *path_cd,char **env)
 	int		j;
 	char	*save;
 
-	if(chdir(path_cd))
-	{
-		printf("faild to %s\n",path_cd);
-		return(0);
-	}
+	// if(chdir(path_cd))
+	// {
+		// printf("faild to %s\n",path_cd);
+		// return(0);
+	// }
 	// if(x == 0)
 	// {
+		chdir(path_cd);
 		j = position(env,"OLDPWD");
 		save = env[j];
 	//}
@@ -143,6 +144,7 @@ void	builtins(char **str,t_ex *ex)
 			{
 				ex->export = export_sort(ex->ex_save);
 				i = 0;
+				printf("hohoho\n");
 				while(ex->export[i])
 					printf("declare -x %s\n",ex->export[i++]);
 			}

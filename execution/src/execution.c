@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/08 20:26:56 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/09 09:55:47 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,10 +153,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 		//signal
 		if((((t_cmd *)((my_cmd)->content))->after_expand))
 		{	while ((((t_cmd *)((my_cmd)->content))->after_expand)[i])
-			{
-				free((((t_cmd *)((my_cmd)->content))->after_expand)[i]);
-				i++;
-			}
+				free((((t_cmd *)((my_cmd)->content))->after_expand)[i++]);
 		free((((t_cmd *)((my_cmd)->content))->after_expand));
 		}
 		free(lst_fd);

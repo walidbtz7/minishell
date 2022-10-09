@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/08 21:16:26 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/09 11:30:41 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,31 +118,31 @@ char **export_sort(char **envp)
 {
 	int i;
 	int x;
-	char **export;
-	//char	*old;
+	// char **export;
 	char	*tmp;
 	
 	i = 0;
-	export = envp;
-	//old = ft_strdup("OLDPWD");
-	while (export[i])
+	if(envp)
 	{
-		x = 0;
-		while (export[i + x])
+		while (envp[i])
 		{
-			if(ft_strcmp(export[i],export[i + x]) > 0)
+			x = 0;
+			while (envp[i + x])
 			{
-				tmp = export[i];
-				export[i] = export[i+x];
-				export[i+x] = tmp;
-				//free(tmp);
+				if(ft_strcmp(envp[i],envp[i + x]) > 0)
+				{
+					tmp = envp[i];
+					envp[i] = envp[i+x];
+					envp[i+x] = tmp;
+					//free(tmp);
+				}
+				x++;
 			}
-			x++;
+			i++;
 		}
-		i++;
+		envp = ft_add(envp);
 	}
-	export = ft_add(export);
-	return(export);
+	return(envp);
 }
 
 int	check_cmd_export(char *str)
