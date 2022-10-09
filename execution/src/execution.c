@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/09 09:55:47 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/09 17:57:59 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void ft_after_expand(t_node *my_cmd)
 	if(my_cmd)
 		((t_cmd *)(my_cmd->content))->after_expand = argvconvert(((t_cmd *)my_cmd->content)->argv);
 }
+
 void ft_error(char **str)
 {
 	if(str)
@@ -115,7 +116,7 @@ void ft_error(char **str)
 		ft_putstr_fd("minishell>  ",2);
 		ft_putstr_fd(str[0], 2);
 		ft_putstr_fd(": command not found\n",2);
-		exit(0);
+		exit(127);
 	}
 }
 
@@ -127,6 +128,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 	int save;
 	int	*lst_fd;
 	int i = 0;
+	int status;
 	t_redirection *redrec;
 	
 	my_cmd = cmd;
@@ -137,18 +139,17 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 		if(((t_cmd *)my_cmd->content)->redirection)
 			redrec = (t_redirection *)(((t_cmd *)my_cmd->content)->redirection->content);
 		ft_after_expand(my_cmd);
-		builtins((((t_cmd *)((my_cmd)->content))->after_expand),ex);
 		lst_fd = bull_shit((t_cmd *)my_cmd->content,ex->env);
 		pipe(fd);
+		builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex);
 		id = fork();
 		if(id == 0)
 		{
-			// if((((t_cmd *)((my_cmd)->content))->after_expand))    
+			// if((((t_cmd *)((my_cmd)->content))->after_expand))
 					ft_directions(my_cmd,fd,lst_fd,save);
 			run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
-			code = 127;
 		 	ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
-			exit(0);
+			printf("GHJGHDFGHFDGH\n");
 		}
 		//signal
 		if((((t_cmd *)((my_cmd)->content))->after_expand))
@@ -167,6 +168,16 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 	int res = 0;
 	while(res != -1)
 	{
-		res = waitpid(-1, NULL, 0);
+		res = waitpid(-1, &status, 0);
+		if(WIFEXITED(status))
+		{
+			code = WEXITSTATUS(status);
+		}
+		else if (WIFSIGNALED(status))
+		{
+			code = WTERMSIG(status) + 128;
+		}
 	}
+	// WIFEXITED if  true \\ WEXITSTATUS number of exit status
+	// WIFSIGNALED if true \\ ......... + 127 number of exit code
 }

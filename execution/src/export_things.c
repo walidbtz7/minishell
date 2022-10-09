@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/09 11:30:41 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/09 14:43:38 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,6 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 					env = ft_dup(expo.tmp);
 				expo.tmp = ex->ex_save;
 				ft_stock_save(&expo,ex->ex_save,str,x);
-				printf("hna\n");
 				ex->ex_save = ft_dup(expo.tmp);
 			}
 		}

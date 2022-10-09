@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/09 11:34:56 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/09 17:58:38 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,34 +125,42 @@ void	builtins(char **str,t_ex *ex)
 	// ex->ex_save = ft_add_old(ex->ex_save);
 	if(str)
 	{
-		if(!ft_strcmp(str[0],"cd"))
+		if(!ft_strcmp(str[0],"cd") || !ft_strcmp(str[0],"echo") || !ft_strcmp(str[0],"export") || !ft_strcmp(str[0],"pwd") || !ft_strcmp(str[0],"exit"))
 		{
-			tmp = cd_fuction(str[1],ex->env);
-			if(tmp)
+			if(!ft_strcmp(str[0],"cd"))
 			{
-				ex->env = tmp;
-				ex->ex_save = cd_fuction(str[i],ex->ex_save);
-			}		
-		}
-		if(!ft_strcmp(str[0],"echo"))
-				echo_function(str);
-		if(!ft_strcmp(str[0],"export"))
-		{
-			
-				ex->env = export_cmd(ex->env,str,ex);
-			if(!str[1])
-			{
-				ex->export = export_sort(ex->ex_save);
-				i = 0;
-				printf("hohoho\n");
-				while(ex->export[i])
-					printf("declare -x %s\n",ex->export[i++]);
+				tmp = cd_fuction(str[1],ex->env);
+				if(tmp)
+				{
+					ex->env = tmp;
+					ex->ex_save = cd_fuction(str[i],ex->ex_save);
+				}
 			}
-		}
-		if(!ft_strcmp(str[0],"pwd"))
-			printf("%s\n",getcwd(NULL,0));
-		if(!ft_strcmp(str[0],"exit"))
-			exit(0);
+			if(!ft_strcmp(str[0],"echo"))
+				echo_function(str);
+			if(!ft_strcmp(str[0],"export"))
+			{
+			
+					ex->env = export_cmd(ex->env,str,ex);
+				if(!str[1])
+				{
+					ex->export = export_sort(ex->ex_save);
+					i = 0;
+					printf("hohoho\n");
+					while(ex->export[i])
+						printf("declare -x %s\n",ex->export[i++]);
+				}
+			}
+			if(!ft_strcmp(str[0],"pwd"))
+				printf("%s\n",getcwd(NULL,0));
+			if(!ft_strcmp(str[0],"exit"))
+				exit(0);
+			// if(!ft_strcmp(str[0],"unset"))
+			// {
+			// 	ft_unset(ex->env,str,ex);
+			// }
+		
+		}	
 	}
 }
 //exit code 0 succes 1 signal 127 cmd err   258 pars err
