@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/09 17:57:59 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/10 17:09:43 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,12 +145,14 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 		id = fork();
 		if(id == 0)
 		{
+			signal(SIGINT, SIG_DFL);
 			// if((((t_cmd *)((my_cmd)->content))->after_expand))
 					ft_directions(my_cmd,fd,lst_fd,save);
 			run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
 		 	ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
 			printf("GHJGHDFGHFDGH\n");
 		}
+		signal (SIGINT, SIG_IGN);
 		//signal
 		if((((t_cmd *)((my_cmd)->content))->after_expand))
 		{	while ((((t_cmd *)((my_cmd)->content))->after_expand)[i])
@@ -178,6 +180,9 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 			code = WTERMSIG(status) + 128;
 		}
 	}
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN); 
 	// WIFEXITED if  true \\ WEXITSTATUS number of exit status
-	// WIFSIGNALED if true \\ ......... + 127 number of exit code
+	// WIFSIGNALED if true \\ ......... + 128 number of exit code
+	// 285 pars err
 }

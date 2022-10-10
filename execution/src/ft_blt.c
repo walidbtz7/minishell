@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/09 17:58:38 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/10 20:27:08 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,56 @@ void	echo_function(char **str)
 	if(s == 0)
 		printf("\n");
 }
+char **remove_var(char **env,int x)
+{
+	int i;
+	int j;
+	char **retu;
+	
+	j = 0;
+	i = ft_strlen2(env);
+	retu = (char **)malloc(i * sizeof(char *));
+	i = 0;
+	while (env[i])
+	{
+		if(i == x)
+		{
+			if( env[i+1] != '\0')
+				i++;
+			else
+				break;
+		}
+		retu[j] = env[i];
+		j++;
+		i++;
+	}
+	retu[j] = 0;
+	return(retu);	
+}
+char **ft_unset(char **env,char **str)
+{
+	int i;
+	int x,j;
 
+	x = 1;
+	i = 0;
+	j = 0;
+	while (env[i])
+	{
+		x = 0;
+		while(str[1][x] == env[i][x])
+			x++;
+		if(x != 0 && ((!str[1][x] && env[i][x] == '=')))
+			{
+				env = remove_var(env,i);
+				return(env);
+			}
+		i++;
+		
+	}
+	return(env);
+	
+}
 void	builtins(char **str,t_ex *ex)
 {
 	int		i;
@@ -125,8 +174,8 @@ void	builtins(char **str,t_ex *ex)
 	// ex->ex_save = ft_add_old(ex->ex_save);
 	if(str)
 	{
-		if(!ft_strcmp(str[0],"cd") || !ft_strcmp(str[0],"echo") || !ft_strcmp(str[0],"export") || !ft_strcmp(str[0],"pwd") || !ft_strcmp(str[0],"exit"))
-		{
+		// if(!ft_strcmp(str[0],"cd") || !ft_strcmp(str[0],"echo") || !ft_strcmp(str[0],"export") || !ft_strcmp(str[0],"pwd") || !ft_strcmp(str[0],"exit"))
+		// {
 			if(!ft_strcmp(str[0],"cd"))
 			{
 				tmp = cd_fuction(str[1],ex->env);
@@ -146,10 +195,23 @@ void	builtins(char **str,t_ex *ex)
 				{
 					ex->export = export_sort(ex->ex_save);
 					i = 0;
-					printf("hohoho\n");
 					while(ex->export[i])
 						printf("declare -x %s\n",ex->export[i++]);
 				}
+			}
+			if(!ft_strcmp(str[0],"env"))
+			{
+				if(!str[1])
+				{
+					i = 0;
+					while(ex->env[i])
+						printf("%s\n",ex->env[i++]);
+				}
+			}
+			if(!ft_strcmp(str[0],"unset"))
+			{
+				ex->env = ft_unset(ex->env,str);
+				ex->ex_save = ft_unset(ex->ex_save,str);
 			}
 			if(!ft_strcmp(str[0],"pwd"))
 				printf("%s\n",getcwd(NULL,0));
@@ -160,7 +222,7 @@ void	builtins(char **str,t_ex *ex)
 			// 	ft_unset(ex->env,str,ex);
 			// }
 		
-		}	
+		// }	
 	}
 }
 //exit code 0 succes 1 signal 127 cmd err   258 pars err
