@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 16:43:08 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/07 20:06:59 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/11 17:32:05 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,17 @@ char	*avai_path(char *str,char *cmd)
 	int		i;
 
 	i = 0;
-	pos = ft_split(ft_split(str, '=')[1], ':');
-	while(pos[i])
+	if(str)
 	{
-		if (open(ft_strjoin(pos[i],cmd),0)  != -1)
-		{
-			return (ft_strjoin(pos[i],cmd));
-		}
-		i++;
+		pos = ft_split(ft_split(str, '=')[1], ':');	
+			while(pos[i])
+			{
+				if (open(ft_strjoin(pos[i],cmd),0)  != -1)
+				{
+					return (ft_strjoin(pos[i],cmd));
+				}
+				i++;
+			}
 	}
 	return (NULL);
 }
@@ -61,9 +64,7 @@ void ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
 	
 	redrec = NULL;
 	if(((t_cmd *)my_cmd->content)->redirection)
-	{
 		redrec = (t_redirection *)(((t_cmd *)my_cmd->content)->redirection->content);
-	}
 	if(my_cmd->next)
 	{
 		dup2(fd[1], 1);
@@ -89,15 +90,15 @@ void ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
 	}
 	if(redrec != NULL)
 	{
+		if(redrec->e_type == INPUT)
+		{
+			dup2(lst_fd[0], 0);
+			close(lst_fd[0]);
+		}
 		if(redrec->e_type == HERRDOC)
 		{
 			write(2,"\n",1);
 			dup2(lst_fd[0],0);
-			close(lst_fd[0]);
-		}
-		if(redrec->e_type == INPUT)
-		{
-			dup2(lst_fd[0], 0);
 			close(lst_fd[0]);
 		}
 	}

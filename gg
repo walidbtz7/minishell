@@ -1,0 +1,9 @@
+Makefile
+execution
+gg
+global
+includes
+minishell
+minishell.c
+minishell.dSYM
+parsing

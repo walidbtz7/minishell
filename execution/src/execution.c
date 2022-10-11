@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/10 17:09:43 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/11 22:19:59 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ void	herrdoc(t_redirection *redrec,char **env,int fd)
 	char *str;
 	t_cargv *dollar;
 
-	str = readline("<");
-	dollar = NULL;
-	while (ft_strcmp(redrec->file,str))
-	{
-		dollar = init_cargv(str,env);
-		if(redrec->expand == 1)
-			str = expand_env(dollar);
-		ft_putstr_fd(str,fd);
-		write(fd, "\n", 1);
-		free(str);
 		str = readline("<");
-	}
-	close(fd);
+		dollar = NULL;
+		while (ft_strcmp(redrec->file,str))
+		{
+			dollar = init_cargv(str,env);
+			if(redrec->expand == 1)
+				str = expand_env(dollar);
+			ft_putstr_fd(str,fd);
+			write(fd, "\n", 1);
+			free(str);
+			str = readline("<");
+		}
+		close(fd);
 }
 
 int	*bull_shit(t_cmd *cmd,char **env)
@@ -88,7 +88,6 @@ int	*bull_shit(t_cmd *cmd,char **env)
 			lst_fd[1] = fd[1]; 
 			herrdoc(red,env,lst_fd[1]);
 			lst_fd[0] = fd[0];
-			printf("%d\n",lst_fd[1]);
 			x = 1;
 		}
 		my_cmd = my_cmd->next;
@@ -102,9 +101,6 @@ int	*bull_shit(t_cmd *cmd,char **env)
 
 void ft_after_expand(t_node *my_cmd)
 {
-	int i;
-	
-	i = 0;
 	if(my_cmd)
 		((t_cmd *)(my_cmd->content))->after_expand = argvconvert(((t_cmd *)my_cmd->content)->argv);
 }
@@ -146,14 +142,14 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 		if(id == 0)
 		{
 			signal(SIGINT, SIG_DFL);
-			// if((((t_cmd *)((my_cmd)->content))->after_expand))
+			 if((((t_cmd *)((my_cmd)->content))->after_expand))
 					ft_directions(my_cmd,fd,lst_fd,save);
 			run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
 		 	ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
-			printf("GHJGHDFGHFDGH\n");
 		}
 		signal (SIGINT, SIG_IGN);
 		//signal
+		i = 0;
 		if((((t_cmd *)((my_cmd)->content))->after_expand))
 		{	while ((((t_cmd *)((my_cmd)->content))->after_expand)[i])
 				free((((t_cmd *)((my_cmd)->content))->after_expand)[i++]);
@@ -181,7 +177,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 		}
 	}
 	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN); 
+	signal(SIGQUIT, SIG_IGN);
 	// WIFEXITED if  true \\ WEXITSTATUS number of exit status
 	// WIFSIGNALED if true \\ ......... + 128 number of exit code
 	// 285 pars err
