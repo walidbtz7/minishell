@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/10 20:27:08 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/13 15:19:26 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,26 +141,35 @@ char **remove_var(char **env,int x)
 	retu[j] = 0;
 	return(retu);	
 }
+
 char **ft_unset(char **env,char **str)
 {
 	int i;
 	int x,j;
+	int	z;
 
 	x = 1;
 	i = 0;
 	j = 0;
+	z = 1;
 	while (env[i])
 	{
-		x = 0;
-		while(str[1][x] == env[i][x])
-			x++;
-		if(x != 0 && ((!str[1][x] && env[i][x] == '=')))
-			{
+		if(str[z])
+		{
+			x = 0;
+			while((str[z][x] && env[i][x]) && str[z][x] == env[i][x])
+				x++;
+			if(x != 0 && (!str[z][x]) )
+				{
 				env = remove_var(env,i);
-				return(env);
-			}
-		i++;
-		
+					z++;
+					i = 0;
+				// return(env);
+				}
+			i++;
+		}
+		else 
+			break;
 	}
 	return(env);
 	
@@ -174,8 +183,6 @@ void	builtins(char **str,t_ex *ex)
 	// ex->ex_save = ft_add_old(ex->ex_save);
 	if(str)
 	{
-		// if(!ft_strcmp(str[0],"cd") || !ft_strcmp(str[0],"echo") || !ft_strcmp(str[0],"export") || !ft_strcmp(str[0],"pwd") || !ft_strcmp(str[0],"exit"))
-		// {
 			if(!ft_strcmp(str[0],"cd"))
 			{
 				tmp = cd_fuction(str[1],ex->env);
@@ -190,7 +197,7 @@ void	builtins(char **str,t_ex *ex)
 			if(!ft_strcmp(str[0],"export"))
 			{
 			
-					ex->env = export_cmd(ex->env,str,ex);
+				ex->env = export_cmd(ex->env,str,ex);
 				if(!str[1])
 				{
 					ex->export = export_sort(ex->ex_save);
@@ -217,12 +224,6 @@ void	builtins(char **str,t_ex *ex)
 				printf("%s\n",getcwd(NULL,0));
 			if(!ft_strcmp(str[0],"exit"))
 				exit(0);
-			// if(!ft_strcmp(str[0],"unset"))
-			// {
-			// 	ft_unset(ex->env,str,ex);
-			// }
-		
-		// }	
 	}
 }
 //exit code 0 succes 1 signal 127 cmd err   258 pars err

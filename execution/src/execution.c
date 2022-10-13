@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/11 22:19:59 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/13 17:00:49 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,12 @@ void	herrdoc(t_redirection *redrec,char **env,int fd)
 {
 	char *str;
 	t_cargv *dollar;
-
+	int id;
+	int status;
+	id = fork();
+	if(id == 0)
+	{
+		signal(SIGINT, SIG_DFL);
 		str = readline("<");
 		dollar = NULL;
 		while (ft_strcmp(redrec->file,str))
@@ -30,6 +35,25 @@ void	herrdoc(t_redirection *redrec,char **env,int fd)
 			str = readline("<");
 		}
 		close(fd);
+		exit(0);
+	}
+	signal (SIGINT, SIG_IGN);
+	int res = 0;
+	while(res != -1)
+	{
+		res = waitpid(-1, &status, 0);
+		if(WIFEXITED(status))
+		{
+			code = WEXITSTATUS(status);
+		}
+		else if (WIFSIGNALED(status))
+		{
+			code = WTERMSIG(status) + 128;
+		}
+	}
+	signal(SIGINT, sig_handler);
+	signal(SIGQUIT, SIG_IGN);
+	close(fd);
 }
 
 int	*bull_shit(t_cmd *cmd,char **env)
@@ -42,7 +66,6 @@ int	*bull_shit(t_cmd *cmd,char **env)
 
 	lst_fd = (int *)malloc(2 * sizeof (int));
 	x = 0;
-	
 	my_cmd = cmd->redirection;
 	while (my_cmd)
 	{
@@ -52,33 +75,27 @@ int	*bull_shit(t_cmd *cmd,char **env)
 			if(lst_fd > 0)
 				close(lst_fd[0]);
 			lst_fd[0] = open(red->file, O_RDONLY , 0666);
-			if (lst_fd < 0)
-			{ 
-				perror("red->file");
-				// return(0);
-			}
+			if (lst_fd[0] < 0)
+				{
+					perror("red->file");
+					return(0);
+				}
 		}
 		else if (red->e_type == OUTPUT)
 		{
 			if(lst_fd > 0)
 				close(lst_fd[1]);
 			lst_fd[1] = open(red->file, O_CREAT | O_WRONLY , 0666);
-			if (lst_fd < 0)
-			{
-				perror("red->file");
-				// return(0);
-			}
+			if (lst_fd[1] < 0)
+				perror("red->file"); 
 		}
 		else if (red->e_type == APPED)
 		{
 			if(x != 0)
 				close(lst_fd[1]);
 			lst_fd[1] = open(red->file, O_WRONLY | O_APPEND | O_CREAT, 0666);
-			if (lst_fd < 0)
-			{
+			if (lst_fd[1] < 0)
 				perror("red->file");
-				// return(0);
-			}
 		}
 		else if (red->e_type == HERRDOC)
 		{
@@ -115,7 +132,20 @@ void ft_error(char **str)
 		exit(127);
 	}
 }
-
+int ft_not_builts(char **str)
+{
+	if(str)
+	{
+		if(ft_strcmp(str[0],"echo") && ft_strcmp(str[0],"pwd")
+	 		&& ft_strcmp(str[0],"export") && ft_strcmp(str[0],"unset") &&
+	 		ft_strcmp(str[0],"exit") &&  ft_strcmp(str[0],"cd") && ft_strcmp(str[0],"env"))
+			return(1);
+	
+		else
+		return(0);
+	}
+	return(0);
+}
 void	ft_pipe(t_node *cmd,t_ex *ex)
 {
 	int fd[2];
@@ -138,14 +168,17 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 		lst_fd = bull_shit((t_cmd *)my_cmd->content,ex->env);
 		pipe(fd);
 		builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex);
-		id = fork();
-		if(id == 0)
+		if(ft_not_builts((((t_cmd *)((my_cmd)->content))->after_expand)))
 		{
-			signal(SIGINT, SIG_DFL);
-			 if((((t_cmd *)((my_cmd)->content))->after_expand))
-					ft_directions(my_cmd,fd,lst_fd,save);
-			run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
-		 	ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
+			id = fork();
+			if(id == 0)
+			{
+				signal(SIGINT, SIG_DFL);
+				 if((((t_cmd *)((my_cmd)->content))->after_expand))
+						ft_directions(my_cmd,fd,lst_fd,save);
+				run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
+		 		ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
+			}
 		}
 		signal (SIGINT, SIG_IGN);
 		//signal

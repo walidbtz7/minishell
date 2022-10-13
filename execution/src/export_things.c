@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/09 14:43:38 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/13 15:26:48 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,14 +144,32 @@ char **export_sort(char **envp)
 	}
 	return(envp);
 }
-
+int ft_notvalid(char *str)
+{
+	int i;
+	
+	i = 0;
+	while (str[i])
+	{
+		if(str[i] == '#' && i == 0)
+			return(2);
+		if(i == 0 && (str[i] >= 0 && str[i] <= 9))
+			return(1);
+		if(	str[i] == '!' ||  str[i] == '"' || ( str[i] >= '$' && str[i] < '0') || (str[i] >= '[' && str[i] <= '`') || (str[i] >= '{'&& str[i] <= '~'))
+			return(1);
+		i++;
+	}
+	return(0);
+}
 int	check_cmd_export(char *str)
 {
-	if(ft_isnumber(str[1]))
+	if(ft_notvalid(str) == 1)
 	{
-		printf("export: `%s': not a valid identifier",str);
+		printf("export: `%s': not a valid identifier\n",str);
 		return(0);
 	}
+	else if(ft_notvalid(str) == 2)
+		return(2);
 	return(1);
 }
 
@@ -190,7 +208,39 @@ int ft_strcmp2(char **env,char *str)
 	}
 	return(0);
 }
-
+int ft_search_ss(char *str,char *exp)
+{
+	int i;
+	int x;
+	i = 0;
+	x = 0;
+	
+	while (str[x] && str[x] != '=')
+	{
+		x++;
+	}
+	if(!ft_strncmp(exp,str,x) && str[x] == '\0')
+		return(2);
+	if(!ft_strncmp(exp,str,x))
+		return(1);
+	return(0);
+}
+int ft_str_cmp3(char **env,char *str)
+{
+	int i;
+	
+	i = 0;
+	if(env && str)
+	{
+		while (env[i])
+		{
+			if(ft_search_ss(str,env[i]))
+				return(1);
+			i++;
+		}
+	}
+	return(0);
+}
 void ft_stock_save(t_ex *expo,char **env,char **str,int x)
 {
 	int i;
@@ -198,7 +248,7 @@ void ft_stock_save(t_ex *expo,char **env,char **str,int x)
 	
 	i =  0;
 	i = ft_strlen2(env);
-	if(!ft_strcmp2(env,str[x]))
+	if(!ft_str_cmp3(env,str[x]))
 			i = i+1;
 	expo->tmp = (char **)malloc((i+1) * sizeof(char *));
 	i = 0;
@@ -223,6 +273,7 @@ void ft_stock_save(t_ex *expo,char **env,char **str,int x)
 		else
 			expo->tmp[i]= 0;
 	}
+	
 	// i = 0;
 	// while (expo->tmp[i])
 	// {
@@ -274,7 +325,7 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 	expo.tmp = env;
 	while (str[x])
 	{
-		if(check_cmd_export(str[x]))
+		if(check_cmd_export(str[x]) == 1)
 		{
 			if(str[0])
 			{
@@ -286,7 +337,9 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 				ex->ex_save = ft_dup(expo.tmp);
 			}
 		}
-	x++;
+		else if(check_cmd_export(str[x])== 2)
+			break;
+		x++;
 	}
 	return(env);
 }
