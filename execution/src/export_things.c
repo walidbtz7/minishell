@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/13 15:26:48 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/13 22:06:45 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,17 +177,13 @@ int ft_search(char *str,char *exp)
 {
 	int i;
 	int x;
+	char **rd;
 	i = 0;
 	x = 0;
-	// if(!str || !exp)
-	// 	return(0);
-	while (str[x] && str[x] != '=')
-	{
-		x++;
-	}
-	if(!ft_strncmp(exp,str,x) && str[x] == '\0')
+	rd = ft_split(str,'=');
+	if(!ft_strcmp(exp,rd[0]) && !rd[1])
 		return(2);
-	if(!ft_strncmp(exp,str,x))
+	if(!ft_strcmp(exp,rd[0]))
 		return(1);
 	return(0);
 }
@@ -208,24 +204,26 @@ int ft_strcmp2(char **env,char *str)
 	}
 	return(0);
 }
-int ft_search_ss(char *str,char *exp)
+
+int ft_search1(char *str,char *exp)
 {
 	int i;
 	int x;
+	char **rd;
+
 	i = 0;
 	x = 0;
-	
-	while (str[x] && str[x] != '=')
-	{
+	rd = ft_split(str,'=');
+	while(exp[x] && exp[x] != '=')
 		x++;
-	}
-	if(!ft_strncmp(exp,str,x) && str[x] == '\0')
-		return(2);
-	if(!ft_strncmp(exp,str,x))
+	if(!ft_strncmp(exp,rd[0],x) && !rd[0][x] && !rd[1])
+		return(3);
+	if(!ft_strncmp(exp,rd[0],x) && (!str[x] || str[x] == '='))
 		return(1);
 	return(0);
 }
-int ft_str_cmp3(char **env,char *str)
+
+int ft_strcmp3(char **env,char *str)
 {
 	int i;
 	
@@ -234,38 +232,46 @@ int ft_str_cmp3(char **env,char *str)
 	{
 		while (env[i])
 		{
-			if(ft_search_ss(str,env[i]))
+			if(ft_search1(str,env[i]))
 				return(1);
 			i++;
 		}
 	}
 	return(0);
 }
+
 void ft_stock_save(t_ex *expo,char **env,char **str,int x)
 {
 	int i;
 	int e;
+	int z;
 	
 	i =  0;
+	z = 0;
 	i = ft_strlen2(env);
-	if(!ft_str_cmp3(env,str[x]))
-			i = i+1;
+	if(!ft_strcmp3(env,str[x]))
+			{
+				i++;
+				z = 1;
+			}
+	printf ("ana i = %d\n", i);
 	expo->tmp = (char **)malloc((i+1) * sizeof(char *));
 	i = 0;
 	if(env && str)
 	{
 		while (env[i])
 		{
-			e = ft_search(str[x],env[i]);
-			if(e)
-				{
-					expo->tmp[i] = ft_strdup(str[x]);
-				}
+			e = ft_search1(str[x],env[i]);
+			if(e == 1)
+			{
+				expo->tmp[i] = str[x];
+			}
 			else
 				expo->tmp[i] = env[i];
+			// printf("%s\n",expo->tmp[i]);
 			i++;
 		}
-		if(!e)
+		if(z == 1)
 		{
 			expo->tmp[i] = str[x];
 			expo->tmp[i+1] = 0;
@@ -321,8 +327,9 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 	i = 0;
 	i = ft_strlen2(env);
 	x = 1;
-	expo.tmp = (char **)malloc((i+2) * sizeof(char *));
-	expo.tmp = env;
+	printf ("len is %d\n", i);
+	// expo.tmp = (char **)malloc((i+1) * sizeof(char *));
+	// // expo.tmp = env;
 	while (str[x])
 	{
 		if(check_cmd_export(str[x]) == 1)
@@ -337,7 +344,7 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 				ex->ex_save = ft_dup(expo.tmp);
 			}
 		}
-		else if(check_cmd_export(str[x])== 2)
+		else if(check_cmd_export(str[x]) == 2)
 			break;
 		x++;
 	}
