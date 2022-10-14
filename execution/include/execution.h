@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 11:30:51 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/08 21:20:11 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/14 21:00:54 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,7 @@ char	**export_cmd(char **env,char **str,t_ex *ex);
 int		ft_strlen2(char **str);
 char **ft_dup(char **str);
 void	 ft_free_e(char **str);
+void befor_cd(char **str,t_ex *ex);
+int	ft_lstsize(t_node *a);
 
 #endif

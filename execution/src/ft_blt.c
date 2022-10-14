@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/13 15:19:26 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/14 21:32:57 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,30 @@ char **cd_fuction(char *path_cd,char **env)
 {
 	int		i;
 	int		j;
-	char	*save;
-
-	// if(chdir(path_cd))
-	// {
-		// printf("faild to %s\n",path_cd);
-		// return(0);
-	// }
+	int		t;
+	// char	*save;
+	t = chdir(path_cd);
+	if(t == -1)
+	{
+		ft_putstr_fd("minishel: cd: ",2);
+		ft_putstr_fd(path_cd,2);
+		ft_putstr_fd(" No such file or directory\n",2);
+		code = 1;
+		return(env);
+	}
 	// if(x == 0)
 	// {
-		chdir(path_cd);
-		j = position(env,"OLDPWD");
-		save = env[j];
+		 j = position(env,"OLDPWD");
+		// save = env[j];
 	//}
 	i = position(env,"PWD");
+	printf("%s\n",env[i]);
 	env[j] = ft_strjoin("OLD",env[i]);
-	if (getcwd(NULL, 0))
+		// chdir(path_cd);
+	// if (getcwd(NULL, 0))
 		env[i] =  ft_strjoin("PWD=",getcwd(NULL, 0));
-	else
-	 	env[i] = save; 
+	// else
+	//  	env[i] = save; 
 	return(env);
 }
 
@@ -174,12 +179,18 @@ char **ft_unset(char **env,char **str)
 	return(env);
 	
 }
+
 void	builtins(char **str,t_ex *ex)
 {
 	int		i;
 	char	**tmp;
 	
 	i = 0;
+	if(!ex->env)
+	{
+		ex->env = (char **)malloc(1 *sizeof(char*));
+		ex->env = 0;
+	}
 	// ex->ex_save = ft_add_old(ex->ex_save);
 	if(str)
 	{
@@ -189,7 +200,8 @@ void	builtins(char **str,t_ex *ex)
 				if(tmp)
 				{
 					ex->env = tmp;
-					ex->ex_save = cd_fuction(str[i],ex->ex_save);
+					ex->ex_save = tmp;
+					// ex->ex_save = cd_fuction(str[i],ex->ex_save);
 				}
 			}
 			if(!ft_strcmp(str[0],"echo"))
@@ -223,7 +235,10 @@ void	builtins(char **str,t_ex *ex)
 			if(!ft_strcmp(str[0],"pwd"))
 				printf("%s\n",getcwd(NULL,0));
 			if(!ft_strcmp(str[0],"exit"))
-				exit(0);
+				{
+					write(2,"exit\n",5);
+					exit(0);
+				}
 	}
 }
 //exit code 0 succes 1 signal 127 cmd err   258 pars err

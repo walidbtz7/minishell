@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/13 17:00:49 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/14 21:10:34 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void ft_error(char **str)
 {
 	if(str)
 	{
-		ft_putstr_fd("minishell>  ",2);
+		ft_putstr_fd("minishell:  ",2);
 		ft_putstr_fd(str[0], 2);
 		ft_putstr_fd(": command not found\n",2);
 		exit(127);
@@ -160,41 +160,51 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 	my_cmd = cmd;
 	save = -1;
 	redrec = NULL;
-	while (my_cmd)
+	ft_after_expand(my_cmd);
+	if(ft_lstsize(cmd) == 1 && !ft_not_builts((((t_cmd *)((my_cmd)->content))->after_expand)))
 	{
 		if(((t_cmd *)my_cmd->content)->redirection)
-			redrec = (t_redirection *)(((t_cmd *)my_cmd->content)->redirection->content);
-		ft_after_expand(my_cmd);
-		lst_fd = bull_shit((t_cmd *)my_cmd->content,ex->env);
-		pipe(fd);
-		builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex);
-		if(ft_not_builts((((t_cmd *)((my_cmd)->content))->after_expand)))
+				redrec = (t_redirection *)(((t_cmd *)my_cmd->content)->redirection->content);
+			builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex);
+	}
+	else
+	{
+		while (my_cmd)
 		{
+			if(((t_cmd *)my_cmd->content)->redirection)
+				redrec = (t_redirection *)(((t_cmd *)my_cmd->content)->redirection->content);
+			ft_after_expand(my_cmd);
+			lst_fd = bull_shit((t_cmd *)my_cmd->content,ex->env);
+			pipe(fd);
 			id = fork();
 			if(id == 0)
 			{
 				signal(SIGINT, SIG_DFL);
 				 if((((t_cmd *)((my_cmd)->content))->after_expand))
 						ft_directions(my_cmd,fd,lst_fd,save);
-				run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
-		 		ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
+				builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex);
+				if(ft_not_builts((((t_cmd *)((my_cmd)->content))->after_expand)))
+				{
+					run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
+		 			ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
+				}
+					exit(0);
 			}
-		}
-		signal (SIGINT, SIG_IGN);
+			signal (SIGINT, SIG_IGN);
 		//signal
-		i = 0;
-		if((((t_cmd *)((my_cmd)->content))->after_expand))
-		{	while ((((t_cmd *)((my_cmd)->content))->after_expand)[i])
-				free((((t_cmd *)((my_cmd)->content))->after_expand)[i++]);
-		free((((t_cmd *)((my_cmd)->content))->after_expand));
+			i = 0;
+			if((((t_cmd *)((my_cmd)->content))->after_expand))
+			{	while ((((t_cmd *)((my_cmd)->content))->after_expand)[i])
+					free((((t_cmd *)((my_cmd)->content))->after_expand)[i++]);
+			free((((t_cmd *)((my_cmd)->content))->after_expand));
+			}
+			free(lst_fd);
+			if(save != -1)
+				close(save);
+			close(fd[1]);
+			save = fd[0];
+			(my_cmd) = (my_cmd)->next;
 		}
-		free(lst_fd);
-		if(save != -1)
-			close(save);
-		close(fd[1]);
-		save = fd[0];
-		(my_cmd) = (my_cmd)->next;
-		
 	}
 	int res = 0;
 	while(res != -1)

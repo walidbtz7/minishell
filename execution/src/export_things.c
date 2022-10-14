@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/13 22:06:45 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/14 21:34:32 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,37 +173,7 @@ int	check_cmd_export(char *str)
 	return(1);
 }
 
-int ft_search(char *str,char *exp)
-{
-	int i;
-	int x;
-	char **rd;
-	i = 0;
-	x = 0;
-	rd = ft_split(str,'=');
-	if(!ft_strcmp(exp,rd[0]) && !rd[1])
-		return(2);
-	if(!ft_strcmp(exp,rd[0]))
-		return(1);
-	return(0);
-}
 
-int ft_strcmp2(char **env,char *str)
-{
-	int i;
-	
-	i = 0;
-	if(env && str)
-	{
-		while (env[i])
-		{
-			if(ft_search(str,env[i]))
-				return(1);
-			i++;
-		}
-	}
-	return(0);
-}
 
 int ft_search1(char *str,char *exp)
 {
@@ -240,75 +210,32 @@ int ft_strcmp3(char **env,char *str)
 	return(0);
 }
 
-void ft_stock_save(t_ex *expo,char **env,char **str,int x)
-{
-	int i;
-	int e;
-	int z;
-	
-	i =  0;
-	z = 0;
-	i = ft_strlen2(env);
-	if(!ft_strcmp3(env,str[x]))
-			{
-				i++;
-				z = 1;
-			}
-	printf ("ana i = %d\n", i);
-	expo->tmp = (char **)malloc((i+1) * sizeof(char *));
-	i = 0;
-	if(env && str)
-	{
-		while (env[i])
-		{
-			e = ft_search1(str[x],env[i]);
-			if(e == 1)
-			{
-				expo->tmp[i] = str[x];
-			}
-			else
-				expo->tmp[i] = env[i];
-			// printf("%s\n",expo->tmp[i]);
-			i++;
-		}
-		if(z == 1)
-		{
-			expo->tmp[i] = str[x];
-			expo->tmp[i+1] = 0;
-		}
-		else
-			expo->tmp[i]= 0;
-	}
-	
-	// i = 0;
-	// while (expo->tmp[i])
-	// {
-	// 	printf("%s  \n",expo->tmp[i++]);
-	// }
-	
-}
 
 void ft_stock(t_ex *expo,char **env,char **str,int x)
 {
 	int i;
 	int e;
+	int z;
 	
+	z= 0;
 	i =  0;
 	i = ft_strlen2(env);
-	if(!ft_strcmp2(env,str[x]))
-			i = i+1;
+	if(!ft_strcmp3(env,str[x]))
+			{i = i+1;
+			z = 1;
+			}
 	expo->tmp = (char **)malloc((i+1) * sizeof(char *));
 	i = 0;
 	while (env[i])
 	{
-		e = ft_search(str[x],env[i]);
+		e = ft_search1(str[x],env[i]);
 		if(e == 1)
 			expo->tmp[i] = str[x];
 		else
 			expo->tmp[i] = env[i];
 		i++;
 	}
-	if(e == 0)
+	if(z  == 1)
 	{
 		expo->tmp[i] = str[x];
 		expo->tmp[i+1] = 0;
@@ -322,14 +249,10 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 	t_ex expo;
 	int i;
 	int x;
-	// int e;
 
 	i = 0;
 	i = ft_strlen2(env);
 	x = 1;
-	printf ("len is %d\n", i);
-	// expo.tmp = (char **)malloc((i+1) * sizeof(char *));
-	// // expo.tmp = env;
 	while (str[x])
 	{
 		if(check_cmd_export(str[x]) == 1)
@@ -340,7 +263,7 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 				if(ft_strchr(str[x],'='))
 					env = ft_dup(expo.tmp);
 				expo.tmp = ex->ex_save;
-				ft_stock_save(&expo,ex->ex_save,str,x);
+				ft_stock(&expo,ex->ex_save,str,x);
 				ex->ex_save = ft_dup(expo.tmp);
 			}
 		}

@@ -6,7 +6,7 @@ PARSING    		=   display.c node.c argv_quotes.c argv_expandenv.c argv.c lexer.c 
 GLOBAL    		=   imposter.c charstr.c strlen.c strchr.c number.c isalnum.c \
 					iswhite.c istop.c strdup.c strldup.c substr.c quotes.c ft_itoa.c split_space.c split.c strjoin_free.c strjoin.c
 
-EXECUTION		=	 ft_strcmp.c ft_strncmp.c ft_putstr_fd.c get_next_line.c export_things.c ft_blt.c argv_convert.c exe_utils1.c execution.c 
+EXECUTION		=	 ft_lstsize.c ft_strcmp.c ft_strncmp.c ft_putstr_fd.c get_next_line.c export_things.c ft_blt.c argv_convert.c exe_utils1.c execution.c 
 
 FLAGS 			=	-Wall -Wextra -Werror -fsanitize=address -I ./includes
 
