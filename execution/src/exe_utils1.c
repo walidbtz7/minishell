@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 16:43:08 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/15 17:29:32 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/15 21:08:50 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
 				close(lst_fd[1]);
 			}
 		}
+		close(fd[0]);
 		if (save != -1)
 		{
 			dup2(save, 0);

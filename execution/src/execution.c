@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/15 15:56:50 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/15 21:09:59 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	*bull_shit(t_cmd *cmd,char **env)
 	while (my_cmd)
 	{
 		red = (t_redirection *)my_cmd->content;
-		
 		if (red->e_type == INPUT)
 		{
 			if(lst_fd > 0)
@@ -89,11 +88,10 @@ int	*bull_shit(t_cmd *cmd,char **env)
 			if(lst_fd[1] > 0)
 				close(lst_fd[1]);
 			lst_fd[1] = open(red->file, O_CREAT | O_WRONLY , 0666);
-			printf("yoo %d\n",lst_fd[1]);
 			if (lst_fd[1] < 0)
 				perror("red->file"); 
 		}
-		else if (red->e_type == APPED)
+		if (red->e_type == APPED)
 		{
 			if(x != 0)
 				close(lst_fd[1]);
@@ -101,12 +99,12 @@ int	*bull_shit(t_cmd *cmd,char **env)
 			if (lst_fd[1] < 0)
 				perror("red->file");
 		}
-		else if (red->e_type == HERRDOC)
+		if (red->e_type == HERRDOC)
 		{
 			if(x != 0)
 				close(lst_fd[0]);
 			pipe(fd);
-			lst_fd[1] = fd[1]; 
+			lst_fd[1] = fd[1];
 			herrdoc(red,env,lst_fd[1]);
 			lst_fd[0] = fd[0];
 			x = 1;
@@ -140,6 +138,7 @@ int ft_not_builts(char **str)
 {
 	if(str)
 	{
+		
 		if(ft_strcmp(str[0],"echo") && ft_strcmp(str[0],"pwd")
 	 		&& ft_strcmp(str[0],"export") && ft_strcmp(str[0],"unset") &&
 	 		ft_strcmp(str[0],"exit") &&  ft_strcmp(str[0],"cd") && ft_strcmp(str[0],"env"))
@@ -148,7 +147,7 @@ int ft_not_builts(char **str)
 		else
 		return(0);
 	}
-	return(0);
+	return(2);
 }
 void	ft_pipe(t_node *cmd,t_ex *ex)
 {
@@ -188,7 +187,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 				if((((t_cmd *)((my_cmd)->content))->after_expand))
 						ft_directions(my_cmd,fd,lst_fd,save);
 				builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex);
-				if(ft_not_builts((((t_cmd *)((my_cmd)->content))->after_expand)))
+				if(ft_not_builts((((t_cmd *)((my_cmd)->content))->after_expand)) == 1)
 				{
 					run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
 		 			ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
@@ -208,7 +207,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 			if(save != -1)
 				close(save);
 			close(fd[1]);
-			save = fd[0];
+			save =  fd[0];
 			(my_cmd) = (my_cmd)->next;
 		}
 		close(save);
