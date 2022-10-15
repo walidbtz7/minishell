@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/14 21:32:57 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/15 11:25:50 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,26 @@ int position(char **env,char *search)
 	
 	i = 0;
 	j = 0;
-	while(env[i])
+	if(env)
 	{
-		j = 0;
-		while(env[i][j])
+		while(env[i])
 		{
-			if(env[i][j] == search[j] && (env[i][j] != '\0' || search[j] != '\0'))
+			j = 0;
+			while(env[i][j])
 			{
-				j++;
-				if(!search[j])
-					return(i);
+				if(env[i][j] == search[j] && (env[i][j] != '\0' || search[j] != '\0'))
+				{
+					j++;
+					if(!search[j])
+						return(i);
+				}
+				else
+					break;
 			}
-			else
-				break;
+			i++;
 		}
-		i++;
 	}
-	return(0);
+	return(-1);
 }
 
 char **cd_fuction(char *path_cd,char **env)
@@ -55,11 +58,12 @@ char **cd_fuction(char *path_cd,char **env)
 	}
 	// if(x == 0)
 	// {
-		 j = position(env,"OLDPWD");
+	j = position(env,"OLDPWD");
 		// save = env[j];
 	//}
 	i = position(env,"PWD");
-	printf("%s\n",env[i]);
+	if(j == -1 || i == -1)
+		return(env);
 	env[j] = ft_strjoin("OLD",env[i]);
 		// chdir(path_cd);
 	// if (getcwd(NULL, 0))
@@ -129,6 +133,8 @@ char **remove_var(char **env,int x)
 	j = 0;
 	i = ft_strlen2(env);
 	retu = (char **)malloc(i * sizeof(char *));
+	if(i == 1)
+		return(NULL);
 	i = 0;
 	while (env[i])
 	{
@@ -153,28 +159,34 @@ char **ft_unset(char **env,char **str)
 	int x,j;
 	int	z;
 
+	i = ft_strlen2(env);
+	if(i == 1)
+		return(NULL);
 	x = 1;
 	i = 0;
 	j = 0;
 	z = 1;
-	while (env[i])
+	if(env)
 	{
-		if(str[z])
+		while (env[i])
 		{
-			x = 0;
-			while((str[z][x] && env[i][x]) && str[z][x] == env[i][x])
-				x++;
-			if(x != 0 && (!str[z][x]) )
-				{
-				env = remove_var(env,i);
-					z++;
-					i = 0;
+			if(str[z])
+			{
+				x = 0;
+				while((str[z][x] && env[i][x]) && str[z][x] == env[i][x])
+					x++;
+				if(x != 0 && (!str[z][x]) )
+					{
+					env = remove_var(env,i);
+						z++;
+						i = 0;
 				// return(env);
-				}
-			i++;
+					}
+				i++;
+			}
+			else 
+				break;
 		}
-		else 
-			break;
 	}
 	return(env);
 	
@@ -212,10 +224,13 @@ void	builtins(char **str,t_ex *ex)
 				ex->env = export_cmd(ex->env,str,ex);
 				if(!str[1])
 				{
-					ex->export = export_sort(ex->ex_save);
-					i = 0;
-					while(ex->export[i])
-						printf("declare -x %s\n",ex->export[i++]);
+					if(ex->ex_save)
+					{
+						ex->export = export_sort(ex->ex_save);
+						i = 0;
+						while(ex->export[i])
+							printf("declare -x %s\n",ex->export[i++]);
+					}
 				}
 			}
 			if(!ft_strcmp(str[0],"env"))

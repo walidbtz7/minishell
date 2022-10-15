@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/14 21:10:34 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/15 15:56:50 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,14 @@ int	*bull_shit(t_cmd *cmd,char **env)
 	int				*lst_fd;
 
 	lst_fd = (int *)malloc(2 * sizeof (int));
+	lst_fd[0]=-1;
+	lst_fd[1] = -1;
 	x = 0;
 	my_cmd = cmd->redirection;
 	while (my_cmd)
 	{
 		red = (t_redirection *)my_cmd->content;
+		
 		if (red->e_type == INPUT)
 		{
 			if(lst_fd > 0)
@@ -81,11 +84,12 @@ int	*bull_shit(t_cmd *cmd,char **env)
 					return(0);
 				}
 		}
-		else if (red->e_type == OUTPUT)
+		if (red->e_type == OUTPUT)
 		{
-			if(lst_fd > 0)
+			if(lst_fd[1] > 0)
 				close(lst_fd[1]);
 			lst_fd[1] = open(red->file, O_CREAT | O_WRONLY , 0666);
+			printf("yoo %d\n",lst_fd[1]);
 			if (lst_fd[1] < 0)
 				perror("red->file"); 
 		}
@@ -180,7 +184,8 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 			if(id == 0)
 			{
 				signal(SIGINT, SIG_DFL);
-				 if((((t_cmd *)((my_cmd)->content))->after_expand))
+				signal(SIGQUIT, SIG_DFL);
+				if((((t_cmd *)((my_cmd)->content))->after_expand))
 						ft_directions(my_cmd,fd,lst_fd,save);
 				builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex);
 				if(ft_not_builts((((t_cmd *)((my_cmd)->content))->after_expand)))
@@ -198,13 +203,15 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 					free((((t_cmd *)((my_cmd)->content))->after_expand)[i++]);
 			free((((t_cmd *)((my_cmd)->content))->after_expand));
 			}
-			free(lst_fd);
+			close(lst_fd[1]);
+			close(lst_fd[0]);
 			if(save != -1)
 				close(save);
 			close(fd[1]);
 			save = fd[0];
 			(my_cmd) = (my_cmd)->next;
 		}
+		close(save);
 	}
 	int res = 0;
 	while(res != -1)

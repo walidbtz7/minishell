@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/14 21:34:32 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/15 10:32:03 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,19 +221,23 @@ void ft_stock(t_ex *expo,char **env,char **str,int x)
 	i =  0;
 	i = ft_strlen2(env);
 	if(!ft_strcmp3(env,str[x]))
-			{i = i+1;
-			z = 1;
-			}
+	{
+		i = i+1;
+		z = 1;
+	}
 	expo->tmp = (char **)malloc((i+1) * sizeof(char *));
 	i = 0;
-	while (env[i])
+	if(env)
 	{
-		e = ft_search1(str[x],env[i]);
-		if(e == 1)
-			expo->tmp[i] = str[x];
-		else
-			expo->tmp[i] = env[i];
-		i++;
+		while (env[i])
+		{
+			e = ft_search1(str[x],env[i]);
+			if(e == 1)
+				expo->tmp[i] = str[x];
+			else
+				expo->tmp[i] = env[i];
+			i++;
+		}
 	}
 	if(z  == 1)
 	{
