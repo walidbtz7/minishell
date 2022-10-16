@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/15 10:32:03 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/16 20:35:13 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,14 +183,18 @@ int ft_search1(char *str,char *exp)
 
 	i = 0;
 	x = 0;
-	rd = ft_split(str,'=');
-	while(exp[x] && exp[x] != '=')
-		x++;
-	if(!ft_strncmp(exp,rd[0],x) && !rd[0][x] && !rd[1])
-		return(3);
-	if(!ft_strncmp(exp,rd[0],x) && (!str[x] || str[x] == '='))
-		return(1);
-	return(0);
+	if(str)
+	{
+		rd = ft_split(str,'=');
+		while(exp[x] && exp[x] != '=')
+			x++;
+		if(!ft_strncmp(exp,rd[0],x) && !rd[0][x] && !rd[1])
+			return(3);
+		if(!ft_strncmp(exp,rd[0],x) && (!str[x] || str[x] == '='))
+			return(1);
+		return(0);
+	}
+	return(-1);
 }
 
 int ft_strcmp3(char **env,char *str)
@@ -202,7 +206,7 @@ int ft_strcmp3(char **env,char *str)
 	{
 		while (env[i])
 		{
-			if(ft_search1(str,env[i]))
+			if(ft_search1(str,env[i]) > 0)
 				return(1);
 			i++;
 		}
@@ -234,7 +238,7 @@ void ft_stock(t_ex *expo,char **env,char **str,int x)
 			e = ft_search1(str[x],env[i]);
 			if(e == 1)
 				expo->tmp[i] = str[x];
-			else
+			else if(e >= 0)
 				expo->tmp[i] = env[i];
 			i++;
 		}

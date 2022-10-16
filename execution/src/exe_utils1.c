@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 16:43:08 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/15 21:08:50 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/16 18:46:06 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char *path(char **env,char *search)
 	return(NULL);
 }
 
-void ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
+int ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
 {
 	t_redirection *redrec;
 	t_node		*loop;
@@ -80,17 +80,28 @@ void ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
 		{
 			if(redrec->e_type == OUTPUT)
 			{
-				dup2(lst_fd[1], 1);
-				close(lst_fd[1]);
+				if(lst_fd[1] != -1)
+				{
+					dup2(lst_fd[1], 1);
+					close(lst_fd[1]);
+				}
+				else
+					return(0);
 			}
 			if(redrec->e_type == APPED)
 			{
-				dup2(lst_fd[1], 1);
-				close(lst_fd[1]);
+				if(lst_fd[1] != -1)
+				{
+					dup2(lst_fd[1], 1);
+					close(lst_fd[1]);
+				}
+				else
+					return(0);
 			}
 		}
-		close(fd[0]);
-		if (save != -1)
+		if(save != -20)
+			close(fd[0]);
+		if (save != -1 && save != -20)
 		{
 			dup2(save, 0);
 			close(save);
@@ -99,14 +110,25 @@ void ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
 		{
 			if(redrec->e_type == INPUT)
 			{
-				dup2(lst_fd[0], 0);
-				close(lst_fd[0]);
+				if(lst_fd[0] > 0 && save != -20)
+				{
+				write(2,"yoo\n",3);
+					dup2(lst_fd[0], 0);
+					close(lst_fd[0]);
+				}
+				else if(lst_fd[0] == -20)
+					return(0);
 			}
 			if(redrec->e_type == HERRDOC)
 			{
-				write(2,"\n",1);
-				dup2(lst_fd[0],0);
-				close(lst_fd[0]);
+				if(lst_fd[0] != -1 && save != -20)
+				{
+					write(2,"\n",1);
+					dup2(lst_fd[0],0);
+					close(lst_fd[0]);
+				}
+				else
+					return(0);
 			}
 		}
 		if(((t_cmd *)my_cmd->content)->redirection)
@@ -118,17 +140,27 @@ void ft_directions(t_node *my_cmd, int *fd, int *lst_fd, int save)
 		else
 			break;
 	}
+	return(1);
 }
 
 void run_cmd(char **env,char **av)
 {
-	char *cmd_path;
-	char *cmd;
+	char *cmd_path = NULL;
+	char *cmd = NULL;
+	char *tmp;
 
 	if(!av)
 		return;
-	cmd = ft_strjoin("/", av[0]);
-	cmd_path = avai_path(path(env, "PATH"), cmd);
-	free(cmd);
+	tmp = ft_strchr(av[0],'/');
+	if(tmp)
+		cmd_path = av[0];
+	else
+	{
+		cmd = ft_strjoin("/", av[0]);
+		cmd_path = avai_path(path(env, "PATH"), cmd);
+		free(cmd);
+	}
+	// if(tmp)
+	// 	free(tmp);
 	execve(cmd_path,av, env);
 }

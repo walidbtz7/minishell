@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/15 11:25:50 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/16 20:43:54 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	echo_function(char **str)
 			printf(" ");
 		i++;
 	}
-	if(s == 0)
+	if(s == 0 || !str)
 		printf("\n");
 }
 char **remove_var(char **env,int x)
@@ -220,8 +220,10 @@ void	builtins(char **str,t_ex *ex)
 				echo_function(str);
 			if(!ft_strcmp(str[0],"export"))
 			{
-			
-				ex->env = export_cmd(ex->env,str,ex);
+				if(str[1] && str[1][0])
+					ex->env = export_cmd(ex->env,str,ex);
+				else
+					ft_putstr_fd("minishell :export: `': not a valid identifier\n",2);
 				if(!str[1])
 				{
 					if(ex->ex_save)

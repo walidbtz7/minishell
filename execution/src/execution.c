@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/15 21:09:59 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/16 18:34:24 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ int	*bull_shit(t_cmd *cmd,char **env)
 				close(lst_fd[0]);
 			lst_fd[0] = open(red->file, O_RDONLY , 0666);
 			if (lst_fd[0] < 0)
-				{
-					perror("red->file");
-					return(0);
-				}
+					{
+						perror("red->file");
+						lst_fd[0] = -20;
+					}
 		}
 		if (red->e_type == OUTPUT)
 		{
@@ -158,6 +158,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 	int	*lst_fd;
 	int i = 0;
 	int status;
+	int my_fd;
 	t_redirection *redrec;
 	
 	my_cmd = cmd;
@@ -166,9 +167,16 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 	ft_after_expand(my_cmd);
 	if(ft_lstsize(cmd) == 1 && !ft_not_builts((((t_cmd *)((my_cmd)->content))->after_expand)))
 	{
+		my_fd = dup(1);
 		if(((t_cmd *)my_cmd->content)->redirection)
 				redrec = (t_redirection *)(((t_cmd *)my_cmd->content)->redirection->content);
+			lst_fd = bull_shit((t_cmd *)my_cmd->content,ex->env);
+			if((((t_cmd *)((my_cmd)->content))->after_expand))
+				ft_directions(my_cmd,fd,lst_fd,-20);
 			builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex);
+			close(lst_fd[1]);
+			close(lst_fd[0]);
+			dup2(my_fd,1);
 	}
 	else
 	{
@@ -185,7 +193,8 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 				signal(SIGINT, SIG_DFL);
 				signal(SIGQUIT, SIG_DFL);
 				if((((t_cmd *)((my_cmd)->content))->after_expand))
-						ft_directions(my_cmd,fd,lst_fd,save);
+						if(!ft_directions(my_cmd,fd,lst_fd,save))
+							return;
 				builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex);
 				if(ft_not_builts((((t_cmd *)((my_cmd)->content))->after_expand)) == 1)
 				{
@@ -227,6 +236,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 	}
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
+			printf("yoooooo\n");
 	// WIFEXITED if  true \\ WEXITSTATUS number of exit status
 	// WIFSIGNALED if true \\ ......... + 128 number of exit code
 	// 285 pars err
