@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/17 16:35:07 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/17 17:03:15 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,9 +252,18 @@ void	builtins(char **str,t_ex *ex,int in)
 			if(!ft_strcmp(str[0],"exit"))
 				{
 					if(in == 0)
-						write(2,"exit\n",5);
+					{
+						if(ft_strlen2(str) == 1)
+						{
+							write(2,"exit\n",5);
+							exit(0);
+						}
+					}
 					if(ft_strlen2(str) > 2)
+					{
 						ft_putstr_fd("minishell: exit: too many arguments\n",2);
+						exit(1);
+					}
 					else if(str[1] && str[1][0])
 					{
 						if(!ft_isnumber(str[1][0]))

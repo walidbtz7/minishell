@@ -1,2 +1,1 @@
 cat << l | grep wld
-export l=0

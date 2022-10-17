@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/17 16:23:42 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/17 16:59:49 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	herrdoc(t_redirection *redrec,char **env,int fd)
 	}
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
-	// close(fd);
+	//close(fd);
 }
 
 int	*bull_shit(t_cmd *cmd,char **env)
@@ -105,8 +105,7 @@ int	*bull_shit(t_cmd *cmd,char **env)
 			if(x != 0)
 				close(lst_fd[0]);
 			pipe(fd);
-			lst_fd[1] = fd[1];
-			herrdoc(red,env,lst_fd[1]);
+			herrdoc(red,env,fd[1]);
 			lst_fd[0] = fd[0];
 			x = 1;
 		}
