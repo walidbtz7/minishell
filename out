@@ -1,2 +1,4 @@
+
 cat << l | grep wld
+exit cmd (788578)
 export l=0

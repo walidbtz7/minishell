@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/16 20:43:54 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/17 16:35:07 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ char **ft_unset(char **env,char **str)
 	
 }
 
-void	builtins(char **str,t_ex *ex)
+void	builtins(char **str,t_ex *ex,int in)
 {
 	int		i;
 	char	**tmp;
@@ -220,10 +220,8 @@ void	builtins(char **str,t_ex *ex)
 				echo_function(str);
 			if(!ft_strcmp(str[0],"export"))
 			{
-				if(str[1] && str[1][0])
+				if(str[1])
 					ex->env = export_cmd(ex->env,str,ex);
-				else
-					ft_putstr_fd("minishell :export: `': not a valid identifier\n",2);
 				if(!str[1])
 				{
 					if(ex->ex_save)
@@ -253,8 +251,21 @@ void	builtins(char **str,t_ex *ex)
 				printf("%s\n",getcwd(NULL,0));
 			if(!ft_strcmp(str[0],"exit"))
 				{
-					write(2,"exit\n",5);
-					exit(0);
+					if(in == 0)
+						write(2,"exit\n",5);
+					if(ft_strlen2(str) > 2)
+						ft_putstr_fd("minishell: exit: too many arguments\n",2);
+					else if(str[1] && str[1][0])
+					{
+						if(!ft_isnumber(str[1][0]))
+						{
+							ft_putstr_fd("minishell: exit: ",2);
+							ft_putstr_fd(str[1],2);
+							ft_putstr_fd("numeric argument required\n",2);
+							exit(0);
+						}
+						exit(atoi(str[1]));
+					}
 				}
 	}
 }

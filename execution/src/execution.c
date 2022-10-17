@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/16 18:34:24 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/17 16:23:42 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	herrdoc(t_redirection *redrec,char **env,int fd)
 	}
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
-	close(fd);
+	// close(fd);
 }
 
 int	*bull_shit(t_cmd *cmd,char **env)
@@ -79,8 +79,9 @@ int	*bull_shit(t_cmd *cmd,char **env)
 			lst_fd[0] = open(red->file, O_RDONLY , 0666);
 			if (lst_fd[0] < 0)
 					{
-						perror("red->file");
+						perror(red->file);
 						lst_fd[0] = -20;
+						code = 1;
 					}
 		}
 		if (red->e_type == OUTPUT)
@@ -128,6 +129,23 @@ void ft_error(char **str)
 {
 	if(str)
 	{
+		if(ft_strchr(str[0],'/'))
+		{
+			if(!ft_strcmp(str[0],"/"))
+			{
+				ft_putstr_fd("minishell:  ",2);
+				ft_putstr_fd(str[0], 2);
+				ft_putstr_fd(": is a directory\n",2);
+				exit(126);
+			}
+			else
+			{
+				ft_putstr_fd("minishell:  ",2);
+				ft_putstr_fd(str[0], 2);
+				ft_putstr_fd(": No such file or directory\n",2);
+				exit(127);
+			}
+		}
 		ft_putstr_fd("minishell:  ",2);
 		ft_putstr_fd(str[0], 2);
 		ft_putstr_fd(": command not found\n",2);
@@ -173,7 +191,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 			lst_fd = bull_shit((t_cmd *)my_cmd->content,ex->env);
 			if((((t_cmd *)((my_cmd)->content))->after_expand))
 				ft_directions(my_cmd,fd,lst_fd,-20);
-			builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex);
+			builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex,0);
 			close(lst_fd[1]);
 			close(lst_fd[0]);
 			dup2(my_fd,1);
@@ -195,7 +213,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 				if((((t_cmd *)((my_cmd)->content))->after_expand))
 						if(!ft_directions(my_cmd,fd,lst_fd,save))
 							return;
-				builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex);
+				builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex,1);
 				if(ft_not_builts((((t_cmd *)((my_cmd)->content))->after_expand)) == 1)
 				{
 					run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
@@ -236,7 +254,6 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 	}
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
-			printf("yoooooo\n");
 	// WIFEXITED if  true \\ WEXITSTATUS number of exit status
 	// WIFSIGNALED if true \\ ......... + 128 number of exit code
 	// 285 pars err

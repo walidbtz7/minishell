@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 11:30:51 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/16 11:59:22 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/17 16:23:20 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	echo_function(char **str);
 char	*path(char **env,char *search);
 int		ft_directions(t_node *my_cmd, int *fd,int *lst_fd, int save);
 char	**export_sort(char **envp);
-void	builtins(char **str,t_ex *ex);
+void	builtins(char **str,t_ex *ex,int in);
 char	**export_sort(char **envp);
 char	**export_cmd(char **env,char **str,t_ex *ex);
 int		ft_strlen2(char **str);

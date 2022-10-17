@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/16 20:35:13 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/17 15:32:49 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,22 +153,24 @@ int ft_notvalid(char *str)
 	{
 		if(str[i] == '#' && i == 0)
 			return(2);
-		if(i == 0 && (str[i] >= 0 && str[i] <= 9))
-			return(1);
 		if(	str[i] == '!' ||  str[i] == '"' || ( str[i] >= '$' && str[i] < '0') || (str[i] >= '[' && str[i] <= '`') || (str[i] >= '{'&& str[i] <= '~'))
 			return(1);
-		i++;
+		if((str[i] >= '0' && str[i] <= '9') && i == 0 )
+			return(1);
 	}
 	return(0);
 }
 int	check_cmd_export(char *str)
 {
-	if(ft_notvalid(str) == 1)
+	int check;
+	
+	check = ft_notvalid(str);
+	if(check == 1)
 	{
 		printf("export: `%s': not a valid identifier\n",str);
 		return(0);
 	}
-	else if(ft_notvalid(str) == 2)
+	else if(check == 2)
 		return(2);
 	return(1);
 }
@@ -251,32 +253,49 @@ void ft_stock(t_ex *expo,char **env,char **str,int x)
 	else
 	expo->tmp[i] = 0;
 }
-
+void print2d(t_ex *ex)
+{
+	int i;
+	i = 0;
+	while (ex->export[i])
+		printf("declare -x %s\n",ex->export[i++]);
+}
 char	**export_cmd(char **env,char **str,t_ex *ex)
 {
 	t_ex expo;
 	int i;
 	int x;
+	int check;
 
 	i = 0;
 	i = ft_strlen2(env);
 	x = 1;
 	while (str[x])
 	{
-		if(check_cmd_export(str[x]) == 1)
+		check = check_cmd_export(str[x]);
+		if(check == 1)
 		{
 			if(str[0])
 			{
-				ft_stock(&expo,env,str,x);
-				if(ft_strchr(str[x],'='))
-					env = ft_dup(expo.tmp);
-				expo.tmp = ex->ex_save;
-				ft_stock(&expo,ex->ex_save,str,x);
-				ex->ex_save = ft_dup(expo.tmp);
+				if(str[1][0])
+				{
+					ft_stock(&expo,env,str,x);
+					if(ft_strchr(str[x],'='))
+						env = ft_dup(expo.tmp);
+					expo.tmp = ex->ex_save;
+					ft_stock(&expo,ex->ex_save,str,x);
+					ex->ex_save = ft_dup(expo.tmp);
+				}
+				else
+					ft_putstr_fd("minishell :export: `': not a valid identifier\n",2);
 			}
 		}
-		else if(check_cmd_export(str[x]) == 2)
+		else if(check == 2)
+		{
+			ex->export = export_sort(ex->ex_save);
+			print2d(ex);
 			break;
+		}
 		x++;
 	}
 	return(env);
