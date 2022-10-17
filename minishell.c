@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/14 15:47:00 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/17 19:54:34 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN); 
 	code = 0;
-	execu.env = envp;
-	execu.ex_save = envp;
+	execu.env = ft_dup (envp);
+	execu.ex_save = ft_dup(envp);
 	while (1)
 	{
 		parse = init_parse(execu.env);
@@ -74,7 +74,9 @@ int	main(int argc, char **argv, char **envp)
 			free_parse(parse);
 		}
 		else
+		{
 			return (0);
+		}
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/17 16:39:00 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/17 23:53:59 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,12 @@ void	 ft_free_e(char **str)
 	int i;
 	i = 0;
 
-	while (str[i])
-		free(str[i++]);
-	free(str);
+	if(str)
+	{
+		while (str[i])
+			free(str[i++]);
+		free(str);
+	}
 	
 }
 
@@ -63,7 +66,9 @@ char **ft_add(char **export)
 {
 	t_ex ex;
 	
+	ex.tmp2 = NULL;
 	ex.i = 0;
+	ft_free_e(ex.tmp2);
 	ex.tmp2 = (char **)malloc((ft_strlen2(export)+1) * sizeof(char *));
 	while (export[ex.i])
 	{
@@ -84,6 +89,7 @@ char **ft_add(char **export)
 		ex.i++;
 	}
 		ex.tmp2[ex.i] = NULL;
+	ft_free_e(export);
 	return(ex.tmp2);
 }
 int ft_strlen2(char **str)
@@ -114,14 +120,16 @@ char **ft_dup(char **str)
 	return(tmp);
 }
 
-char **export_sort(char **envp)
+char **export_sort(char **exp)
 {
 	int i;
 	int x;
-	// char **export;
+	char **envp;
 	char	*tmp;
+	// char **save;
 	
 	i = 0;
+	envp = ft_dup(exp);
 	if(envp)
 	{
 		while (envp[i])
@@ -134,14 +142,16 @@ char **export_sort(char **envp)
 					tmp = envp[i];
 					envp[i] = envp[i+x];
 					envp[i+x] = tmp;
-					//free(tmp);
 				}
 				x++;
 			}
 			i++;
 		}
+		// save = ft_dup(envp);
+		// free(envp);
 		envp = ft_add(envp);
 	}
+	 ft_free_e(exp);
 	return(envp);
 }
 int ft_notvalid(char *str)
@@ -192,9 +202,16 @@ int ft_search1(char *str,char *exp)
 		while(exp[x] && exp[x] != '=')
 			x++;
 		if(!ft_strncmp(exp,rd[0],x) && !rd[0][x] && !rd[1])
-			return(3);
+			{
+				ft_free_e(rd);
+				return(3);
+			}
 		if(!ft_strncmp(exp,rd[0],x) && (!str[x] || str[x] == '='))
+		{
+			ft_free_e(rd);
 			return(1);
+		}
+		ft_free_e(rd);
 		return(0);
 	}
 	return(-1);
@@ -232,6 +249,7 @@ void ft_stock(t_ex *expo,char **env,char **str,int x)
 		i = i+1;
 		z = 1;
 	}
+	ft_free_e(expo->tmp);
 	expo->tmp = (char **)malloc((i+1) * sizeof(char *));
 	i = 0;
 	if(env)
@@ -271,6 +289,7 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 	i = 0;
 	i = ft_strlen2(env);
 	x = 1;
+	expo.tmp = NULL;
 	while (str[x])
 	{
 		check = check_cmd_export(str[x]);
@@ -280,12 +299,18 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 			{
 				if(str[1][0])
 				{
+					// expo.tmp = NULL;
 					ft_stock(&expo,env,str,x);
 					if(ft_strchr(str[x],'='))
+					{
 						env = ft_dup(expo.tmp);
-					expo.tmp = ex->ex_save;
+					}
+					free(expo.tmp);
+					expo.tmp = ft_dup(ex->ex_save);
 					ft_stock(&expo,ex->ex_save,str,x);
+					free(ex->ex_save);
 					ex->ex_save = ft_dup(expo.tmp);
+					// ft_free_e(expo.tmp);
 				}
 				else
 					ft_putstr_fd("minishell :export: `': not a valid identifier\n",2);
@@ -293,10 +318,12 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 		}
 		else if(check == 2)
 		{
-			ex->export = export_sort(ex->ex_save);
+			ex->export = ft_dup(export_sort(ex->ex_save));
 			print2d(ex);
+			ft_free_e(ex->export);
 			break;
 		}
+		
 		x++;
 	}
 	return(env);

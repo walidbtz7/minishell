@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/17 16:59:49 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/17 21:26:08 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,10 @@ void	herrdoc(t_redirection *redrec,char **env,int fd)
 	while(res != -1)
 	{
 		res = waitpid(-1, &status, 0);
-		if(WIFEXITED(status))
-		{
-			code = WEXITSTATUS(status);
-		}
-		else if (WIFSIGNALED(status))
-		{
-			code = WTERMSIG(status) + 128;
-		}
+		if (WIFSIGNALED(status))
+			code = 1;
+		else
+			code = 0;
 	}
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
@@ -155,14 +151,14 @@ int ft_not_builts(char **str)
 {
 	if(str)
 	{
-		
 		if(ft_strcmp(str[0],"echo") && ft_strcmp(str[0],"pwd")
 	 		&& ft_strcmp(str[0],"export") && ft_strcmp(str[0],"unset") &&
 	 		ft_strcmp(str[0],"exit") &&  ft_strcmp(str[0],"cd") && ft_strcmp(str[0],"env"))
 			return(1);
+
 	
 		else
-		return(0);
+			return(0);
 	}
 	return(2);
 }
@@ -173,7 +169,6 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 	t_node *my_cmd;
 	int save;
 	int	*lst_fd;
-	int i = 0;
 	int status;
 	int my_fd;
 	t_redirection *redrec;
@@ -194,9 +189,12 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 			close(lst_fd[1]);
 			close(lst_fd[0]);
 			dup2(my_fd,1);
+		free(lst_fd);
 	}
 	else
 	{
+		if(my_cmd)
+			ft_free_e((((t_cmd *)((my_cmd)->content))->after_expand));
 		while (my_cmd)
 		{
 			if(((t_cmd *)my_cmd->content)->redirection)
@@ -215,19 +213,14 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 				builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex,1);
 				if(ft_not_builts((((t_cmd *)((my_cmd)->content))->after_expand)) == 1)
 				{
+					ft_after_expand(my_cmd);
 					run_cmd(ex->env, (((t_cmd *)((my_cmd)->content))->after_expand));
 		 			ft_error((((t_cmd *)((my_cmd)->content))->after_expand));
 				}
-					exit(0);
+				exit(0);
 			}
 			signal (SIGINT, SIG_IGN);
-		//signal
-			i = 0;
-			if((((t_cmd *)((my_cmd)->content))->after_expand))
-			{	while ((((t_cmd *)((my_cmd)->content))->after_expand)[i])
-					free((((t_cmd *)((my_cmd)->content))->after_expand)[i++]);
-			free((((t_cmd *)((my_cmd)->content))->after_expand));
-			}
+		ft_free_e((((t_cmd *)((my_cmd)->content))->after_expand));
 			close(lst_fd[1]);
 			close(lst_fd[0]);
 			if(save != -1)
@@ -235,6 +228,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 			close(fd[1]);
 			save =  fd[0];
 			(my_cmd) = (my_cmd)->next;
+		free(lst_fd);
 		}
 		close(save);
 	}
@@ -253,6 +247,7 @@ void	ft_pipe(t_node *cmd,t_ex *ex)
 	}
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
+	// system("leaks minishell");
 	// WIFEXITED if  true \\ WEXITSTATUS number of exit status
 	// WIFSIGNALED if true \\ ......... + 128 number of exit code
 	// 285 pars err

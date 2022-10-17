@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/17 17:03:15 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/17 23:53:23 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ char **cd_fuction(char *path_cd,char **env)
 	int		i;
 	int		j;
 	int		t;
-	// char	*save;
+	char *tmp;
+	char *pwd;
+	
 	t = chdir(path_cd);
 	if(t == -1)
 	{
@@ -56,18 +58,21 @@ char **cd_fuction(char *path_cd,char **env)
 		code = 1;
 		return(env);
 	}
-	// if(x == 0)
-	// {
+	
 	j = position(env,"OLDPWD");
-		// save = env[j];
-	//}
 	i = position(env,"PWD");
 	if(j == -1 || i == -1)
 		return(env);
-	env[j] = ft_strjoin("OLD",env[i]);
-		// chdir(path_cd);
-	// if (getcwd(NULL, 0))
-		env[i] =  ft_strjoin("PWD=",getcwd(NULL, 0));
+	printf("%d %s\n", i , env[i]);
+	pwd = ft_strdup(env[i]);
+	free(env[j]);
+	env[j] = ft_strjoin98("OLD",pwd);
+	tmp = getcwd(NULL, 0);
+	pwd = env[i];
+	free(env[i]);
+	if(tmp)
+		env[i] =  ft_strjoin98("PWD=",tmp);
+	// free(tmp);
 	// else
 	//  	env[i] = save; 
 	return(env);
@@ -196,6 +201,7 @@ void	builtins(char **str,t_ex *ex,int in)
 {
 	int		i;
 	char	**tmp;
+	char    **yo;
 	
 	i = 0;
 	if(!ex->env)
@@ -208,32 +214,50 @@ void	builtins(char **str,t_ex *ex,int in)
 	{
 			if(!ft_strcmp(str[0],"cd"))
 			{
-				tmp = cd_fuction(str[1],ex->env);
+				tmp = ft_dup(cd_fuction(str[1],ex->env));
 				if(tmp)
 				{
-					ex->env = tmp;
-					ex->ex_save = tmp;
+					ft_free_e(ex->env);
+					ft_free_e(ex->ex_save);
+					ex->env = ft_dup(tmp);
+					ex->ex_save = ft_dup(tmp);
+					ft_free_e(tmp);
 					// ex->ex_save = cd_fuction(str[i],ex->ex_save);
 				}
+				ft_free_e(str);
 			}
-			if(!ft_strcmp(str[0],"echo"))
-				echo_function(str);
-			if(!ft_strcmp(str[0],"export"))
+			else if(!ft_strcmp(str[0],"echo"))
+				{
+					echo_function(str);
+					ft_free_e(str);
+					
+				}
+			else if(!ft_strcmp(str[0],"export"))
 			{
 				if(str[1])
-					ex->env = export_cmd(ex->env,str,ex);
+				{
+					yo = ft_dup(ex->env);
+					ft_free_e(ex->env);
+					ex->env = export_cmd(yo,str,ex);
+					printf("%p\n",ex->env);
+					// ft_free_e(yo);
+					//system("leaks minishell");
+				}
+					
 				if(!str[1])
 				{
 					if(ex->ex_save)
 					{
-						ex->export = export_sort(ex->ex_save);
+						ex->export = export_sort(ft_dup(ex->ex_save));
 						i = 0;
 						while(ex->export[i])
 							printf("declare -x %s\n",ex->export[i++]);
+						ft_free_e(ex->export);
 					}
 				}
+				ft_free_e(str);
 			}
-			if(!ft_strcmp(str[0],"env"))
+			else if(!ft_strcmp(str[0],"env"))
 			{
 				if(!str[1])
 				{
@@ -241,15 +265,20 @@ void	builtins(char **str,t_ex *ex,int in)
 					while(ex->env[i])
 						printf("%s\n",ex->env[i++]);
 				}
+				ft_free_e(str);
 			}
-			if(!ft_strcmp(str[0],"unset"))
+			else if(!ft_strcmp(str[0],"unset"))
 			{
 				ex->env = ft_unset(ex->env,str);
 				ex->ex_save = ft_unset(ex->ex_save,str);
 			}
-			if(!ft_strcmp(str[0],"pwd"))
-				printf("%s\n",getcwd(NULL,0));
-			if(!ft_strcmp(str[0],"exit"))
+			else if(!ft_strcmp(str[0],"pwd"))
+				{
+					printf("%s\n",getcwd(NULL,0));
+					ft_free_e(str);
+
+				}
+			else if(!ft_strcmp(str[0],"exit"))
 				{
 					if(in == 0)
 					{
@@ -275,6 +304,7 @@ void	builtins(char **str,t_ex *ex,int in)
 						}
 						exit(atoi(str[1]));
 					}
+					ft_free_e(str);
 				}
 	}
 }

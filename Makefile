@@ -8,7 +8,7 @@ GLOBAL    		=   imposter.c charstr.c strlen.c strchr.c number.c isalnum.c \
 
 EXECUTION		=	 ft_lstsize.c ft_strcmp.c ft_strncmp.c ft_putstr_fd.c get_next_line.c export_things.c ft_blt.c argv_convert.c exe_utils1.c execution.c 
 
-FLAGS 			=	-Wall -Wextra -Werror -fsanitize=address -I ./includes
+FLAGS 			=	-Wall -Wextra -Werror  -fsanitize=address  -I ./includes
 
 RL_PATH			= -lreadline -L ~/goinfre/homebrew/opt/readline/lib -I ~/goinfre/homebrew/opt/readline/include
 
