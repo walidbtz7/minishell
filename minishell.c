@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/06 12:11:27 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/14 15:47:00 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	sig_handler(int signum)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
+		code = 1;
 	}
 }
 
@@ -51,17 +52,17 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_parsing	*parse;
 	t_ex		execu;
-	//char		**tmp;
 
 	(void ) argc;
 	(void ) argv;
 	signal(SIGINT, sig_handler);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN); 
+	code = 0;
 	execu.env = envp;
 	execu.ex_save = envp;
 	while (1)
 	{
-		parse = init_parse(envp);
+		parse = init_parse(execu.env);
 		parse->str = readline("minishell> ");
 		if (parse->str)
 		{

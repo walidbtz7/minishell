@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_ambg.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/06 11:57:16 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/07 15:11:27 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ambiguous_red(char	*str, t_parsing	*parse)
 
 	res = 1;
 	check = NULL;
-	if(parse->token->e_type == TOKEN_HEREDOC)
+	if (parse->token->e_type == TOKEN_HEREDOC)
 		return (1);
 	if (str && str[0])
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/06 12:07:53 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/07 15:11:14 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,14 @@ void	token_rm(t_parsing	*parse, t_node	**new)
 	{
 		check = init_cargv(str, NULL);
 		str = rmquote(check);
-		if(!parse->token->next->value)
-		{
-			if (ft_strlen(str) != ft_strlen(parse->token->next->value))
-				expand = 0;
-		}
-			*new = ft_lstnew(init_redirection(parse->token->e_type, \
+		if (ft_strlen(str) != ft_strlen(parse->token->next->value))
+			expand = 0;
+		*new = ft_lstnew(init_redirection(parse->token->e_type, \
 		str, expand));
 	}
 	else
 		parse->res = -4;
 	parse->token = parse->token->next;
-
 }
 
 void	token_red(t_parsing	*parse)
@@ -107,7 +103,7 @@ void	token_red(t_parsing	*parse)
 		new = ft_lstnew(init_redirection(ERROR, tmp, 1));
 		parse->res = -2;
 	}
-	if(new)
+	if (new)
 	{
 		if (new->content)
 			ft_nodeadd_back(&(parse->redirection), new);

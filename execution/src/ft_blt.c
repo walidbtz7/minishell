@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/06 11:33:38 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/16 20:43:54 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,70 +19,101 @@ int position(char **env,char *search)
 	
 	i = 0;
 	j = 0;
-	while(env[i])
+	if(env)
 	{
-		j = 0;
-		while(env[i][j])
+		while(env[i])
 		{
-			if(env[i][j] == search[j] && (env[i][j] != '\0' || search[j] != '\0'))
+			j = 0;
+			while(env[i][j])
 			{
-				j++;
-				if(!search[j])
-					return(i);
+				if(env[i][j] == search[j] && (env[i][j] != '\0' || search[j] != '\0'))
+				{
+					j++;
+					if(!search[j])
+						return(i);
+				}
+				else
+					break;
 			}
-			else
-				break;
+			i++;
 		}
-		i++;
 	}
-	return(0);
+	return(-1);
 }
 
 char **cd_fuction(char *path_cd,char **env)
 {
 	int		i;
 	int		j;
-	char	*save;
-	
-	if(chdir(path_cd))
+	int		t;
+	// char	*save;
+	t = chdir(path_cd);
+	if(t == -1)
 	{
-		printf("faild to %s\n",path_cd);
-		return(0);
+		ft_putstr_fd("minishel: cd: ",2);
+		ft_putstr_fd(path_cd,2);
+		ft_putstr_fd(" No such file or directory\n",2);
+		code = 1;
+		return(env);
 	}
-	i = position(env,"PWD");
+	// if(x == 0)
+	// {
 	j = position(env,"OLDPWD");
-	save = env[j];
-	env[j] = env[i];
-	if (getcwd(NULL, 0))
-		env[i] =  getcwd(NULL, 0);
-	else
-		env[i] = save; 
+		// save = env[j];
+	//}
+	i = position(env,"PWD");
+	if(j == -1 || i == -1)
+		return(env);
+	env[j] = ft_strjoin("OLD",env[i]);
+		// chdir(path_cd);
+	// if (getcwd(NULL, 0))
+		env[i] =  ft_strjoin("PWD=",getcwd(NULL, 0));
+	// else
+	//  	env[i] = save; 
 	return(env);
 }
+
 int check_echo(char **str)
 {
 	int i;
+	int	x;
+	int r;
 	
-	i = 1;
-	while (str[1][i])
+	x = 1;
+	r = 0;
+	while(str[x])
 	{
-		if(str[1][0] != '-')
-			return(0);
-		else if(str[1][i] != 'n')
-			return(0);
-		i++;
+		i = 0;
+			if(i == 0 && str[x][i] == '-')
+			{
+				i = 1;
+				while(str[x][i] && str[x][i] == 'n')
+				{
+					if(!str[x][i+1])
+							r = x;
+					i++;
+				}
+			}
+			else
+				break;
+		x++;
 	}
-	return(1);
+	return(r);
 }
 
 void	echo_function(char **str)
 {
 	int i;
-
+	int s;
 	i = 1;
-
-	if(check_echo(str))
-		i = 2;
+	if(!str[1])
+		return;
+	i = check_echo(str);
+	s = i;
+	if(i == 0)
+		i = 1;
+	else
+		i++;
 	while (str[i])
 	{
 		printf("%s",str[i]);
@@ -90,8 +121,75 @@ void	echo_function(char **str)
 			printf(" ");
 		i++;
 	}
-	if(!check_echo(str))
+	if(s == 0 || !str)
 		printf("\n");
+}
+char **remove_var(char **env,int x)
+{
+	int i;
+	int j;
+	char **retu;
+	
+	j = 0;
+	i = ft_strlen2(env);
+	retu = (char **)malloc(i * sizeof(char *));
+	if(i == 1)
+		return(NULL);
+	i = 0;
+	while (env[i])
+	{
+		if(i == x)
+		{
+			if( env[i+1] != '\0')
+				i++;
+			else
+				break;
+		}
+		retu[j] = env[i];
+		j++;
+		i++;
+	}
+	retu[j] = 0;
+	return(retu);	
+}
+
+char **ft_unset(char **env,char **str)
+{
+	int i;
+	int x,j;
+	int	z;
+
+	i = ft_strlen2(env);
+	if(i == 1)
+		return(NULL);
+	x = 1;
+	i = 0;
+	j = 0;
+	z = 1;
+	if(env)
+	{
+		while (env[i])
+		{
+			if(str[z])
+			{
+				x = 0;
+				while((str[z][x] && env[i][x]) && str[z][x] == env[i][x])
+					x++;
+				if(x != 0 && (!str[z][x]) )
+					{
+					env = remove_var(env,i);
+						z++;
+						i = 0;
+				// return(env);
+					}
+				i++;
+			}
+			else 
+				break;
+		}
+	}
+	return(env);
+	
 }
 
 void	builtins(char **str,t_ex *ex)
@@ -100,40 +198,64 @@ void	builtins(char **str,t_ex *ex)
 	char	**tmp;
 	
 	i = 0;
+	if(!ex->env)
+	{
+		ex->env = (char **)malloc(1 *sizeof(char*));
+		ex->env = 0;
+	}
+	// ex->ex_save = ft_add_old(ex->ex_save);
 	if(str)
 	{
-		if(!ft_strcmp(str[0],"cd"))
-		{
-			tmp = cd_fuction(str[1],ex->env);
-			if(tmp)
+			if(!ft_strcmp(str[0],"cd"))
+			{
+				tmp = cd_fuction(str[1],ex->env);
+				if(tmp)
 				{
-					ex->env = ft_dup(tmp);
-					ex->export = export_sort(ex->env);
-					while (ex->env[i])
-					{
-						printf("%s\n",ex->env[i++]);
-					}
-					
+					ex->env = tmp;
+					ex->ex_save = tmp;
+					// ex->ex_save = cd_fuction(str[i],ex->ex_save);
 				}
-		}
-		if(!ft_strcmp(str[0],"echo"))
+			}
+			if(!ft_strcmp(str[0],"echo"))
 				echo_function(str);
-		if(!ft_strcmp(str[0],"export"))
-		{
-				ex->env = export_cmd(ex->env,str,ex);
-				i = 0;
-				while(ex->ex_save[i])
+			if(!ft_strcmp(str[0],"export"))
+			{
+				if(str[1] && str[1][0])
+					ex->env = export_cmd(ex->env,str,ex);
+				else
+					ft_putstr_fd("minishell :export: `': not a valid identifier\n",2);
+				if(!str[1])
 				{
-					printf("%s\n",ex->ex_save[i++]);
+					if(ex->ex_save)
+					{
+						ex->export = export_sort(ex->ex_save);
+						i = 0;
+						while(ex->export[i])
+							printf("declare -x %s\n",ex->export[i++]);
+					}
 				}
-	
-		}
-		if(!ft_strcmp(str[0],"pwd"))
-			printf("%s\n",getcwd(NULL,0));
+			}
+			if(!ft_strcmp(str[0],"env"))
+			{
+				if(!str[1])
+				{
+					i = 0;
+					while(ex->env[i])
+						printf("%s\n",ex->env[i++]);
+				}
+			}
+			if(!ft_strcmp(str[0],"unset"))
+			{
+				ex->env = ft_unset(ex->env,str);
+				ex->ex_save = ft_unset(ex->ex_save,str);
+			}
+			if(!ft_strcmp(str[0],"pwd"))
+				printf("%s\n",getcwd(NULL,0));
+			if(!ft_strcmp(str[0],"exit"))
+				{
+					write(2,"exit\n",5);
+					exit(0);
+				}
 	}
-	i = 0;
-	// while (ex->export[i])
-	// 	free(ex->export[i++]);
-	// free(ex->export);
-	
 }
+//exit code 0 succes 1 signal 127 cmd err   258 pars err

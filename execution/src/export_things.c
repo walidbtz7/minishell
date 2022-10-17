@@ -6,13 +6,13 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/06 11:34:08 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/16 20:35:13 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
-
 #include <minishell.h>
+
 int ft_end(t_ex *ex,char **export)
 {
 	
@@ -90,9 +90,11 @@ int ft_strlen2(char **str)
 {
 	int i;
 	i = 0;
-	 
-	while (str[i])
+	if(str)
+	{
+		while (str[i])
 		i++;
+	}
 	return(i);
 }
 char **ft_dup(char **str)
@@ -116,134 +118,132 @@ char **export_sort(char **envp)
 {
 	int i;
 	int x;
-	char **export;
-	char	*old;
+	// char **export;
 	char	*tmp;
 	
 	i = 0;
-	export = envp;
-	old = ft_strdup("OLDPWD");
-	
-	while (export[i])
+	if(envp)
 	{
-		x = 0;
-		while (export[i + x])
+		while (envp[i])
 		{
-			if(ft_strcmp(export[i],export[i + x]) > 0)
+			x = 0;
+			while (envp[i + x])
 			{
-				tmp = export[i];
-				export[i] = export[i+x];
-				export[i+x] = tmp;
-				//free(tmp);
+				if(ft_strcmp(envp[i],envp[i + x]) > 0)
+				{
+					tmp = envp[i];
+					envp[i] = envp[i+x];
+					envp[i+x] = tmp;
+					//free(tmp);
+				}
+				x++;
 			}
-			x++;
+			i++;
 		}
-		i++;
+		envp = ft_add(envp);
 	}
-	export = ft_add(export);
-	return(export);
+	return(envp);
 }
-
-int	check_cmd_export(char *str)
-{
-	if(ft_isnumber(str[1]))
-	{
-		printf("export: `%s': not a valid identifier",str);
-		return(0);
-	}
-	return(1);
-}
-
-int ft_search(char *str,char *exp)
-{
-	int i;
-	int x;
-	i = 0;
-	x = 0;
-	// if(!str || !exp)
-	// 	return(0);
-	while (str[x] && str[x] != '=')
-	{
-		x++;
-	}
-	if(!ft_strncmp(exp,str,x) && str[x] == '\0')
-		return(2);
-	if(!ft_strncmp(exp,str,x))
-		return(1);
-	return(0);
-}
-
-int ft_strcmp2(char **env,char *str)
+int ft_notvalid(char *str)
 {
 	int i;
 	
 	i = 0;
-	while (env[i])
+	while (str[i])
 	{
-		if(ft_search(str,env[i]))
+		if(str[i] == '#' && i == 0)
+			return(2);
+		if(i == 0 && (str[i] >= 0 && str[i] <= 9))
+			return(1);
+		if(	str[i] == '!' ||  str[i] == '"' || ( str[i] >= '$' && str[i] < '0') || (str[i] >= '[' && str[i] <= '`') || (str[i] >= '{'&& str[i] <= '~'))
 			return(1);
 		i++;
 	}
 	return(0);
 }
+int	check_cmd_export(char *str)
+{
+	if(ft_notvalid(str) == 1)
+	{
+		printf("export: `%s': not a valid identifier\n",str);
+		return(0);
+	}
+	else if(ft_notvalid(str) == 2)
+		return(2);
+	return(1);
+}
 
-void ft_stock_save(t_ex *expo,char **env,char **str,int x)
+
+
+int ft_search1(char *str,char *exp)
 {
 	int i;
-	int e;
-	
-	i =  0;
-	i = ft_strlen2(env);
-	if(!ft_strcmp2(env,str[x]))
-			i = i+1;
-	expo->tmp = (char **)malloc((i+1) * sizeof(char *));
+	int x;
+	char **rd;
+
 	i = 0;
-	while (env[i])
+	x = 0;
+	if(str)
 	{
-		e = ft_search(str[x],env[i]);
-		if(e)
-			{
-				expo->tmp[i] = ft_strdup(str[x]);
-			}
-		else
-			expo->tmp[i] = env[i];
-		i++;
+		rd = ft_split(str,'=');
+		while(exp[x] && exp[x] != '=')
+			x++;
+		if(!ft_strncmp(exp,rd[0],x) && !rd[0][x] && !rd[1])
+			return(3);
+		if(!ft_strncmp(exp,rd[0],x) && (!str[x] || str[x] == '='))
+			return(1);
+		return(0);
 	}
-	if(!e)
-		{expo->tmp[i] = str[x];
-		
-		expo->tmp[i+1] = 0;}
-	else
-	expo->tmp[i]= 0;
-	// i = 0;
-	// while (expo->tmp[i])
-	// {
-	// 	printf("%s  \n",expo->tmp[i++]);
-	// }
-	
+	return(-1);
 }
+
+int ft_strcmp3(char **env,char *str)
+{
+	int i;
+	
+	i = 0;
+	if(env && str)
+	{
+		while (env[i])
+		{
+			if(ft_search1(str,env[i]) > 0)
+				return(1);
+			i++;
+		}
+	}
+	return(0);
+}
+
 
 void ft_stock(t_ex *expo,char **env,char **str,int x)
 {
 	int i;
 	int e;
+	int z;
 	
+	z= 0;
 	i =  0;
 	i = ft_strlen2(env);
-	if(!ft_strcmp2(env,str[x]))
-			i = i+1;
+	if(!ft_strcmp3(env,str[x]))
+	{
+		i = i+1;
+		z = 1;
+	}
 	expo->tmp = (char **)malloc((i+1) * sizeof(char *));
 	i = 0;
-	while (env[i])
+	if(env)
 	{
-		e = ft_search(str[x],env[i]);
-		if(e == 1)
-			expo->tmp[i] = str[x];
-		else
-			expo->tmp[i] = env[i];
-		i++;
+		while (env[i])
+		{
+			e = ft_search1(str[x],env[i]);
+			if(e == 1)
+				expo->tmp[i] = str[x];
+			else if(e >= 0)
+				expo->tmp[i] = env[i];
+			i++;
+		}
 	}
-	if(e == 0)
+	if(z  == 1)
 	{
 		expo->tmp[i] = str[x];
 		expo->tmp[i+1] = 0;
@@ -257,16 +257,13 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 	t_ex expo;
 	int i;
 	int x;
-	// int e;
 
 	i = 0;
 	i = ft_strlen2(env);
 	x = 1;
-	expo.tmp = (char **)malloc((i+2) * sizeof(char *));
-	expo.tmp = env;
 	while (str[x])
 	{
-		if(check_cmd_export(str[x]))
+		if(check_cmd_export(str[x]) == 1)
 		{
 			if(str[0])
 			{
@@ -274,18 +271,13 @@ char	**export_cmd(char **env,char **str,t_ex *ex)
 				if(ft_strchr(str[x],'='))
 					env = ft_dup(expo.tmp);
 				expo.tmp = ex->ex_save;
-				ft_stock_save(&expo,ex->ex_save,str,x);
-				printf("hna\n");
+				ft_stock(&expo,ex->ex_save,str,x);
 				ex->ex_save = ft_dup(expo.tmp);
 			}
 		}
-	x++;
+		else if(check_cmd_export(str[x]) == 2)
+			break;
+		x++;
 	}
-		// i = 0;
-		// while (ex->ex_save[i])
-		// {
-		// 	printf("%s\n",ex->ex_save[i]);
-		// 	i++;
-		// }
 	return(env);
 }

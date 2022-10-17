@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   argv.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wboutzou <wboutzou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/09/26 23:53:13 by wboutzou         ###   ########.fr       */
+/*   Updated: 2022/10/07 15:10:18 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,28 @@ char	**fargv(t_cargv *check)
 		str = ft_split_space(new);
 	free(check);
 	return (str);
+}
+
+char	*expand_env(t_cargv *check)
+{
+	char	*new;
+	char	*expend;
+
+	new = ft_strldup("", 0);
+	expend = NULL;
+	while (check->c)
+	{
+		double_quote(check);
+		single_quote(check);
+		if (check->c == '$')
+			new = ft_strjoin_free(new, expandenv(check));
+		else
+		{
+			new = ft_strjoin_free(new, charstr(check->c));
+			cargv_advence(check);
+		}
+	}
+	free(check->src);
+	free(check);
+	return (new);
 }
