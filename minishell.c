@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/17 19:54:34 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/18 10:01:34 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	main(int argc, char **argv, char **envp)
 			parsing(parse);
 			add_history(parse->str);
 			if (parsing_error(parse))
-				ft_pipe(parse->cmd, &execu);
+				ft_execution(parse->cmd, &execu);
 
 			free_parse(parse);
 		}

@@ -1,0 +1,2 @@
+norm ft_blt.c
+norm export_things.c

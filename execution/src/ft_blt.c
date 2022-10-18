@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/17 23:53:23 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/18 09:46:17 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ char **remove_var(char **env,int x)
 		j++;
 		i++;
 	}
+	ft_free_e(env);
 	retu[j] = 0;
 	return(retu);	
 }
@@ -202,6 +203,7 @@ void	builtins(char **str,t_ex *ex,int in)
 	int		i;
 	char	**tmp;
 	char    **yo;
+	char	*pwd;
 	
 	i = 0;
 	if(!ex->env)
@@ -238,10 +240,9 @@ void	builtins(char **str,t_ex *ex,int in)
 				{
 					yo = ft_dup(ex->env);
 					ft_free_e(ex->env);
-					ex->env = export_cmd(yo,str,ex);
 					printf("%p\n",ex->env);
-					// ft_free_e(yo);
-					//system("leaks minishell");
+					ex->env = ft_dup(export_cmd(yo,str,ex));
+					 ft_free_e(yo);
 				}
 					
 				if(!str[1])
@@ -271,12 +272,14 @@ void	builtins(char **str,t_ex *ex,int in)
 			{
 				ex->env = ft_unset(ex->env,str);
 				ex->ex_save = ft_unset(ex->ex_save,str);
+				ft_free_e(str);
 			}
 			else if(!ft_strcmp(str[0],"pwd"))
 				{
-					printf("%s\n",getcwd(NULL,0));
+					pwd = getcwd(NULL,0);
+					printf("%s\n",pwd);
+					free(pwd);
 					ft_free_e(str);
-
 				}
 			else if(!ft_strcmp(str[0],"exit"))
 				{
