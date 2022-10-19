@@ -6,13 +6,13 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 12:01:55 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/18 12:07:15 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 00:32:54 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	*bull_shit(t_cmd *cmd, char **env)
+int	*bull_shit(t_cmd *cmd, char **env,int *d)
 {
 	t_redirection	*red;
 	t_node			*my_cmd;
@@ -27,7 +27,7 @@ int	*bull_shit(t_cmd *cmd, char **env)
 	{
 		red = (t_redirection *)my_cmd->content;
 		lst_fd = in_out(red, lst_fd);
-		lst_fd = apped_herr(red, lst_fd, env);
+		lst_fd = apped_herr(red, lst_fd, env, d);
 		my_cmd = my_cmd->next;
 	}
 	return (lst_fd);

@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 00:59:52 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/19 01:05:26 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/19 23:40:21 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,21 +91,21 @@ int	ft_help_env(char **env, char **str, t_ex *expo, int x)
 	return (i);
 }
 
-void	ft_stock(t_ex *expo, char **env, char **str, int x)
+void	ft_stock(t_ex *expo, char ***env, char **str, int x)
 {
 	int	i;
 	int	z;
 
 	z = 0;
 	i = 0;
-	i = ft_strlen2(env);
-	if (!ft_strcmp3(env, str[x]))
+	i = ft_strlen2(*env);
+	if (!ft_strcmp3(*env, str[x]))
 	{
 		i = i + 1;
 		z = 1;
 	}
 	expo->tmp = (char **)malloc((i + 1) * sizeof(char *));
-	i = ft_help_env(env, str, expo, x);
+	i = ft_help_env(*env, str, expo, x);
 	if (z == 1)
 	{
 		expo->tmp[i] = str[x];
@@ -113,4 +113,6 @@ void	ft_stock(t_ex *expo, char **env, char **str, int x)
 	}
 	else
 		expo->tmp[i] = 0;
+	free(*env);
+	*env = expo->tmp;
 }

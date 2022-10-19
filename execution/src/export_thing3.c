@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 00:58:41 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/19 00:59:02 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/19 23:21:52 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	**ft_dup(char **str)
 	int		i;
 
 	i = ft_strlen2(str);
-	tmp = (char **)malloc((i +1) * sizeof(char *));
+	tmp = (char **)malloc((i + 1) * sizeof(char *));
 	i = 0;
 	while (str[i])
 	{
@@ -76,7 +76,6 @@ char	**export_sort(char **exp)
 		}
 		envp = ft_add(envp);
 	}
-	ft_free_e(exp);
 	return (envp);
 }
 

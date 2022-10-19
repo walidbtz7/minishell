@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/19 01:03:56 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/19 23:57:51 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,52 +21,43 @@ void	print2d(t_ex *ex)
 		printf("declare -x %s\n", ex->export[i++]);
 }
 
-char	**export_helper1(t_ex *expo, char **env, char **str, t_ex *ex)
+void export_helper1(t_ex *expo, char **str, t_ex *ex)
 {
-	ft_stock(expo, env, str, expo->x);
 	if (ft_strchr(str[expo->x], '='))
-	{
-		ft_free_e(env);
-		env = ft_dup(expo->tmp);
-	}
-	free(expo->tmp);
-	ft_stock_save(expo, ex->ex_save, str, expo->x);
-	ft_free_e(ex->ex_save);
-	ex->ex_save = ft_dup(expo->tmp2);
-	free(expo->tmp2);
-	return (env);
+		ft_stock(expo, &ex->env, str, expo->x);
+	ft_stock_save(expo, &ex->ex_save, str, expo->x);
+	//system("leaks minishell");
 }
 
 void	check_ex_print(int x, t_ex *ex)
 {
 	if (x == 1)
 	{
-		ex->export = export_sort(ft_dup(ex->ex_save));
+		ex->export = export_sort(ex->ex_save);
 		print2d(ex);
 		ft_free_e(ex->export);
 	}
 }
 
-char	**export_helper2(char **str, t_ex *expo, t_ex *ex, char **env)
+void export_helper2(char **str, t_ex *expo, t_ex *ex)
 {
 	if (str[0])
 	{
 		if (str[1][0])
-			env = export_helper1(expo, env, str, ex);
+			export_helper1(expo, str, ex);
 		else
 			ft_putstr_fd("minishell :export: `': not a valid identifier\n", 2);
 	}
-	return (env);
 }
 
-char	**export_cmd(char **env, char **str, t_ex *ex)
+void export_cmd(char **str, t_ex *ex)
 {
 	t_ex	expo;
 	int		i;
 	int		check;
 
 	i = 0;
-	i = ft_strlen2(env);
+	i = ft_strlen2(ex->env);
 	expo.x = 1;
 	expo.tmp = NULL;
 	expo.tmp2 = NULL;
@@ -74,7 +65,7 @@ char	**export_cmd(char **env, char **str, t_ex *ex)
 	{
 		check = check_cmd_export(str[expo.x]);
 		if (check == 1)
-			env = export_helper2(str, &expo, ex, env);
+			export_helper2(str, &expo, ex);
 		else if (check == 2)
 		{
 			check_ex_print(expo.x, ex);
@@ -82,5 +73,4 @@ char	**export_cmd(char **env, char **str, t_ex *ex)
 		}
 		expo.x++;
 	}
-	return (env);
 }

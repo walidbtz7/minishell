@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/19 13:09:34 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 00:37:30 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,16 @@ void	ft_pipe(t_node *my_cmd, t_ex *ex, int save, int *fd)
 {
 	int		*lst_fd;
 	pid_t	id;
+	int  	i;
 
 	while (my_cmd)
 	{
-		ft_after_expand(my_cmd);
-		lst_fd = bull_shit((t_cmd *)my_cmd->content, ex->env);
+		if(i == 1)
+		{
+			i = 0;
+			break;
+		}
+		lst_fd = bull_shit((t_cmd *)my_cmd->content, ex->env,&i);
 		pipe(fd);
 		id = fork();
 		if (id == 0)
@@ -57,6 +62,7 @@ void	ft_pipe(t_node *my_cmd, t_ex *ex, int save, int *fd)
 		}
 		save = ft_close_free(my_cmd, lst_fd, save, fd);
 		my_cmd = my_cmd->next;
+		ft_after_expand(my_cmd);
 	}
 	close(save);
 	wait_for_child(id);
@@ -67,6 +73,7 @@ void	ft_execution(t_node *cmd, t_ex *ex)
 	int				fd[2];
 	t_node			*my_cmd;
 	int				save;
+	// int				d;
 	t_redirection	*redrec;
 
 	my_cmd = cmd;
@@ -77,11 +84,7 @@ void	ft_execution(t_node *cmd, t_ex *ex)
 		&& !ft_nblt((((t_cmd *)((my_cmd)->content))->after_expand)))
 		ft_norm1(my_cmd, ex);
 	else
-	{
-		if (my_cmd)
-			ft_free_e((((t_cmd *)((my_cmd)->content))->after_expand));
 		ft_pipe(my_cmd, ex, save, fd);
-	}
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN);
 }
