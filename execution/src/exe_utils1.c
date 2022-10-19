@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/29 16:43:08 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/18 14:29:26 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/18 20:55:37 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	norm_direc2(t_redirection *redrec, int *lst_fd, int save)
 	{
 		if (lst_fd[0] != -1 && save != -20)
 		{
-			write(2, "\n", 1);
 			dup2(lst_fd[0], 0);
 			close(lst_fd[0]);
 		}

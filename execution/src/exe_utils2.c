@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 14:26:29 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/18 14:27:27 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/19 01:10:13 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,22 +39,25 @@ char	*path(char **env, char *search)
 	int	j;
 
 	i = 0;
-	while (env[i])
+	if (env)
 	{
-		j = 0;
-		while (env[i][j])
+		while (env[i])
 		{
-			if (env[i][j] == search[j]
-				&& (env[i][j] != '\0' || search[j] != '\0'))
+			j = 0;
+			while (env[i][j])
 			{
-				j++;
-				if (!search[j])
-					return (env[i]);
+				if (env[i][j] == search[j]
+					&& (env[i][j] != '\0' || search[j] != '\0'))
+				{
+					j++;
+					if (!search[j])
+						return (env[i]);
+				}
+				else
+					break ;
 			}
-			else
-				break ;
+			i++;
 		}
-		i++;
 	}
 	return (NULL);
 }

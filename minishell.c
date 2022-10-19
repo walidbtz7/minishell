@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/18 10:01:34 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/18 20:58:32 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	sig_handler(int signum)
 
 int	main(int argc, char **argv, char **envp)
 {
+
 	t_parsing	*parse;
 	t_ex		execu;
 
@@ -70,8 +71,8 @@ int	main(int argc, char **argv, char **envp)
 			add_history(parse->str);
 			if (parsing_error(parse))
 				ft_execution(parse->cmd, &execu);
-
 			free_parse(parse);
+	//system("leaks minishell");
 		}
 		else
 		{
