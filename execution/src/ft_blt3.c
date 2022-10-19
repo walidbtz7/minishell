@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 01:33:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/19 01:39:41 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/19 13:01:33 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ void	ft_exit(char **str, int in)
 	if (in == 0)
 	{
 		if (ft_strlen2(str) == 1)
-		{
 			write(2, "exit\n", 5);
-			exit(0);
-		}
+		exit(code);
 	}
 	if (ft_strlen2(str) > 2)
 	{

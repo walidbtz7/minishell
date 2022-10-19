@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 01:32:30 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/19 01:39:30 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/19 13:00:02 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,5 @@ void	exit_err(char **str)
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(str[1], 2);
 	ft_putstr_fd("numeric argument required\n", 2);
-	exit(0);
+	exit(255);
 }
