@@ -153,7 +153,7 @@ int exist(char **env,char *args)
 void ft_stock(char ***env,char *args)
 {	
 	int i;
-	char **tmp=NULL;
+	char **tmp;
 
 	i = exist((*env),args);
 	if(ft_strchr(args,'='))
@@ -167,9 +167,9 @@ void ft_stock(char ***env,char *args)
 		{
 			printf("new and =\n");
 			tmp = *env;
-			(*env) = (char **)(malloc((ft_strlen2(*env) + 2) * sizeof(char *)));
+			(*env) = (char **)(malloc((ft_strlen2(*env)+2) * sizeof(char *)));
 			i = 0;
-			while((*tmp)[i])
+			while((tmp)[i])
 			{
 				(*env)[i] = tmp[i];
 				i++;
@@ -180,21 +180,17 @@ void ft_stock(char ***env,char *args)
 	}
 	else
 	{
-		tmp = ft_dup(*env);
+		tmp = *env;
 		(*env) = (char **)(malloc((ft_strlen2(*env)+2) * sizeof(char *)));
 		i = 0;
-		while((*tmp)[i])
+		while((tmp)[i])
 		{
 			(*env)[i] = tmp[i];
-			printf("%s\n",tmp[i]);
 			i++;
 		}
 		(*env)[i] = ft_strdup(args);
 		(*env)[i+1] = 0;
 	}
-	// i = 0;
-	// while(env[i])
-	// 	printf("%s\n",(*env)[i++]);
 }
 
 void ft_export(char ***env,char ***export,char **args)
