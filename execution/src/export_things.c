@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 12:07:12 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 18:33:50 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,15 @@ void	print2d(t_ex *ex)
 	int	i;
 
 	i = 0;
-	while (ex->export[i])
-		printf("declare -x %s\n", ex->export[i++]);
+	if (ex->export && ex->export[0])
+	{
+		while (ex->export[i])
+			printf("declare -x %s\n", ex->export[i++]);
+	}
 }
 
 // void export_helper1(t_ex *expo, char **str, t_ex *ex)
 // {
-	
 // 	// if (ft_strchr(str[expo->x], '='))
 // 	// 	ft_stock(expo, &ex->env, str, expo->x);
 // 	// ft_stock_save(expo, &ex->ex_save, str, expo->x);
@@ -34,9 +36,12 @@ void	check_ex_print(int x, t_ex *ex)
 {
 	if (x == 1)
 	{
-		ex->export = export_sort(ex->ex_save);
-		print2d(ex);
-		ft_free_e(ex->export);
+		if (ex->ex_save[0])
+		{
+			ex->export = export_sort(ex->ex_save);
+			print2d(ex);
+			ft_free_e(ex->export);
+		}
 	}
 }
 

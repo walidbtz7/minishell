@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 12:04:03 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 00:36:16 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 16:36:32 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,15 @@ void	ft_norm1(t_node *my_cmd, t_ex *ex)
 	int				*lst_fd;
 	int				fd[2];
 	int				my_fd;
-	int				d=0;
+	int				d;
 	t_redirection	*redrec;
 
+	d = 0;
 	my_fd = dup(1);
 	if (((t_cmd *)my_cmd->content)->redirection)
 		redrec = (t_redirection *)(((t_cmd *)
 					my_cmd->content)->redirection->content);
-	lst_fd = bull_shit((t_cmd *)my_cmd->content, ex->env,&d);
+	lst_fd = bull_shit((t_cmd *)my_cmd->content, ex->env, &d);
 	if ((((t_cmd *)((my_cmd)->content))->after_expand))
 		ft_directions(my_cmd, fd, lst_fd, -20);
 	builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex, 0);

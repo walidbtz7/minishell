@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/27 02:22:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/07 15:09:25 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 18:44:36 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*checkfirst(t_cargv *cargv)
 	{
 		if (cargv->c == '?')
 		{
-			str = ft_strdup(ft_itoa(code));
+			str = ft_itoa(code);
 			cargv_advence(cargv);
 		}
 		else if (!envstop(cargv->c))

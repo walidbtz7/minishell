@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 13:41:57 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 17:33:29 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,39 +32,31 @@ int	cd_and_echo(t_ex *ex, char **str)
 		tmp = ft_dup(cd_fuction(str[1], ex->env, 1));
 		if (tmp)
 			cd_helper(ex, str, tmp);
-		return(1);
+		return (1);
 	}
 	else if (!ft_strcmp(str[0], "echo"))
 	{
 		echo_function(str);
-		return(1);
+		return (1);
 	}
-	return(0);
+	return (0);
 }
 
 int	export_and_env(t_ex *ex, char **str)
 {
 	int	i;
 
-	i = 0;
 	if (!ft_strcmp(str[0], "export"))
 	{
 		if (str[1])
-		{
-			ft_export(&ex->env, &ex->ex_save,str);
-			// i = 0;
-			// while ((ex->ex_save)[i])
-			// {
-			// 	printf("%s\n",(ex->ex_save)[i++]);
-			// }
-		}
+			ft_export(&ex->env, &ex->ex_save, str);
 		if (!str[1])
 		{
 			ex->export = export_sort(ex->ex_save);
 			print2d(ex);
 			ft_free_e(ex->export);
 		}
-		return(1);
+		return (1);
 	}
 	else if (!ft_strcmp(str[0], "env"))
 	{
@@ -74,9 +66,9 @@ int	export_and_env(t_ex *ex, char **str)
 			while (ex->env[i])
 				printf("%s\n", ex->env[i++]);
 		}
-		return(1);
+		return (1);
 	}
-	return(0);
+	return (0);
 }
 
 int	unset_and_pwd(t_ex *ex, char **str)
@@ -87,27 +79,27 @@ int	unset_and_pwd(t_ex *ex, char **str)
 	{
 		ex->env = ft_unset(ex->env, str);
 		ex->ex_save = ft_unset(ex->ex_save, str);
-		return(1);
+		return (1);
 	}
 	else if (!ft_strcmp(str[0], "pwd"))
 	{
 		pwd = getcwd(NULL, 0);
 		printf("%s\n", pwd);
 		free(pwd);
-		return(1);
+		return (1);
 	}
-	return(0);
+	return (0);
 }
 
 void	builtins(char **str, t_ex *ex, int in)
 {
-	int f;
-	
+	int	f;
+
 	f = 0;
 	if (!ex->env)
 	{
 		ex->env = (char **) malloc(1 * sizeof(char *));
-		ex->env = 0;
+		ex->env[0] = NULL;
 	}
 	if (str)
 	{

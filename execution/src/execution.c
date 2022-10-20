@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 00:37:30 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 18:51:58 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,40 @@ void	wait_for_child(pid_t id)
 	}
 }
 
+void	noorm(t_node *my_cmd, int *fd, int *lst_fd, int save)
+{
+	ft_sigdftl();
+	if ((((t_cmd *)((my_cmd)->content))->after_expand))
+		if (!ft_directions(my_cmd, fd, lst_fd, save))
+			exit(1);
+}
+
+int	herrdoc_signal(int *i)
+{
+	if (*i == 1)
+	{
+		*i = 0;
+		return (1);
+	}
+	return (0);
+}
+
 void	ft_pipe(t_node *my_cmd, t_ex *ex, int save, int *fd)
 {
 	int		*lst_fd;
 	pid_t	id;
-	int  	i;
+	int		i;
 
 	while (my_cmd)
 	{
-		if(i == 1)
-		{
-			i = 0;
-			break;
-		}
-		lst_fd = bull_shit((t_cmd *)my_cmd->content, ex->env,&i);
+		if (herrdoc_signal(&i))
+			break ;
+		lst_fd = bull_shit((t_cmd *)my_cmd->content, ex->env, &i);
 		pipe(fd);
 		id = fork();
 		if (id == 0)
 		{
-			ft_sigdftl();
-			if ((((t_cmd *)((my_cmd)->content))->after_expand))
-				if (!ft_directions(my_cmd, fd, lst_fd, save))
-					exit(1);
+			noorm(my_cmd, fd, lst_fd, save);
 			builtins((((t_cmd *)((my_cmd)->content))->after_expand), ex, 1);
 			if (ft_nblt((((t_cmd *)((my_cmd)->content))->after_expand)) == 1)
 				comd(my_cmd, ex);
@@ -73,7 +85,6 @@ void	ft_execution(t_node *cmd, t_ex *ex)
 	int				fd[2];
 	t_node			*my_cmd;
 	int				save;
-	// int				d;
 	t_redirection	*redrec;
 
 	my_cmd = cmd;

@@ -6,13 +6,13 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 12:01:55 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 00:32:54 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 16:39:39 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	*bull_shit(t_cmd *cmd, char **env,int *d)
+int	*bull_shit(t_cmd *cmd, char **env, int *d)
 {
 	t_redirection	*red;
 	t_node			*my_cmd;

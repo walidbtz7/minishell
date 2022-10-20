@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 11:30:51 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 12:05:29 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 15:10:51 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct execution
 	char	**ex_save;
 }	t_ex;
 
+int		my_ft_strchr(char *s, int c);
 void	run_cmd(char **env, char **av);
 char	*path(char **env, char *search);
 char	**convert(t_cmd *my_cmd);

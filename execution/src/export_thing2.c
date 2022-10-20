@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 00:55:43 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/19 23:52:36 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 18:34:43 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,7 @@ char	**ft_add(char	**export)
 {
 	t_ex	ex;
 
-	ex.tmp2 = NULL;
 	ex.i = 0;
-	ft_free_e(ex.tmp2);
 	ex.tmp2 = (char **)malloc((ft_strlen2(export)+1) * sizeof(char *));
 	while (export[ex.i])
 	{

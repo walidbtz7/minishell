@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 00:58:41 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/19 23:21:52 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 18:34:18 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,21 @@ char	**export_sort(char **exp)
 	char	**envp;
 
 	i = 0;
-	envp = ft_dup(exp);
-	if (envp)
+	if (exp && exp[0])
 	{
-		while (envp[i])
+		envp = ft_dup(exp);
+		if (envp)
 		{
-			sort_help(envp, i);
-			i++;
+			while (envp[i])
+			{
+				sort_help(envp, i);
+				i++;
+			}
+			envp = ft_add(envp);
 		}
-		envp = ft_add(envp);
+		return (envp);
 	}
-	return (envp);
+	return (NULL);
 }
 
 int	ft_notvalid(char *str)

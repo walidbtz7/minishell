@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/19 21:41:17 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 18:33:28 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	main(int argc, char **argv, char **envp)
 			if (parsing_error(parse))
 				ft_execution(parse->cmd, &execu);
 			free_parse(parse);
-	//system("leaks minishell");
 		}
 		else
 		{

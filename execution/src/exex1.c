@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 11:57:29 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 00:36:01 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 16:37:56 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ void	wait_for_herrdoc(int *d)
 	{
 		res = waitpid(-1, &status, 0);
 		if (WIFSIGNALED(status))
-			{
-				code = 1;
-				*d = 1;
-			}
+		{
+			code = 1;
+			*d = 1;
+		}
 		else
 			code = 0;
 	}
 }
 
-void	herrdoc(t_redirection *redrec, char **env, int fd,int *d)
+void	herrdoc(t_redirection *redrec, char **env, int fd, int *d)
 {
 	char	*str;
 	t_cargv	*dollar;
@@ -86,7 +86,7 @@ int	*in_out(t_redirection *red, int *lst_fd)
 	return (lst_fd);
 }
 
-int	*apped_herr(t_redirection *red, int *lst_fd, char **env,int *d)
+int	*apped_herr(t_redirection *red, int *lst_fd, char **env, int *d)
 {
 	int	x;
 	int	fd[2];
@@ -105,7 +105,7 @@ int	*apped_herr(t_redirection *red, int *lst_fd, char **env,int *d)
 		if (x != 0)
 			close(lst_fd[0]);
 		pipe(fd);
-		herrdoc(red, env, fd[1],d);
+		herrdoc(red, env, fd[1], d);
 		lst_fd[0] = fd[0];
 		x = 1;
 	}
