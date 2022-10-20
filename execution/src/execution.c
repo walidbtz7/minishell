@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/11 11:26:50 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 18:51:58 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:23:50 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void	wait_for_child(pid_t id)
 		{
 			if (WIFEXITED(status))
 			{
-				code = WEXITSTATUS(status);
+				g_code = WEXITSTATUS(status);
 			}
 			else if (WIFSIGNALED(status))
-			code = WTERMSIG(status) + 128;
+			g_code = WTERMSIG(status) + 128;
 		}
 	}
 }

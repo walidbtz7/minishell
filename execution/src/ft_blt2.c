@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 01:32:30 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 22:21:01 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:23:50 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	**remove_var(char **env, int x)
 	if (i == 1)
 		return (NULL);
 	remov_var_helper(env, retu, x, j);
-	code = 0;
+	g_code = 0;
 	return (retu);
 }
 

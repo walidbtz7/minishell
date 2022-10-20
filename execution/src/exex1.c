@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 11:57:29 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 16:37:56 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 23:27:38 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void	wait_for_herrdoc(int *d)
 		res = waitpid(-1, &status, 0);
 		if (WIFSIGNALED(status))
 		{
-			code = 1;
+			g_code = 1;
 			*d = 1;
 		}
 		else
-			code = 0;
+			g_code = 0;
 	}
 }
 
@@ -72,14 +72,14 @@ int	*in_out(t_redirection *red, int *lst_fd)
 		{
 			perror(red->file);
 			lst_fd[0] = -20;
-			code = 1;
+			g_code = 1;
 		}
 	}
 	if (red->e_type == OUTPUT)
 	{
 		if (lst_fd[1] > 0)
 			close(lst_fd[1]);
-		lst_fd[1] = open(red->file, O_CREAT | O_WRONLY, 0666);
+		lst_fd[1] = open(red->file, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 		if (lst_fd[1] < 0)
 			perror("red->file");
 	}

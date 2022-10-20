@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 15:32:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 22:20:42 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:23:50 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	print2d(t_ex *ex)
 		while (ex->export[i])
 			printf("declare -x %s\n", ex->export[i++]);
 	}
-	code = 0;
+	g_code = 0;
 }
 
 // void export_helper1(t_ex *expo, char **str, t_ex *ex)

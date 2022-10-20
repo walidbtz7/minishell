@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 01:31:41 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 22:10:18 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:23:50 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,14 @@ char	**cd_fuction(char *path_cd, char **env, int d)
 			ft_putstr_fd("minishel: cd: ", 2);
 			ft_putstr_fd(path_cd, 2);
 			ft_putstr_fd(" No such file or directory\n", 2);
-			code = 1;
+			g_code = 1;
 			return (env);
 		}
 	}
 	if (t >= 0)
 	{
 		cd_update(env);
-		code = 0;
+		g_code = 0;
 	}
 	return (env);
 }

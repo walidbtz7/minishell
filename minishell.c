@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/20 18:33:28 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:29:11 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	sig_handler(int signum)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		code = 1;
+		g_code = 1;
 	}
 }
 
@@ -58,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 	(void ) argv;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN); 
-	code = 0;
+	g_code = 0;
 	execu.env = ft_dup (envp);
 	execu.ex_save = ft_dup(envp);
 	while (1)
@@ -75,9 +75,9 @@ int	main(int argc, char **argv, char **envp)
 		}
 		else
 		{
+			write(2, "exit", 5);
 			return (0);
 		}
-		
 	}
 	return (0);
 }
