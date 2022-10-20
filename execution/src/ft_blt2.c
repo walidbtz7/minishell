@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 01:32:30 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 17:20:45 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:21:01 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,19 @@ char	**remove_var(char **env, int x)
 	if (i == 1)
 		return (NULL);
 	remov_var_helper(env, retu, x, j);
+	code = 0;
 	return (retu);
 }
 
-char	**unset_helper(char **str, int z, char **env)
+void	helllp(char ***env, int *i, int *z)
+{
+	free((*env)[*i]);
+	(*env) = remove_var((*env), *i);
+	(*z)++;
+	*i = 0;
+}
+
+char	**unset_helper(char **str, int z, char **env, int d)
 {
 	int	x;
 	int	i;
@@ -60,15 +69,12 @@ char	**unset_helper(char **str, int z, char **env)
 		if (str[z])
 		{
 			x = 0;
+			if (d == 0 && !check_cmd_export(str[z]))
+				break ;
 			while ((str[z][x] && env[i][x]) && str[z][x] == env[i][x])
 				x++;
 			if (x != 0 && (!str[z][x]))
-			{
-				free(env[i]);
-				env = remove_var(env, i);
-				z++;
-				i = 0;
-			}
+				helllp(&env, &i, &z);
 			i++;
 		}
 		else
@@ -77,7 +83,7 @@ char	**unset_helper(char **str, int z, char **env)
 	return (env);
 }
 
-char	**ft_unset(char **env, char **str)
+char	**ft_unset(char **env, char **str, int d)
 {
 	int	i;
 	int	z;
@@ -87,14 +93,6 @@ char	**ft_unset(char **env, char **str)
 		return (NULL);
 	z = 1;
 	if (env)
-		env = unset_helper(str, z, env);
+		env = unset_helper(str, z, env, d);
 	return (env);
-}
-
-void	exit_err(char **str)
-{
-	ft_putstr_fd("minishell: exit: ", 2);
-	ft_putstr_fd(str[1], 2);
-	ft_putstr_fd("numeric argument required\n", 2);
-	exit(255);
 }

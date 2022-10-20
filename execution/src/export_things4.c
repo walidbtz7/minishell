@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 00:59:52 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 12:07:47 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:00:58 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	check_cmd_export(char *str)
 	if (check == 1)
 	{
 		printf("export: `%s': not a valid identifier\n", str);
+		code = 1;
 		return (0);
 	}
 	else if (check == 2)

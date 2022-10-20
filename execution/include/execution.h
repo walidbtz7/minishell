@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 11:30:51 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 18:58:39 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:21:18 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ int		check_echo(char **str);
 void	echo_function(char **str);
 void	remov_var_helper(char **env, char **retu, int x, int j);
 char	**remove_var(char **env, int x);
-char	**unset_helper(char **str, int z, char **env);
-char	**ft_unset(char **env, char **str);
+char	**unset_helper(char **str, int z, char **env, int d);
+char	**ft_unset(char **env, char **str, int d);
 void	exit_err(char **str);
 void	ft_exit(char **str, int in);
 int		ft_atoi(const char *str);

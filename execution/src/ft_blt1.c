@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 01:31:41 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 18:20:37 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:10:18 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,10 @@ char	**cd_fuction(char *path_cd, char **env, int d)
 		}
 	}
 	if (t >= 0)
+	{
 		cd_update(env);
+		code = 0;
+	}
 	return (env);
 }
 

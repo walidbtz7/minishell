@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 14:44:27 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 18:35:30 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:02:42 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	ft_export(char ***env, char ***export, char **args)
 			if (my_ft_strchr(args[i], '='))
 				ft_stock(env, args[i]);
 			ft_stock(export, args[i]);
+			code = 0;
 		}
 		i++;
 	}

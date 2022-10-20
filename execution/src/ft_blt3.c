@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 01:33:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 16:31:20 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:18:21 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,4 @@ void	ft_exit(char **str, int in)
 		else
 			exit(ft_atoi(str[1]));
 	}
-	ft_free_e(str);
 }

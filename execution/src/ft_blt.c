@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 17:33:29 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 22:20:26 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,15 @@ int	unset_and_pwd(t_ex *ex, char **str)
 
 	if (!ft_strcmp(str[0], "unset"))
 	{
-		ex->env = ft_unset(ex->env, str);
-		ex->ex_save = ft_unset(ex->ex_save, str);
+		ex->env = ft_unset(ex->env, str, 1);
+		ex->ex_save = ft_unset(ex->ex_save, str, 0);
 		return (1);
 	}
 	else if (!ft_strcmp(str[0], "pwd"))
 	{
 		pwd = getcwd(NULL, 0);
 		printf("%s\n", pwd);
+		code = 0;
 		free(pwd);
 		return (1);
 	}
