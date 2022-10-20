@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 18:05:52 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/10 11:57:48 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 19:00:25 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # include "../parsing/include/parsing.h"
 # include "../execution/include/execution.h"
 
-int code;
+int		code;
 void	sig_handler(int signum);
 void	rl_replace_line(const char *text, int clear_undo);
 
