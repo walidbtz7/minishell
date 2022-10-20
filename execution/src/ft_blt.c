@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/19 23:48:52 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 13:41:57 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,14 @@ int	export_and_env(t_ex *ex, char **str)
 	if (!ft_strcmp(str[0], "export"))
 	{
 		if (str[1])
-			export_cmd(str, ex);
+		{
+			ft_export(&ex->env, &ex->ex_save,str);
+			// i = 0;
+			// while ((ex->ex_save)[i])
+			// {
+			// 	printf("%s\n",(ex->ex_save)[i++]);
+			// }
+		}
 		if (!str[1])
 		{
 			ex->export = export_sort(ex->ex_save);

@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 11:30:51 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 00:35:36 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 12:05:29 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int		check_cmd_export(char *str);
 int		ft_search1(char *str, char *exp);
 int		ft_strcmp3(char **env, char *str);
 int		ft_help_env(char **env, char **str, t_ex *expo, int x);
-void	ft_stock(t_ex *expo, char ***env, char **str, int x);
+//void	ft_stock(t_ex *expo, char ***env, char **str, int x);
 int		ft_strlen2(char **str);
 void	sort_help(char **envp, int i);
 char	**export_sort(char **exp);
@@ -97,4 +97,5 @@ char	**ft_unset(char **env, char **str);
 void	exit_err(char **str);
 void	ft_exit(char **str, int in);
 int		ft_atoi(const char *str);
+void ft_export(char ***env,char ***export,char **args);
 #endif
