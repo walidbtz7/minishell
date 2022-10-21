@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 00:55:43 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 18:34:43 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/21 01:53:18 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	ft_end(t_ex *ex, char **export)
 
 int	ft_close(t_ex *ex, char **export)
 {
-	if (export[ex->i][ex->x] == '=' )
+	if (export[ex->i][ex->x] == '=')
 	{
 		ex->tmp2[ex->i][ex->y++] = export[ex->i][ex->x];
 		if (export[ex->i][ex->x + 1] != '\0')

@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 11:57:29 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 23:27:38 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/21 02:04:39 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	*in_out(t_redirection *red, int *lst_fd)
 		lst_fd[0] = open(red->file, O_RDONLY, 0666);
 		if (lst_fd[0] < 0)
 		{
-			perror(red->file);
+			perror("red->file");
 			lst_fd[0] = -20;
 			g_code = 1;
 		}

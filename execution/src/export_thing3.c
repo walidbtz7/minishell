@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 00:58:41 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 23:35:20 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/21 02:02:58 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,18 @@ int	ft_notvalid(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] && str[i] != '=')
+	while (str[i])
 	{
 		if (str[i] == '#' && i == 0)
 			return (2);
+		if ((str[i] == '=' && i == 0)
+			|| ((str[i] >= '0' && str[i] <= '9') && i == 0))
+			return (1);
 		if (str[i] == '!' || str[i] == '"'
 			|| (str[i] >= '$' && str[i] < '0')
-			|| (str[i] >= '[' && str[i] <= '`')
-			|| (str[i] >= '{' && str[i] <= '~'))
-			return (1);
-		if ((str[i] >= '0' && str[i] <= '9') && i == 0)
+			|| (str[i] >= '[' && str[i] <= '^')
+			|| (str[i] >= '{' && str[i] <= '~')
+			|| (str[i] == '`'))
 			return (1);
 		i++;
 	}

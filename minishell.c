@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/20 22:29:11 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/21 01:20:11 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	main(int argc, char **argv, char **envp)
 		else
 		{
 			write(2, "exit", 5);
-			return (0);
+			exit(g_code);
 		}
 	}
 	return (0);

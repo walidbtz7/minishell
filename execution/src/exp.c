@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 14:44:27 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 22:23:50 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/21 02:03:59 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,18 +90,21 @@ void	ft_stock(char ***env, char *args)
 {		
 	int	i;
 
-	i = exist((*env), args);
-	if (i == -3)
+	if (args && args[0])
 	{
-		if ((*env))
-			free(*env);
-		(*env) = (char **)malloc(sizeof (char *));
-		(*env)[0] = NULL;
+		i = exist((*env), args);
+		if (i == -3)
+		{
+			if ((*env))
+				free(*env);
+			(*env) = (char **)malloc(sizeof (char *));
+			(*env)[0] = NULL;
+		}
+		if (args[0])
+			add_var(env, args, i);
+		else
+			ft_putstr_fd("minishell :export: `': not a valid identifier\n", 2);
 	}
-	if (args[0])
-		add_var(env, args, i);
-	else
-		ft_putstr_fd("minishell :export: `': not a valid identifier\n", 2);
 }
 
 void	ft_export(char ***env, char ***export, char **args)
