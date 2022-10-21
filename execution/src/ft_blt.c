@@ -6,256 +6,109 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/30 16:28:58 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/16 20:43:54 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/20 23:59:58 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int position(char **env,char *search)
+void	cd_helper(t_ex *ex, char **str, char **tmp)
 {
-	int i;
-	int j;
-	
-	i = 0;
-	j = 0;
-	if(env)
-	{
-		while(env[i])
-		{
-			j = 0;
-			while(env[i][j])
-			{
-				if(env[i][j] == search[j] && (env[i][j] != '\0' || search[j] != '\0'))
-				{
-					j++;
-					if(!search[j])
-						return(i);
-				}
-				else
-					break;
-			}
-			i++;
-		}
-	}
-	return(-1);
+	ft_free_e(ex->env);
+	ex->env = ft_dup(tmp);
+	ft_free_e(tmp);
+	tmp = ft_dup(cd_fuction(str[1], ex->ex_save, 0));
+	ft_free_e(ex->ex_save);
+	ex->ex_save = ft_dup(tmp);
+	ft_free_e(tmp);
 }
 
-char **cd_fuction(char *path_cd,char **env)
+int	cd_and_echo(t_ex *ex, char **str)
 {
-	int		i;
-	int		j;
-	int		t;
-	// char	*save;
-	t = chdir(path_cd);
-	if(t == -1)
-	{
-		ft_putstr_fd("minishel: cd: ",2);
-		ft_putstr_fd(path_cd,2);
-		ft_putstr_fd(" No such file or directory\n",2);
-		code = 1;
-		return(env);
-	}
-	// if(x == 0)
-	// {
-	j = position(env,"OLDPWD");
-		// save = env[j];
-	//}
-	i = position(env,"PWD");
-	if(j == -1 || i == -1)
-		return(env);
-	env[j] = ft_strjoin("OLD",env[i]);
-		// chdir(path_cd);
-	// if (getcwd(NULL, 0))
-		env[i] =  ft_strjoin("PWD=",getcwd(NULL, 0));
-	// else
-	//  	env[i] = save; 
-	return(env);
-}
-
-int check_echo(char **str)
-{
-	int i;
-	int	x;
-	int r;
-	
-	x = 1;
-	r = 0;
-	while(str[x])
-	{
-		i = 0;
-			if(i == 0 && str[x][i] == '-')
-			{
-				i = 1;
-				while(str[x][i] && str[x][i] == 'n')
-				{
-					if(!str[x][i+1])
-							r = x;
-					i++;
-				}
-			}
-			else
-				break;
-		x++;
-	}
-	return(r);
-}
-
-void	echo_function(char **str)
-{
-	int i;
-	int s;
-	i = 1;
-	if(!str[1])
-		return;
-	i = check_echo(str);
-	s = i;
-	if(i == 0)
-		i = 1;
-	else
-		i++;
-	while (str[i])
-	{
-		printf("%s",str[i]);
-		if(str[i+1])
-			printf(" ");
-		i++;
-	}
-	if(s == 0 || !str)
-		printf("\n");
-}
-char **remove_var(char **env,int x)
-{
-	int i;
-	int j;
-	char **retu;
-	
-	j = 0;
-	i = ft_strlen2(env);
-	retu = (char **)malloc(i * sizeof(char *));
-	if(i == 1)
-		return(NULL);
-	i = 0;
-	while (env[i])
-	{
-		if(i == x)
-		{
-			if( env[i+1] != '\0')
-				i++;
-			else
-				break;
-		}
-		retu[j] = env[i];
-		j++;
-		i++;
-	}
-	retu[j] = 0;
-	return(retu);	
-}
-
-char **ft_unset(char **env,char **str)
-{
-	int i;
-	int x,j;
-	int	z;
-
-	i = ft_strlen2(env);
-	if(i == 1)
-		return(NULL);
-	x = 1;
-	i = 0;
-	j = 0;
-	z = 1;
-	if(env)
-	{
-		while (env[i])
-		{
-			if(str[z])
-			{
-				x = 0;
-				while((str[z][x] && env[i][x]) && str[z][x] == env[i][x])
-					x++;
-				if(x != 0 && (!str[z][x]) )
-					{
-					env = remove_var(env,i);
-						z++;
-						i = 0;
-				// return(env);
-					}
-				i++;
-			}
-			else 
-				break;
-		}
-	}
-	return(env);
-	
-}
-
-void	builtins(char **str,t_ex *ex)
-{
-	int		i;
 	char	**tmp;
-	
-	i = 0;
-	if(!ex->env)
+
+	if (!ft_strcmp(str[0], "cd"))
 	{
-		ex->env = (char **)malloc(1 *sizeof(char*));
-		ex->env = 0;
+		tmp = ft_dup(cd_fuction(str[1], ex->env, 1));
+		if (tmp)
+			cd_helper(ex, str, tmp);
+		return (1);
 	}
-	// ex->ex_save = ft_add_old(ex->ex_save);
-	if(str)
+	else if (!ft_strcmp(str[0], "echo"))
 	{
-			if(!ft_strcmp(str[0],"cd"))
-			{
-				tmp = cd_fuction(str[1],ex->env);
-				if(tmp)
-				{
-					ex->env = tmp;
-					ex->ex_save = tmp;
-					// ex->ex_save = cd_fuction(str[i],ex->ex_save);
-				}
-			}
-			if(!ft_strcmp(str[0],"echo"))
-				echo_function(str);
-			if(!ft_strcmp(str[0],"export"))
-			{
-				if(str[1] && str[1][0])
-					ex->env = export_cmd(ex->env,str,ex);
-				else
-					ft_putstr_fd("minishell :export: `': not a valid identifier\n",2);
-				if(!str[1])
-				{
-					if(ex->ex_save)
-					{
-						ex->export = export_sort(ex->ex_save);
-						i = 0;
-						while(ex->export[i])
-							printf("declare -x %s\n",ex->export[i++]);
-					}
-				}
-			}
-			if(!ft_strcmp(str[0],"env"))
-			{
-				if(!str[1])
-				{
-					i = 0;
-					while(ex->env[i])
-						printf("%s\n",ex->env[i++]);
-				}
-			}
-			if(!ft_strcmp(str[0],"unset"))
-			{
-				ex->env = ft_unset(ex->env,str);
-				ex->ex_save = ft_unset(ex->ex_save,str);
-			}
-			if(!ft_strcmp(str[0],"pwd"))
-				printf("%s\n",getcwd(NULL,0));
-			if(!ft_strcmp(str[0],"exit"))
-				{
-					write(2,"exit\n",5);
-					exit(0);
-				}
+		echo_function(str);
+		g_code = 0;
+		return (1);
+	}
+	return (0);
+}
+
+int	export_and_env(t_ex *ex, char **str)
+{
+	int	i;
+
+	if (!ft_strcmp(str[0], "export"))
+	{
+		if (str[1])
+			ft_export(&ex->env, &ex->ex_save, str);
+		if (!str[1])
+		{
+			ex->export = export_sort(ex->ex_save);
+			print2d(ex);
+			ft_free_e(ex->export);
+		}
+		return (1);
+	}
+	else if (!ft_strcmp(str[0], "env"))
+	{
+		if (!str[1])
+		{
+			i = 0;
+			while (ex->env[i])
+				printf("%s\n", ex->env[i++]);
+		}
+		return (1);
+	}
+	return (0);
+}
+
+int	unset_and_pwd(t_ex *ex, char **str)
+{
+	char	*pwd;
+
+	if (!ft_strcmp(str[0], "unset"))
+	{
+		ex->env = ft_unset(ex->env, str, 1);
+		ex->ex_save = ft_unset(ex->ex_save, str, 0);
+		return (1);
+	}
+	else if (!ft_strcmp(str[0], "pwd"))
+	{
+		pwd = getcwd(NULL, 0);
+		printf("%s\n", pwd);
+		g_code = 0;
+		free(pwd);
+		return (1);
+	}
+	return (0);
+}
+
+void	builtins(char **str, t_ex *ex, int in)
+{
+	int	f;
+
+	f = 0;
+	if (!ex->env)
+	{
+		ex->env = (char **) malloc(1 * sizeof(char *));
+		ex->env[0] = NULL;
+	}
+	if (str)
+	{
+			f = cd_and_echo(ex, str);
+			f = export_and_env(ex, str);
+			f = unset_and_pwd(ex, str);
+		if (!ft_strcmp(str[0], "exit"))
+			ft_exit(str, in);
 	}
 }
-//exit code 0 succes 1 signal 127 cmd err   258 pars err

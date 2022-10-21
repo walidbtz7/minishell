@@ -1,29 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_blt3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/11 15:14:54 by mrafik            #+#    #+#             */
-/*   Updated: 2022/10/20 22:17:19 by mrafik           ###   ########.fr       */
+/*   Created: 2022/10/19 01:33:58 by mrafik            #+#    #+#             */
+/*   Updated: 2022/10/20 22:23:50 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-void	ft_putstr_fd(char *s, int fd)
+void	ft_exit(char **str, int in)
 {
-	if (s)
+	if (ft_strlen2(str) > 2)
 	{
-		write(fd, s, ft_strlen(s));
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		g_code = 1;
 	}
-}
-
-void	exit_err(char **str)
-{
-	ft_putstr_fd("minishell: exit: ", 2);
-	ft_putstr_fd(str[1], 2);
-	ft_putstr_fd("numeric argument required\n", 2);
-	exit(255);
+	else if (str[1] && str[1][0])
+	{
+		if (!ft_isnumber(str[1][0]))
+			exit_err(str);
+		exit(ft_atoi(str[1]));
+	}
+	else if (in == 0)
+	{
+		if (ft_strlen2(str) == 1)
+			write(2, "exit\n", 5);
+		if (ft_strlen2(str) == 1)
+			exit(g_code);
+		else
+			exit(ft_atoi(str[1]));
+	}
 }

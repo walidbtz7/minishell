@@ -6,7 +6,7 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/26 22:49:02 by wboutzou          #+#    #+#             */
-/*   Updated: 2022/10/14 15:47:00 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/21 01:20:11 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,13 @@ void	sig_handler(int signum)
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
-		code = 1;
+		g_code = 1;
 	}
 }
 
 int	main(int argc, char **argv, char **envp)
 {
+
 	t_parsing	*parse;
 	t_ex		execu;
 
@@ -57,9 +58,9 @@ int	main(int argc, char **argv, char **envp)
 	(void ) argv;
 	signal(SIGINT, sig_handler);
 	signal(SIGQUIT, SIG_IGN); 
-	code = 0;
-	execu.env = envp;
-	execu.ex_save = envp;
+	g_code = 0;
+	execu.env = ft_dup (envp);
+	execu.ex_save = ft_dup(envp);
 	while (1)
 	{
 		parse = init_parse(execu.env);
@@ -69,12 +70,14 @@ int	main(int argc, char **argv, char **envp)
 			parsing(parse);
 			add_history(parse->str);
 			if (parsing_error(parse))
-				ft_pipe(parse->cmd, &execu);
-
+				ft_execution(parse->cmd, &execu);
 			free_parse(parse);
 		}
 		else
-			return (0);
+		{
+			write(2, "exit", 5);
+			exit(g_code);
+		}
 	}
 	return (0);
 }

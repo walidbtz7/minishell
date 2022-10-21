@@ -6,12 +6,11 @@
 /*   By: mrafik <mrafik@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 22:58:47 by mrafik            #+#    #+#             */
-/*   Updated: 2022/09/27 23:27:52 by mrafik           ###   ########.fr       */
+/*   Updated: 2022/10/18 14:49:18 by mrafik           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
-
 
 int	cont(char *stock)
 {
@@ -55,7 +54,7 @@ char	*get_next_line(int fd)
 	char		*tmp;
 
 	rd = 1;
-	if (fd < 0 )
+	if (fd < 0)
 		return (0);
 	buffer = (char *) malloc(2);
 	buffer[0] = 0;
